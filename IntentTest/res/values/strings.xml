@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">IntentTest</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="button1">Coucou ! Ma deuxième activité</string>
+    <string name="Valid">Valider</string>
+    <string name="Call">Appeler</string>
+
+</resources>

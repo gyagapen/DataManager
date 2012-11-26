@@ -1,0 +1,5 @@
+package com.example.threadtest;
+
+public class AHandler extends Handler{
+
+}

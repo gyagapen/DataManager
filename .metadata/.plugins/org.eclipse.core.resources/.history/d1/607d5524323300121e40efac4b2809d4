@@ -1,0 +1,57 @@
+package com.example.threadtest;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.os.RecoverySystem.ProgressListener;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+public class MainActivity extends Activity implements OnClickListener {
+
+	Button monBouton = null;
+	
+	//waiting dialog
+	private ProgressDialog progressDialog = null;
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        monBouton = (Button)findViewById(R.id.MonBouton);
+        monBouton.setOnClickListener(this);
+        
+        //set progressDialog msg
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please wait...");
+        
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+
+	public void onClick(View v) {
+		
+		if(v == monBouton)
+		{
+			//show progress dialog
+			progressDialog.show();
+			
+			//create new thread
+			Thread processThread = new Thread(new ARunnable());
+			processThread.start();
+			
+			//hide progress dialog
+			progressDialog.dismiss();
+		}
+		
+	}
+	
+
+}

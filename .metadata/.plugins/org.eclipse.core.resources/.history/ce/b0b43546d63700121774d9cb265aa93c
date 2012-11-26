@@ -1,0 +1,32 @@
+package com.example.datamanager;
+
+import java.util.TimerTask;
+
+import android.content.Context;
+import android.widget.Toast;
+
+public class TimerOnTask extends TimerTask {
+	
+	
+
+	private DataHandler dataHandler = null;
+	
+	public TimerOnTask(DataHandler dataHandler) {
+		
+		super();
+		this.dataHandler = dataHandler;
+	}
+
+	/**
+	 * Behavior when time out
+	 */
+	public void run() {
+
+		
+		// launch thread
+		Thread dataThread = new Thread(new DataRunnable(dataHandler));
+		dataThread.start();
+
+	}
+
+}

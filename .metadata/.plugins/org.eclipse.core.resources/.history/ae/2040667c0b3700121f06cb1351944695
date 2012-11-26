@@ -1,0 +1,58 @@
+package com.example.databasetest;
+
+import android.app.Activity;
+import android.media.ExifInterface;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class AddActivity extends Activity implements OnClickListener{
+
+	
+	//boutons de l'activité
+	Button addButton = null;
+	Button cancelButton = null; 
+	
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.add_product);
+		
+		//récupération des boutons et association du comportement
+		addButton = (Button)findViewById(R.id.buttonSave);
+		cancelButton = (Button)findViewById(R.id.buttonCancelAdd);
+	}
+
+	public void onClick(View v) {
+
+		if(v == addButton)
+		{
+			//récupération des text
+			EditText etProduit  = (EditText)findViewById(R.id.etProduit);
+			String produitText = etProduit.getText().toString();
+			
+			EditText etQuantite = (EditText)findViewById(R.id.etQuantite);
+			String quantiteText = etQuantite.getText().toString();
+			
+			//si texts non null
+			if(etProduit.length() > 0 && etQuantite > 0)
+			{
+				
+				//création d'une course
+				Course newCourse = new Course(produitText, Integer.parseInt(quantiteText));
+			
+				CourseRepository courseRepository = new CourseRepository(this);
+				courseRepository.Open();
+				courseRepository.save(newCourse);
+				courseRepository.close();
+			}
+		}
+		else if(v == cancelButton)
+		{
+			finish();
+		}
+		
+	}
+}

@@ -1,0 +1,50 @@
+package com.example.intenttest;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+public class MainActivity extends Activity implements OnClickListener {
+
+	private Button monBouton = null;
+	
+	public static final int CODE_RETOUR = 0;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+		monBouton = (Button) findViewById(R.id.buttonToast);
+
+		//add listener to button
+		monBouton.setOnClickListener(this);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		return true;
+	}
+
+	public void onClick(View v) {
+		
+
+		//vérification de la vue cliquée
+		if(v == monBouton)
+		{
+			//Toast.makeText(MainActivity.this, "Coucou 2!", Toast.LENGTH_SHORT).show();
+			
+			//launching new activity
+			Intent monIntent = new Intent(this, OtherActivity.class);
+			startActivityForResult(monIntent, CODE_RETOUR);
+			
+		}
+		
+	}
+
+}

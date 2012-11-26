@@ -1,0 +1,54 @@
+package com.example.databasetest;
+
+import java.util.List;
+
+import android.database.Cursor;
+
+public class CourseRepository extends Repository<Course> {
+
+	public CourseRepository(Context context)
+	{
+		sqLiteOpenHelper = new CourseOpenHelper(context, null);
+	}
+	
+	public List getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Course GetById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void save(Course entite) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void update(Course entite) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void Delete(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List ConvertCursorToListObject(Cursor c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Course ConvertCursorToObject(Cursor c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Course ConvertCursorToOneObject(Cursor c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

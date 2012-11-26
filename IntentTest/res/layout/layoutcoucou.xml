@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+
+<TextView android:id="@+id/bottomtext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button1" 
+        />
+<EditText 
+    android:id="@+id/editTextNom"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"/>
+
+<Button 
+    android:id="@+id/ButtonValider"
+    android:text="@string/Valid"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"/>
+
+<Button 
+    android:id="@+id/Appeler"
+    android:text="@string/Call"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"/>
+
+</LinearLayout>

@@ -1,0 +1,31 @@
+package com.example.datamanager;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.widget.Toast;
+
+public class DataHandler extends Handler {
+	
+	Context aContext = null;
+	
+	public DataHandler(Context context) {
+		aContext = context;
+	}
+	
+	//handle message from thread
+	public void handleMessage(Message msg)
+	{
+		
+		if(msg.what == 0)
+		{
+			//data is used
+			Toast.makeText(getB, text, duration)
+		}
+		else
+		{
+			//data not used
+		}
+	}
+
+}

@@ -1,0 +1,66 @@
+package com.example.datamanager;
+
+import android.net.TrafficStats;
+
+public class DataUsage {
+	
+
+
+	/**
+	 * Indicates wether data is used over all connected interfaces
+	 * @return
+	 * @throws InterruptedException 
+	 */
+	public static int isDataUsed() throws InterruptedException
+	{
+		int result = 0;
+		boolean dataIsUsed = false;
+		
+		//get number of bytes received
+		long nbBytesSent1 = TrafficStats.getMobileTxBytes();
+		long nbBytesReceived1 = TrafficStats.getMobileRxBytes();
+		
+		//get number of bytes received 1 second later
+		Thread closeActivity = new Thread(new Runnable() {
+			  public void run() {
+			    try {
+			    	
+			      Thread.sleep(1000);
+			      
+			    } catch (Exception e) {
+			      e.getLocalizedMessage();
+			    }
+			  }
+			});
+
+		
+		
+		long nbBytesReceived2 = TrafficStats.getMobileRxBytes()+1;
+		long nbBytesSent2 = TrafficStats.getMobileTxBytes();
+		
+		boolean dataIsReceived = (nbBytesReceived1 != nbBytesReceived2);
+		
+		//if no data received then check if data is sent
+		if(!dataIsReceived)
+		{
+			//get number of bytes sent
+			//long nbBytesSent1 = TrafficStats.getMobileTxBytes();
+			
+			//get number of bytes sent one second later
+			//Thread.sleep(500);
+			//long nbBytesSent2 = TrafficStats.getMobileTxBytes();
+			
+			dataIsUsed = (nbBytesSent1 != nbBytesSent2);
+		}
+		else
+		{
+			//data connection is used
+			dataIsUsed = true;
+		}
+		
+		return dataIsUsed;
+		
+	}
+	
+
+}

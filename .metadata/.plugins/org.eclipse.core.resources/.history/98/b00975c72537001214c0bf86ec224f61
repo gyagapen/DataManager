@@ -1,0 +1,69 @@
+package com.example.datamanager;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.net.TrafficStats;
+
+
+/**
+ * Detects wether 3g is used 
+ * @author Gui
+ *
+ */
+public class DataUsage implements Runnable {
+	
+	//interval when 3G usage is cheked (ms)
+	private final int DATA_INTERVAL_CHECK = 5000; 
+
+	//data handler is the interface to communicate to activities
+	private DataHandler dataHandler = null;;
+
+	public DataUsage(DataHandler dataHandler) {
+		this.dataHandler = dataHandler;
+		
+		SharedPreferences dataManagerSettings = getSharedPreferences("DataManagerPreferences", Context.MODE_PRIVATE);
+	}
+
+	
+
+	public void run() {
+
+
+			boolean dataIsUsed = false;
+
+			// get number of bytes received and sent
+			long nbBytesSent1 = TrafficStats.getMobileTxBytes();
+			long nbBytesReceived1 = TrafficStats.getMobileRxBytes();
+
+			// get number of bytes received 5 second later
+			try {
+				Thread.sleep(DATA_INTERVAL_CHECK);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			long nbBytesReceived2 = TrafficStats.getMobileRxBytes();
+			long nbBytesSent2 = TrafficStats.getMobileTxBytes();
+
+			boolean dataIsReceived = (nbBytesReceived1 != nbBytesReceived2);
+			
+
+			// if no data received then check if data is sent
+			if (!dataIsReceived) {
+				dataIsUsed = (nbBytesSent1 != nbBytesSent2);
+			} else {
+				// data connection is used
+				dataIsUsed = true;
+			}
+
+			if (dataIsUsed) {
+				dataHandler.sendEmptyMessage(0);
+			} else {
+				dataHandler.sendEmptyMessage(1);
+			}
+
+
+	}
+
+}

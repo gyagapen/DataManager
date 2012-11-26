@@ -1,0 +1,22 @@
+package com.example.datamanager;
+
+import android.os.Handler;
+import android.os.Message;
+
+public class DataHandler extends Handler {
+	
+	//handle message from thread
+	public void handleMessage(Message msg)
+	{
+		
+		if(msg.what == 0)
+		{
+			//data is used
+		}
+		else
+		{
+			//data not used
+		}
+	}
+
+}

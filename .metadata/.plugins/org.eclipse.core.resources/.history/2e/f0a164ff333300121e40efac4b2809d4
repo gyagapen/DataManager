@@ -1,0 +1,7 @@
+package com.example.threadtest;
+
+import android.os.Handler;
+
+public class AHandler extends Handler{
+
+}

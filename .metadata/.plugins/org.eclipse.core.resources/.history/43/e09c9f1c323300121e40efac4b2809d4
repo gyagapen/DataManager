@@ -1,0 +1,27 @@
+package com.example.threadtest;
+
+public class ARunnable implements Runnable {
+
+	
+	//will be launched by a thread
+	public void run() {
+		
+		traitementDesDonnes();
+	}
+	
+	
+	//dummy method for simulate processing
+	private void traitementDesDonnes()
+	{
+		for(int i=0;i<10;i++)
+		{
+			//wait 500ms
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+}

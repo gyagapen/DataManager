@@ -1,0 +1,19 @@
+package com.example.datamanager;
+
+import android.content.Intent;
+
+/**
+ * Launch Service with Time On
+ * @author Gui
+ *
+ */
+public class ServiceIntent extends Intent{
+	
+	private int timeOn = 0;
+	private int timeOff =0;
+	
+	public ServiceIntent() {
+		
+	}
+
+}

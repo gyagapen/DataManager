@@ -1,0 +1,25 @@
+package com.example.datamanager;
+
+/**
+ * Read a properties file
+ * @author Gui
+ *
+ */
+public class PropertiesFileReader {
+	
+	private String propertiesFileName = "";
+	private Properties props;
+	
+	public PropertiesFileReader(String aPropertiesFileName) {
+		
+		propertiesFileName = aPropertiesFileName;
+		AssetManager am = this.getResources().getAssets();
+		Properties pp = new Properties();
+
+		InputStream isConfig = am.open("config.properties",Context.MODE_PRIVATE);           
+		pp.load(isConfig);
+	}
+	
+	
+
+}

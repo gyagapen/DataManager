@@ -1,0 +1,17 @@
+package com.example.datamanager;
+
+/**
+ * Read a properties file
+ * @author Gui
+ *
+ */
+public class PropertiesFileReader {
+	
+	private String propertiesFileName = "";
+	
+	public PropertiesFileReader(String aPropertiesFileName) {
+		
+		propertiesFileName = aPropertiesFileName;
+	}
+
+}

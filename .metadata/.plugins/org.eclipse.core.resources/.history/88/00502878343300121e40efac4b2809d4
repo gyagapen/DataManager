@@ -1,0 +1,19 @@
+package com.example.threadtest;
+
+import android.os.Handler;
+import android.os.Message;
+
+public class AHandler extends Handler{
+
+	public AHandler(Context context) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void handleMessage(Message msg)
+	{
+		if(msg.what == 0)
+		{
+			
+		}
+	}
+}

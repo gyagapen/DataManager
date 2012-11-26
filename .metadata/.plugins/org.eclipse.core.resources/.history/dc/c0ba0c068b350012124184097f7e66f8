@@ -1,0 +1,18 @@
+package com.example.databasetest;
+
+public class Course {
+	
+	private int id;
+	private String produit;
+	private int quantite;
+	private boolean achete;
+	
+	public Course(String produit, int quantite)
+	{
+		this.produit = produit;
+		this.quantite = quantite;
+		this.achete = false;
+	}
+
+	
+}

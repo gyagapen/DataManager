@@ -1,0 +1,38 @@
+package com.example.databasetest;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+public class AddActivity extends Activity implements OnClickListener{
+
+	
+	//boutons de l'activité
+	Button addButton = null;
+	Button cancelButton = null; 
+	
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.add_product);
+		
+		//récupération des boutons et association du comportement
+		addButton = (Button)findViewById(R.id.buttonSave);
+		cancelButton = (Button)findViewById(R.id.buttonCancelAdd);
+	}
+
+	public void onClick(View v) {
+
+		if(v == addButton)
+		{
+			
+		}
+		else if(v == cancelButton)
+		{
+			
+		}
+		
+	}
+}

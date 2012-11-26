@@ -1,0 +1,32 @@
+package com.example.databasetest;
+
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class CourseOpenHelper extends SQLiteOpenHelper{
+
+	//version de la base de données
+	private static final int DATABASE_VERSION = 1;
+	
+	//Nom de la bd
+	private static final String COURSE_BASE_NAME = "course.db";
+	
+	//Nom de la table
+	public static final String COURSE_TABLE_NAME = "Course";
+	
+	//Description des colonnes
+	public static final 
+	
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

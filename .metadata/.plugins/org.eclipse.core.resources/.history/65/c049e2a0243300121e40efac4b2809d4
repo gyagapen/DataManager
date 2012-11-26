@@ -1,0 +1,21 @@
+package com.example.intenttest;
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class OtherActivity extends Activity{
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.layoutcoucou);
+		
+		//fetching button
+		Button boutonValider = (Button)findViewById(R.id.ButtonValider);
+		
+		//fetching input field
+		final EditText editTextNom = (EditText)findViewById(R.id.editTextNom); 
+
+		}
+}

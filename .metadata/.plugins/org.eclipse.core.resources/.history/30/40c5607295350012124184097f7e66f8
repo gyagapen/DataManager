@@ -1,0 +1,28 @@
+package com.example.databasetest;
+
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public abstract class Repository<T> implements IRepository<T> {
+	
+	//base de données
+	protected SQLiteDatabase maBDD;
+	
+	protected SQLiteOpenHelper sqLiteOpenHelper;
+	
+	/**
+	 * Constructeur par défaut
+	 */
+	public Repository() {
+	
+	}
+	
+	/**
+	 * Ouverture de la connexion
+	 */
+	public void Open()
+	{
+		maBDD = sqLiteOpenHelper.getWritableDatabase();
+	}
+
+}

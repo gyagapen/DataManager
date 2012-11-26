@@ -1,0 +1,5 @@
+package com.example.databasetest;
+
+public class CourseRepository extends Repository<Course> {
+
+}

@@ -1,0 +1,22 @@
+package com.example.datamanager;
+
+/***
+ * Manage all preferences
+ * @author Gui
+ *
+ */
+public class PreferencesManager {
+
+	public PreferencesManager() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public initializePreferences()
+	{
+		AssetManager am = this.getResources().getAssets();
+		Properties pp = new Properties();
+
+		InputStream isConfig = am.open("config.properties",Context.MODE_PRIVATE);           
+		pp.load(isConfig);
+	}
+}

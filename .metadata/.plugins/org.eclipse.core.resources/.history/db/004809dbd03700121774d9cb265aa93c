@@ -1,0 +1,35 @@
+package com.example.datamanager;
+
+import java.util.TimerTask;
+
+import android.content.Context;
+import android.widget.Toast;
+
+public class TimerOnTask extends TimerTask {
+	
+	
+	private Context context = null;
+	private DataHandler dataHandler = null;
+	
+	public TimerOnTask(Context aContext, DataHandler dataHandler) {
+		
+		super();
+		context = aContext;
+		this.dataHandler = dataHandler;
+	}
+
+	/**
+	 * Behavior when time out
+	 */
+	public void run() {
+
+		Toast.makeText(context, "Run function", Toast.LENGTH_SHORT)
+		.show();
+		
+		// launch thread
+		Thread dataThread = new Thread(new DataRunnable(dataHandler));
+		dataThread.start();
+
+	}
+
+}

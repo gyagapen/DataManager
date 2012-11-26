@@ -1,0 +1,22 @@
+package com.example.datamanager;
+
+import android.view.View;
+import android.view.View.OnClickListener;
+
+/**
+ * Define behavior of all UI components
+ * @author Gui
+ *
+ */
+public class UIBehavior implements OnClickListener {
+
+	public void onClick(View v) {
+		
+		if(v.getId() == findViewById(R.id.checkBoxData))
+		{
+			
+		}
+		
+	}
+
+}

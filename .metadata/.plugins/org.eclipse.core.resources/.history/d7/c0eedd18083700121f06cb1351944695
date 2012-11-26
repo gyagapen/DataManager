@@ -1,0 +1,21 @@
+package com.example.databasetest;
+
+import android.view.View;
+import android.view.View.OnClickListener;
+
+public class ButtonBehavior implements OnClickListener {
+
+	//vue actuellement traité
+	
+	public ButtonBehavior() {
+	
+		super();
+	}
+	
+	public void onClick(View v) {
+
+		//button 
+		
+	}
+
+}

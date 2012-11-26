@@ -1,0 +1,44 @@
+package com.example.threadtest;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.widget.ProgressBar;
+
+public class AHandler extends Handler{
+
+	//waiting dialog
+	private ProgressDialog progressDialog = null;
+	
+	//progress bar
+	private ProgressDialog progressBar = null;
+	
+	public AHandler(Context context) {
+		
+		//set progressDialog msg
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Please wait...");
+        
+        //set progress bqr information
+        progressBar = new ProgressDialog(context);
+        progressBar.setTitle("Please wait...");
+        progressBar.setMessage("Loading");
+        progressBar.setMax(10);
+       
+	}
+
+	public void handleMessage(Message msg)
+	{
+		if(msg.what == 0)
+		{
+			//show progress dialog
+			progressDialog.show();
+		}
+		else if(msg.what == 1)
+		{
+			//hide progress dialog
+			progressDialog.dismiss();
+		}
+	}
+}

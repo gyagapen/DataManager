@@ -1,0 +1,26 @@
+package com.example.listviewtest;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.widget.ListView;
+
+public class MainActivity extends Activity {
+
+	ListView lvListe;
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        //récupération de la liste view
+        lvListe = (ListView)findViewById(R.id.lvListe);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+}

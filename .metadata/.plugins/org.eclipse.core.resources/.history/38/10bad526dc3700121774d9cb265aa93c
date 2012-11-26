@@ -1,0 +1,28 @@
+package com.example.datamanager;
+
+import java.util.TimerTask;
+
+import android.content.Context;
+import android.widget.Toast;
+
+public class TimerOffTask extends TimerTask {
+	
+	
+	private DataHandler dataHandler = null;
+	
+	public TimerOffTask(DataHandler aDataHandler) {
+		
+		super();
+		parentService = aService;
+	}
+
+	/**
+	 * Behavior when time out
+	 */
+	public void run() {
+
+		
+		
+	}
+
+}

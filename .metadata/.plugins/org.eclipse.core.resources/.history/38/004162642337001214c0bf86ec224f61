@@ -1,0 +1,28 @@
+package com.example.datamanager;
+
+import java.io.InputStream;
+import java.util.Properties;
+
+import android.content.Context;
+import android.content.res.AssetManager;
+
+/***
+ * Manage all preferences
+ * @author Gui
+ *
+ */
+public class PreferencesManager {
+
+	public PreferencesManager(Context context) {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public void initializePreferences()
+	{
+		AssetManager am = this.getResources().getAssets();
+		Properties pp = new Properties();
+
+		InputStream isConfig = am.open("config.properties",Context.MODE_PRIVATE);           
+		pp.load(isConfig);
+	}
+}

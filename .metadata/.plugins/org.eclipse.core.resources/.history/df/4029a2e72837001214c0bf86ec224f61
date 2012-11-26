@@ -1,0 +1,24 @@
+package com.example.datamanager;
+
+import java.io.IOException;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+/***
+ * Manage all preferences
+ * @author Gui
+ *
+ */
+public class PreferencesManager {
+	
+	private Context context;
+
+	public PreferencesManager(Context context) {
+		this.context = context;
+	}
+	
+
+	
+	
+}

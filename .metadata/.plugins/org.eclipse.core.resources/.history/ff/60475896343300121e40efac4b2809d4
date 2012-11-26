@@ -1,0 +1,46 @@
+package com.example.threadtest;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+
+public class ARunnable implements Runnable {
+
+	
+	
+	public ARunnable() {
+		super();
+		//set progressDialog msg
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Please wait...");
+	}
+	
+	//will be launched by a thread
+	public void run() {
+	
+		//show progress dialog
+		progressDialog.show();
+		
+		traitementDesDonnes();
+		
+		//hide progress dialog
+		progressDialog.dismiss();
+		
+	}
+	
+	
+	//dummy method for simulate processing
+	private void traitementDesDonnes()
+	{
+		
+		for(int i=0;i<10;i++)
+		{
+			//wait 500ms
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+}

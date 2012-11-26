@@ -1,0 +1,24 @@
+package com.example.datamanager;
+
+import java.util.TimerTask;
+
+public class TimerOn extends TimerTask {
+	
+	
+	private Context context = null;
+
+	/**
+	 * Behavior when time out
+	 */
+	public void run() {
+
+		// data handler
+		DataHandler dataHandler = new DataHandler(getBaseContext());
+
+		// launch thread
+		Thread dataThread = new Thread(new DataRunnable(dataHandler));
+		dataThread.start();
+
+	}
+
+}

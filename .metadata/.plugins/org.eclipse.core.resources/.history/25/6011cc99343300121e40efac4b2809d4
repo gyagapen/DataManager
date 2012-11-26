@@ -1,0 +1,24 @@
+package com.example.threadtest;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+
+public class AHandler extends Handler{
+
+	//waiting dialog
+			private ProgressDialog progressDialog = null;
+	
+	public AHandler(Context context) {
+		
+	}
+
+	public void handleMessage(Message msg)
+	{
+		if(msg.what == 0)
+		{
+			
+		}
+	}
+}

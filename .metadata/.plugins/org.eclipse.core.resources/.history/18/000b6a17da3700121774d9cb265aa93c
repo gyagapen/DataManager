@@ -1,0 +1,36 @@
+package com.example.datamanager;
+
+import java.util.TimerTask;
+
+import android.content.Context;
+import android.widget.Toast;
+
+public class TimerOffTask extends TimerTask {
+	
+	
+	private MainService parentService = null;
+	
+	public TimerOffTask(MainService aService) {
+		
+		super();
+		parentService = aService;
+	}
+
+	/**
+	 * Behavior when time out
+	 */
+	public void run() {
+
+		
+		//enable data
+		parentService.setMobileDataEnabled(true);
+		
+		//cancel timerOff
+		parentService.CancelTimeOff();
+		
+		//reset timerOn
+		parentService.CancelTimerOn();
+		parentService.StartTimerOn();
+	}
+
+}

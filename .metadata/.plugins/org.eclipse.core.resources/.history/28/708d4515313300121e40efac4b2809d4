@@ -1,0 +1,52 @@
+package com.example.threadtest;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+public class MainActivity extends Activity implements OnClickListener {
+
+	Button monBouton = null;
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        monBouton = (Button)findViewById(R.id.MonBouton);
+        monBouton.setOnClickListener(this);
+        
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+
+	public void onClick(View v) {
+		
+		if(v == monBouton)
+		{
+			traitementDesDonnes();
+		}
+		
+	}
+	
+	//dummy method for simulate processing
+	private void traitementDesDonnes()
+	{
+		for(int i=0;i<10;i++)
+		{
+			//wait 500ms
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}

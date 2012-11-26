@@ -1,0 +1,7 @@
+package com.example.databasetest;
+
+import android.view.View.OnClickListener;
+
+public class ButtonBehavior implements OnClickListener {
+
+}
