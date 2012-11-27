@@ -1,16 +1,13 @@
 package com.example.datamanager;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Timer;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.widget.Toast;
 
@@ -22,10 +19,20 @@ public class MainService extends Service {
 	private TimerOnTask timerOnTask = null;
 	private TimerOffTask timerOffTask = null;
 
+	//time values
+	private int timeOnValue =0;
+	private int timeOffValue =0;
+	private int timeCheckData = 5000;
+	
 	// data handler
 	DataHandler dataHandler = null;
 
+	// SharedPreferences
+	SharedPreferences prefs = null;
+	SharedPrefsEditor sharedPrefsEditor = null;
 
+	// screen broadcast receiver
+	BroadcastReceiver mReceiver = null;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -43,20 +50,27 @@ public class MainService extends Service {
 
 		filter.addAction(Intent.ACTION_SCREEN_OFF);
 
-		BroadcastReceiver mReceiver = new ScreenReceiver();
+		mReceiver = new ScreenReceiver();
 
 		registerReceiver(mReceiver, filter);
-		
-		
 
 		// Timers implementation
 		timerOn = new Timer();
 		timerOff = new Timer();
-		
-		// data handler
-		dataHandler = new DataHandler(getBaseContext(), this);	
 
-		
+		// data handler
+		dataHandler = new DataHandler(getBaseContext(), this);
+
+		// shared prefs init
+		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
+				Activity.MODE_PRIVATE);
+		sharedPrefsEditor = new SharedPrefsEditor(prefs);
+
+		// register service start in preferences
+		sharedPrefsEditor.setServiceActivation(true);
+
+		Toast.makeText(getBaseContext(), "DataManager service started",
+				Toast.LENGTH_SHORT).show();
 
 	}
 
@@ -64,127 +78,126 @@ public class MainService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
 		boolean screenOff = false;
-		
-		try
-		{
-			 screenOff = intent.getBooleanExtra("screen_state", false);
-		}
-		catch(NullPointerException ex)
-		{
-			//first run
+
+		try {
+			screenOff = intent.getBooleanExtra("screen_state", false);
+		} catch (NullPointerException ex) {
+			// first run
 			screenOff = false;
 		}
-		
-		
-		Toast.makeText(getBaseContext(), "Screen on : "+screenOff, Toast.LENGTH_SHORT).show();
+
+		/*Toast.makeText(getBaseContext(), "Screen on : " + screenOff,
+				Toast.LENGTH_SHORT).show();*/
 
 		// if screen is on
 		if (screenOff) {
-			
-			//stop all timers if there are running
+
+			// stop all timers if there are running
 			CancelTimeOff();
 			CancelTimerOn();
-			
+
 			// activate data
-
-		} else { //screen is off
-
-			
 			try {
-				launchTimer();
-				StartTimerOn();
-			} catch (InterruptedException e) {
-				Toast.makeText(getBaseContext(), "Erreur", Toast.LENGTH_SHORT)
-						.show();
+				setMobileDataEnabled(true, true); // activate autosync too
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
+		} else { // screen is off
+
+			StartTimerOn();
+
 		}
 
 		return super.onStartCommand(intent, flags, startId);
 	}
 
-	public void launchTimer() throws InterruptedException {
-
-		// fetching preferences
-		/*SharedPreferences dataManagerSettings = getSharedPreferences(
-				SharedPreferences.PREFERENCE_NAME, Context.MODE_PRIVATE);
-		int timeOn = dataManagerSettings.getInt(MainActivity.STR_TIME_ON,
-				MainActivity.TIME_ON);
-		int timeOff = dataManagerSettings.getInt(MainActivity.STR_TIME_OFF,
-				MainActivity.TIME_OFF);*/
-
-
-
-	}
-	
 	/**
 	 * Start timer On
 	 */
-	public void StartTimerOn()
-	{
+	public void StartTimerOn() {
 		// start timer on
-		Toast.makeText(getBaseContext(), "Start timer on", Toast.LENGTH_SHORT)
-				.show();
-		timerOnTask = new TimerOnTask(dataHandler);
-		timerOn.schedule(timerOnTask, 10000, 10000);
+		/*Toast.makeText(getBaseContext(), "Start timer on", Toast.LENGTH_SHORT)
+				.show();*/
+		
+		
+		timeOnValue = sharedPrefsEditor.getTimeOn()*60*1000; //from min to ms
+		timeCheckData = sharedPrefsEditor.getIntervalCheck()*1000; //from s to ms
+		
+		timerOnTask = new TimerOnTask(dataHandler, timeCheckData);
+		timerOn.schedule(timerOnTask, timeOnValue, timeOnValue);
 	}
-	
+
 	/**
 	 * Start timer off
 	 */
-	public void StartTimerOff()
-	{
-		
+	public void StartTimerOff() {
+
 		// start timer off
-		Toast.makeText(getBaseContext(), "Start timer off", Toast.LENGTH_SHORT)
-				.show();
-		timerOffTask = new TimerOffTask(dataHandler);
-		timerOff.schedule(timerOffTask, 10000, 10000);
+		/*Toast.makeText(getBaseContext(), "Start timer off", Toast.LENGTH_SHORT)
+				.show();*/
 		
+		timeOffValue = sharedPrefsEditor.getTimeOff()*60*1000; //in ms
+		
+		timerOffTask = new TimerOffTask(dataHandler);
+		timerOff.schedule(timerOffTask, timeOffValue, timeOffValue);
+
 	}
-	
-	
+
 	/**
 	 * Cancel TimerOn
 	 */
-	public void CancelTimerOn()
-	{
-		if(timerOnTask != null)
-		{
+	public void CancelTimerOn() {
+		if (timerOnTask != null) {
 			timerOnTask.cancel();
 		}
 	}
-	
+
 	/**
 	 * Cancel TimerOff
 	 */
-	public  void CancelTimeOff()
-	{
-		if(timerOffTask != null)
-		{
+	public void CancelTimeOff() {
+		if (timerOffTask != null) {
 			timerOffTask.cancel();
 		}
 	}
-	
+
 	/**
 	 * Enable or disable data
+	 * 
 	 * @param enabled
 	 * @throws Exception
 	 */
-	public void setMobileDataEnabled(boolean enabled) throws Exception {
-		Context context = getBaseContext();
-	    final ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	    final Class conmanClass = Class.forName(conman.getClass().getName());
-	    final Field iConnectivityManagerField = conmanClass.getDeclaredField("mService");
-	    iConnectivityManagerField.setAccessible(true);
-	    final Object iConnectivityManager = iConnectivityManagerField.get(conman);
-	    final Class iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
-	    final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-	    setMobileDataEnabledMethod.setAccessible(true);
+	public void setMobileDataEnabled(boolean enabled, boolean enableAutoSync)
+			throws Exception {
 
-	    setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
+		DataActivation dataActivation = new DataActivation(getBaseContext());
+		// auto sync disabled too
+		dataActivation.setMobileDataEnabled(enabled, enableAutoSync);
 	}
-	
-	
+
+	@Override
+	public void onDestroy() {
+		// unregister service to screen broadcast receiver
+		unregisterReceiver(mReceiver);
+
+		// stops timers
+		if (timerOnTask != null) {
+			timerOnTask.cancel();
+		}
+
+		if (timerOffTask != null) {
+			timerOffTask.cancel();
+		}
+
+		// register service stopped in preferences
+		sharedPrefsEditor.setServiceActivation(false);
+
+		Toast.makeText(getBaseContext(), "DataManager service stopped",
+				Toast.LENGTH_SHORT).show();
+
+		super.onDestroy();
+
+	}
 
 }

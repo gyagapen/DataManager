@@ -16,105 +16,120 @@ public class SharedPrefsEditor {
 	static final String STR_PREFS_ARE_ESTABLISHED = "prefsAreEstablished";
 	static final String STR_DATA_IS_ACTIVATED = "dataIsActivated";
 	static final String STR_DATA_MANAGER_IS_ACTIVATED = "dataMgrIsActivated";
-	static final String STR_INTERVAL_CHECK="IntervalCheckTime";
+	static final String STR_INTERVAL_CHECK = "IntervalCheckTime";
+	static final String STR_SERVICE_RUNNING = "ServiceIsRunning";
 
 	// Default values
-	static final int TIME_ON = 3; //min
-	static final int TIME_OFF = 15; //min
-	static final int INTERVAL_CHECK=5; //seconds
+	static final int TIME_ON = 3; // min
+	static final int TIME_OFF = 15; // min
+	static final int INTERVAL_CHECK = 5; // seconds
 	static final boolean PREFS_ARE_ESTABLISHED = true;
 	static final boolean DATA_IS_ACTIVATED = true;
 	static final boolean DATA_MGR_IS_ACTIVATED = true;
+	static final boolean SERVICE_IS_STARTED = false;
 	static final String PREFERENCE_NAME = "DataManagerPreferences";
 
 	public SharedPrefsEditor(SharedPreferences someSharedPreferences) {
-		
-		//shared preferences
-        //dataManagerSettings = getSharedPreferences(PREFERENCE_NAME, Activity.MODE_PRIVATE);
+
+		// shared preferences
+		// dataManagerSettings = getSharedPreferences(PREFERENCE_NAME,
+		// Activity.MODE_PRIVATE);
 		dataManagerSettings = someSharedPreferences;
 		prefEditor = dataManagerSettings.edit();
 
 	}
-	
-	
-	public void initializePreferences() throws IOException
-	{
-		  
-		//first run
-		if(!dataManagerSettings.contains(STR_DATA_MANAGER_IS_ACTIVATED))
-		{
-		
-			prefEditor.putInt(STR_TIME_ON, TIME_ON );
-			prefEditor.putInt(STR_TIME_OFF, TIME_OFF );
+
+	public void initializePreferences() throws IOException {
+
+		// first run
+		if (!dataManagerSettings.contains(STR_DATA_MANAGER_IS_ACTIVATED)) {
+
+			prefEditor.putInt(STR_TIME_ON, TIME_ON);
+			prefEditor.putInt(STR_TIME_OFF, TIME_OFF);
 			prefEditor.putInt(STR_INTERVAL_CHECK, INTERVAL_CHECK);
-			prefEditor.putBoolean(STR_PREFS_ARE_ESTABLISHED, PREFS_ARE_ESTABLISHED);
+			prefEditor.putBoolean(STR_PREFS_ARE_ESTABLISHED,
+					PREFS_ARE_ESTABLISHED);
 			prefEditor.putBoolean(STR_DATA_IS_ACTIVATED, DATA_IS_ACTIVATED);
-			prefEditor.putBoolean(STR_DATA_MANAGER_IS_ACTIVATED, DATA_MGR_IS_ACTIVATED);
+			prefEditor.putBoolean(STR_DATA_MANAGER_IS_ACTIVATED,
+					DATA_MGR_IS_ACTIVATED);
+			prefEditor.putBoolean(STR_SERVICE_RUNNING, SERVICE_IS_STARTED);
 			prefEditor.commit();
 		}
 	}
-	
-	
-	public int getTimeOn()
-	{
+
+	public void resetPreferences() throws IOException {
+
+		prefEditor.putInt(STR_TIME_ON, TIME_ON);
+		prefEditor.putInt(STR_TIME_OFF, TIME_OFF);
+		prefEditor.putInt(STR_INTERVAL_CHECK, INTERVAL_CHECK);
+		prefEditor.putBoolean(STR_PREFS_ARE_ESTABLISHED, PREFS_ARE_ESTABLISHED);
+		prefEditor.putBoolean(STR_DATA_IS_ACTIVATED, DATA_IS_ACTIVATED);
+		prefEditor.putBoolean(STR_DATA_MANAGER_IS_ACTIVATED,
+				DATA_MGR_IS_ACTIVATED);
+		prefEditor.putBoolean(STR_SERVICE_RUNNING, SERVICE_IS_STARTED);
+		prefEditor.commit();
+
+	}
+
+	public int getTimeOn() {
 		return dataManagerSettings.getInt(STR_TIME_ON, TIME_ON);
 	}
-	
-	
-	public int getTimeOff()
-	{
+
+	public int getTimeOff() {
 		return dataManagerSettings.getInt(STR_TIME_OFF, TIME_OFF);
 	}
-	
-	public int getIntervalCheck()
-	{
+
+	public int getIntervalCheck() {
 		return dataManagerSettings.getInt(STR_INTERVAL_CHECK, INTERVAL_CHECK);
 	}
-	
-	
-	public boolean isDataActivated()
-	{
-		return dataManagerSettings.getBoolean(STR_DATA_IS_ACTIVATED, DATA_IS_ACTIVATED);
+
+	public boolean isDataActivated() {
+		return dataManagerSettings.getBoolean(STR_DATA_IS_ACTIVATED,
+				DATA_IS_ACTIVATED);
 	}
-	
-	public boolean isDataMgrActivated()
-	{
-		return dataManagerSettings.getBoolean(STR_DATA_MANAGER_IS_ACTIVATED, DATA_MGR_IS_ACTIVATED);
+
+	public boolean isDataMgrActivated() {
+		return dataManagerSettings.getBoolean(STR_DATA_MANAGER_IS_ACTIVATED,
+				DATA_MGR_IS_ACTIVATED);
 	}
-	
-	public void setTimeOn(int timeOn)
-	{
+
+	public boolean isServiceActivated() {
+		return dataManagerSettings.getBoolean(STR_SERVICE_RUNNING,
+				SERVICE_IS_STARTED);
+	}
+
+	public void setTimeOn(int timeOn) {
 		prefEditor.putInt(STR_TIME_ON, timeOn);
 		prefEditor.commit();
 	}
-	
-	public void setTimeOff(int timeOff)
-	{
+
+	public void setTimeOff(int timeOff) {
 		prefEditor.putInt(STR_TIME_OFF, timeOff);
 		prefEditor.commit();
 	}
-	
-	public void setIntervalCheckTime(int intervalCheckTime)
-	{
+
+	public void setIntervalCheckTime(int intervalCheckTime) {
 		prefEditor.putInt(STR_INTERVAL_CHECK, intervalCheckTime);
 		prefEditor.commit();
 	}
-	
-	public void setDataActivation(boolean isEnabled)
-	{
+
+	public void setDataActivation(boolean isEnabled) {
 		prefEditor.putBoolean(STR_DATA_IS_ACTIVATED, isEnabled);
 		prefEditor.commit();
 	}
-	
-	public void setDataActivationManager(boolean isEnabled)
-	{
+
+	public void setDataActivationManager(boolean isEnabled) {
 		prefEditor.putBoolean(STR_DATA_MANAGER_IS_ACTIVATED, isEnabled);
 		prefEditor.commit();
 	}
-	
 
-	public void setAllValues(int timeOn, int timeOff, int checkTime, boolean dataIsEnabled, boolean dataMgrIsEnabled)
-	{
+	public void setServiceActivation(boolean isEnabled) {
+		prefEditor.putBoolean(STR_SERVICE_RUNNING, isEnabled);
+		prefEditor.commit();
+	}
+
+	public void setAllValues(int timeOn, int timeOff, int checkTime,
+			boolean dataIsEnabled, boolean dataMgrIsEnabled) {
 		prefEditor.putInt(STR_TIME_ON, timeOn);
 		prefEditor.putInt(STR_TIME_OFF, timeOff);
 		prefEditor.putInt(STR_INTERVAL_CHECK, checkTime);

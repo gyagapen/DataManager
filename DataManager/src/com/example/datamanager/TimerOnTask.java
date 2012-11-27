@@ -10,8 +10,9 @@ public class TimerOnTask extends TimerTask {
 	
 
 	private DataHandler dataHandler = null;
+	private int dataInterval = 5000; //ms
 	
-	public TimerOnTask(DataHandler dataHandler) {
+	public TimerOnTask(DataHandler dataHandler, int dataIntervalCheck) {
 		
 		super();
 		this.dataHandler = dataHandler;
@@ -24,7 +25,7 @@ public class TimerOnTask extends TimerTask {
 
 		
 		// launch thread that decides if we have to disable data
-		Thread dataThread = new Thread(new DataRunnable(dataHandler));
+		Thread dataThread = new Thread(new DataRunnable(dataHandler, dataInterval));
 		dataThread.start();
 
 	}

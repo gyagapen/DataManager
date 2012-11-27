@@ -13,13 +13,14 @@ import android.net.TrafficStats;
 public class DataRunnable implements Runnable {
 	
 	//interval when 3G usage is cheked (ms)
-	private final int DATA_INTERVAL_CHECK = 5000; 
+	private  int dataInterval = 5000; 
 
 	//data handler is the interface to communicate to activities
 	private DataHandler dataHandler = null;;
 
-	public DataRunnable(DataHandler dataHandler) {
+	public DataRunnable(DataHandler dataHandler, int dataIntervalCheck) {
 		this.dataHandler = dataHandler;
+		dataInterval = dataIntervalCheck;
 		
 	}
 
@@ -36,7 +37,7 @@ public class DataRunnable implements Runnable {
 
 			// get number of bytes received 5 second later
 			try {
-				Thread.sleep(DATA_INTERVAL_CHECK);
+				Thread.sleep(dataInterval);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
