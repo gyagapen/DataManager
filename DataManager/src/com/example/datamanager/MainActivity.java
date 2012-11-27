@@ -13,7 +13,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-public class MainActivity extends Activity{
+public class MainActivity extends Activity implements OnClickListener {
+	
 	
 	//ui components
 	CheckBox cbData = null;
@@ -23,24 +24,44 @@ public class MainActivity extends Activity{
 	EditText edInterval = null;
 	Button buttonSave = null;
 
-	//time on & off for connectivity (in minutes)
-	static final String STR_TIME_ON="TimeOn";
-	static final String STR_TIME_OFF="TimeOff";
-	private final String STR_IS_ESTABLISHED="dataIsEstablished";
-	static final int TIME_ON = 3;
-	static final int TIME_OFF = 15;
-	static final String PREFERENCE_NAME = "DataManagerPreferences";
+
+	//SharedPreferences
+	SharedPreferences prefs = null;
+	SharedPrefsEditor sharedPrefsEditor = null;
+	
 	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         
+        //shared prefs init
+        prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME, Activity.MODE_PRIVATE);
+        sharedPrefsEditor = new SharedPrefsEditor(prefs);
         
-        //lancement du service
-        Intent serviceIntent = new Intent(this, MainService.class);
-        startService(serviceIntent);
+        try {
+			sharedPrefsEditor.initializePreferences();
+		
+	        setContentView(R.layout.activity_main);
+	        
+	        //init ui
+	        loadUiComponents();
+	        initializeUiComponentsData();
+	        
+	        //instanciate save button
+	        buttonSave = (Button)findViewById(R.id.buttonSave);
+	        buttonSave.setOnClickListener(this);
+	        
+	        //lancement du service
+	        Intent serviceIntent = new Intent(this, MainService.class);
+	        startService(serviceIntent);
+			
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+                
+
         
     }
 
@@ -51,21 +72,7 @@ public class MainActivity extends Activity{
     }
     
     
-	public void initializePreferences() throws IOException
-	{
-		SharedPreferences dataManagerSettings = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);  
-		
-		if(!dataManagerSettings.contains("dataIsEstablished"))
-		{
-			SharedPreferences.Editor prefEditor = dataManagerSettings.edit();
-		
-			prefEditor.putInt(STR_TIME_ON, TIME_ON );
-			prefEditor.putInt(STR_TIME_OFF, TIME_OFF );
-			prefEditor.putBoolean(STR_IS_ESTABLISHED, true);  
-			prefEditor.commit();
-		}
-	}
-
+	
 	
 	/**
 	 * 
@@ -80,11 +87,57 @@ public class MainActivity extends Activity{
 		edTimeOff = (EditText)findViewById(R.id.editTextTimeOff);
 		edInterval = (EditText)findViewById(R.id.editTextInterval);
 		
-		buttonSave = (Button)findViewById(R.id.buttonSave);
-		
-		//set listener for all compenents
 	}
 	
+	/**
+	 * Init ui components from value extracted from shared preferences
+	 */
+	private void initializeUiComponentsData()
+	{
+		int timeOn = sharedPrefsEditor.getTimeOn();
+		edTimeOn.setText(String.valueOf(timeOn));
+		
+		int timeOff = sharedPrefsEditor.getTimeOff();
+		edTimeOff.setText(String.valueOf(timeOff));
+		
+		int checkTime = sharedPrefsEditor.getIntervalCheck();
+		edInterval.setText(String.valueOf(checkTime));
+		
+		boolean dataIsActivated = sharedPrefsEditor.isDataActivated();
+		cbData.setChecked(dataIsActivated);
+		
+		boolean dataMgrIsActivated = sharedPrefsEditor.isDataMgrActivated();
+		cbDataMgr.setChecked(dataMgrIsActivated);
+		
+	}
+
+	public void onClick(View v) {
+		
+		
+		//if saved button is click
+		if(v == buttonSave)
+		{
+			//load ui compenents
+			loadUiComponents();
+			
+			//get settings values
+			int timeOn = Integer.parseInt(edTimeOn.getText().toString());
+			int timeOff = Integer.parseInt(edTimeOff.getText().toString());
+			int intervalCheck = Integer.parseInt(edInterval.getText().toString());
+			
+			boolean dataIsActivated = cbData.isChecked();
+			boolean dataMgrIsActivated = cbDataMgr.isChecked();
+			
+			//save all these preferences
+			sharedPrefsEditor.setAllValues(timeOn, timeOff, intervalCheck, dataIsActivated, dataMgrIsActivated);
+			
+		}
+
+		
+	}
+
+	
+		
 	
 
 }

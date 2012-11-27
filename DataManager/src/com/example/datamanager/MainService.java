@@ -106,12 +106,12 @@ public class MainService extends Service {
 	public void launchTimer() throws InterruptedException {
 
 		// fetching preferences
-		SharedPreferences dataManagerSettings = getSharedPreferences(
-				MainActivity.PREFERENCE_NAME, Context.MODE_PRIVATE);
+		/*SharedPreferences dataManagerSettings = getSharedPreferences(
+				SharedPreferences.PREFERENCE_NAME, Context.MODE_PRIVATE);
 		int timeOn = dataManagerSettings.getInt(MainActivity.STR_TIME_ON,
 				MainActivity.TIME_ON);
 		int timeOff = dataManagerSettings.getInt(MainActivity.STR_TIME_OFF,
-				MainActivity.TIME_OFF);
+				MainActivity.TIME_OFF);*/
 
 
 
