@@ -8,6 +8,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 public class DataActivation {
 
@@ -27,6 +28,8 @@ public class DataActivation {
 	 */
 	public void setMobileDataEnabled(boolean enabled)
 			throws Exception {
+		
+		Log.i("Data activation", "Data is activate : "+enabled);
 
 		final ConnectivityManager conman = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);

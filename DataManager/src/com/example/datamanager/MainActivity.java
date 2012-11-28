@@ -2,19 +2,23 @@ package com.example.datamanager;
 
 import java.io.IOException;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity implements OnClickListener, OnCheckedChangeListener {
 
 	// ui components
 	CheckBox cbData = null;
@@ -61,6 +65,9 @@ public class MainActivity extends Activity implements OnClickListener {
 			// instanciate save button
 			buttonSave = (Button) findViewById(R.id.buttonSave);
 			buttonSave.setOnClickListener(this);
+			
+			cbData.setOnCheckedChangeListener(this);
+			cbWifi.setOnCheckedChangeListener(this);
 
 		} catch (IOException e) {
 
@@ -120,6 +127,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	}
 
+	@TargetApi(11)
 	public void onClick(View v) {
 
 		// if saved button is click
@@ -208,6 +216,45 @@ public class MainActivity extends Activity implements OnClickListener {
 			Intent serviceIntent = new Intent(this, MainService.class);
 			startService(serviceIntent);
 		//}
+	}
+
+	/**
+	 * whenever a checkbox is checked/unchecked
+	 */
+
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		
+
+		if(buttonView == cbData)
+		{
+			if(isChecked)
+			{
+				//enable dataManager checkBox
+				cbDataMgr.setVisibility(View.VISIBLE);
+			
+			}
+			else
+			{
+				//disable dataManager checkBoc
+				cbDataMgr.setVisibility(View.INVISIBLE);
+			}
+			
+		}
+		else if(buttonView == cbWifi)
+		{
+			if(isChecked)
+			{
+				//enable dataManager checkBox
+				cbWifiMgr.setVisibility(View.VISIBLE);
+			
+			}
+			else
+			{
+				//disable dataManager checkBoc
+				cbWifiMgr.setVisibility(View.INVISIBLE);
+			}
+		}
+		
 	}
 	
 
