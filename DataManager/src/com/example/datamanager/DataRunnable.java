@@ -32,8 +32,8 @@ public class DataRunnable implements Runnable {
 			boolean dataIsUsed = false;
 
 			// get number of bytes received and sent
-			long nbBytesSent1 = TrafficStats.getMobileTxBytes();
-			long nbBytesReceived1 = TrafficStats.getMobileRxBytes();
+			long nbBytesSent1 = TrafficStats.getTotalTxBytes();
+			long nbBytesReceived1 = TrafficStats.getTotalRxBytes();
 
 			// get number of bytes received 5 second later
 			try {
@@ -43,8 +43,8 @@ public class DataRunnable implements Runnable {
 				e.printStackTrace();
 			}
 
-			long nbBytesReceived2 = TrafficStats.getMobileRxBytes();
-			long nbBytesSent2 = TrafficStats.getMobileTxBytes();
+			long nbBytesReceived2 = TrafficStats.getTotalRxBytes();
+			long nbBytesSent2 = TrafficStats.getTotalTxBytes();
 
 			boolean dataIsReceived = (nbBytesReceived1 != nbBytesReceived2);
 			

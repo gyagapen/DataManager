@@ -19,6 +19,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	// ui components
 	CheckBox cbData = null;
 	CheckBox cbDataMgr = null;
+	CheckBox cbWifi = null;
+	CheckBox cbWifiMgr = null;
 	EditText edTimeOn = null;
 	EditText edTimeOff = null;
 	EditText edInterval = null;
@@ -27,6 +29,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	// SharedPreferences
 	SharedPreferences prefs = null;
 	SharedPrefsEditor sharedPrefsEditor = null;
+	
+	private DataActivation dataActivation;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
-		sharedPrefsEditor = new SharedPrefsEditor(prefs);
+
+		dataActivation = new DataActivation(getBaseContext());
+		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 		
 		/*try {
 			sharedPrefsEditor.resetPreferences();
@@ -76,6 +82,9 @@ public class MainActivity extends Activity implements OnClickListener {
 	private void loadUiComponents() {
 		cbData = (CheckBox) findViewById(R.id.checkBoxData);
 		cbDataMgr = (CheckBox) findViewById(R.id.checkBoxDataMgr);
+		
+		cbWifi = (CheckBox) findViewById(R.id.checkBoxWifi);
+		cbWifiMgr = (CheckBox) findViewById(R.id.checkBoxWifiMgr);
 
 		edTimeOn = (EditText) findViewById(R.id.editTextTimeOn);
 		edTimeOff = (EditText) findViewById(R.id.editTextTimeOff);
@@ -101,6 +110,13 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		boolean dataMgrIsActivated = sharedPrefsEditor.isDataMgrActivated();
 		cbDataMgr.setChecked(dataMgrIsActivated);
+		
+		boolean wifiIsActivated = sharedPrefsEditor.isWifiActivated();
+		cbWifi.setChecked(wifiIsActivated);
+
+		boolean wifiMgrIsActivated = sharedPrefsEditor.isWifiManagerActivated();
+		cbWifiMgr.setChecked(wifiMgrIsActivated);
+
 
 	}
 
@@ -119,33 +135,53 @@ public class MainActivity extends Activity implements OnClickListener {
 
 			boolean dataIsActivated = cbData.isChecked();
 			boolean dataMgrIsActivated = cbDataMgr.isChecked();
+			
+			boolean wifiIsActivated = cbWifi.isChecked();
+			boolean wifiMgrIsActivated = cbWifiMgr.isChecked();
 
 			// save all these preferences
 			sharedPrefsEditor.setAllValues(timeOn, timeOff, intervalCheck,
-					dataIsActivated, dataMgrIsActivated);
+					dataIsActivated, dataMgrIsActivated,wifiIsActivated, wifiMgrIsActivated);
 
 			try {
 				// if data is disabled; data connection is stopped
 				if (!dataIsActivated) {
 
 					//keep auto sync (in case of wifi connection)
-					setMobileDataEnabled(false, false);
-
+					dataActivation.setMobileDataEnabled(false);
+					//dataActivation.setAutoSync(true);
 				} else {
 					// activate data
-					setMobileDataEnabled(true, true);
-					
-					// if data manager is disabled, service is stopped
-					if (!dataMgrIsActivated) {
-						stopDataManagerService();
-					} else {
-						// start service
-						//
-						//Toast.makeText(this, "service is started : "+sharedPrefsEditor.isDataMgrActivated(), Toast.LENGTH_SHORT).show();
-						StartDataManagerService();
-					}
-
+					dataActivation.setMobileDataEnabled(true);
+					//dataActivation.setAutoSync(true);
 				}
+				
+				
+				//if wifi is disabled, wifi connection is stopped
+				if(!wifiIsActivated)
+				{
+					dataActivation.setWifiConnectionEnabled(false);
+					//dataActivation.setAutoSync(true);
+				}
+				else
+				{
+					dataActivation.setWifiConnectionEnabled(true);
+					//dataActivation.setAutoSync(true);
+				}
+				
+				// if data manager and wifi manager are disabled, service is stopped
+				if (!dataMgrIsActivated && !wifiMgrIsActivated) {
+					stopDataManagerService();
+				}
+				
+				
+				//if data and data manager enable or if wifi and wifi manager enable, service is started
+				if ( (dataIsActivated && dataMgrIsActivated) ||  (wifiIsActivated && wifiMgrIsActivated) ){
+					//Toast.makeText(this, "service is started : "+sharedPrefsEditor.isDataMgrActivated(), Toast.LENGTH_SHORT).show();
+					StartDataManagerService();
+				}
+				
+				
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -165,18 +201,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		//}
 	}
 
-	/**
-	 * Enable or disable data
-	 * 
-	 * @param enabled
-	 * @throws Exception
-	 */
-	public void setMobileDataEnabled(boolean enabled, boolean enableAutoSync) throws Exception {
-
-		DataActivation dataActivation = new DataActivation(getBaseContext());
-
-		dataActivation.setMobileDataEnabled(enabled, enableAutoSync);
-	}
 
 	public void StartDataManagerService() {
 		// if service is not started
@@ -185,5 +209,6 @@ public class MainActivity extends Activity implements OnClickListener {
 			startService(serviceIntent);
 		//}
 	}
+	
 
 }

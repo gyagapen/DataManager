@@ -23,7 +23,7 @@ public class DataHandler extends Handler {
 	//handle message from thread
 	public void handleMessage(Message msg)
 	{
-		
+
 		
 		if(msg.what == 0)
 		{
@@ -42,8 +42,13 @@ public class DataHandler extends Handler {
 			
 			//disable data
 			//Toast.makeText(aContext, "DISABLE DATA ", Toast.LENGTH_SHORT).show();
+			
 			try {
-				parentService.setMobileDataEnabled(false, false); //disable autosync too
+				//wifi and 3g off
+				parentService.getDataActivator().setConnectivityDisabled();
+				//disable autosync too
+				parentService.getDataActivator().setAutoSync(false);
+				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -60,7 +65,13 @@ public class DataHandler extends Handler {
 		{
 			//enable data
 			try {
-				parentService.setMobileDataEnabled(true, true); //activate autosync
+				//get shared preferences editor
+				SharedPrefsEditor sharedPrefsEditor = parentService.getSharedPrefsEditor();
+				
+				parentService.getDataActivator().setConnectivityEnabled(sharedPrefsEditor); 
+				//activate autosync
+				parentService.getDataActivator().setAutoSync(true);
+				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

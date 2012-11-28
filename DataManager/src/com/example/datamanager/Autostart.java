@@ -21,9 +21,10 @@ public class Autostart extends BroadcastReceiver {
 
 	public void onReceive(Context arg0, Intent arg1) {
 		// shared prefs init
+		DataActivation dataActivation = new DataActivation(arg0);
 		prefs = arg0.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
-		sharedPrefsEditor = new SharedPrefsEditor(prefs);
+		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
 		// if data and dataManager are activated
 		if (sharedPrefsEditor.isDataActivated()

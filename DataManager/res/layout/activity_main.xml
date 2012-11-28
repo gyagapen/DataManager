@@ -3,15 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="53dp" >
-    </LinearLayout>
+
 
     <CheckBox
         android:id="@+id/checkBoxData"
@@ -26,15 +18,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/checkBoxData"
-        android:layout_alignTop="@+id/linearLayout1"
+        android:layout_below="@+id/checkBoxData"
         android:text="@string/toggle_data_manager" />
+    
+    <CheckBox
+        android:id="@+id/checkBoxWifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_alignLeft="@+id/checkBoxDataMgr"
+        android:layout_below="@+id/checkBoxDataMgr"
+        android:text="@string/toggle_wifi" />
+    
+        <CheckBox
+        android:id="@+id/checkBoxWifiMgr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_alignLeft="@+id/checkBoxWifi"
+        android:layout_below="@+id/checkBoxWifi"
+        android:text="@string/toggle_wifi_manager" />
+    
 
     <EditText
         android:id="@+id/editTextTimeOn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBoxDataMgr"
-        android:layout_below="@+id/checkBoxDataMgr"
+        android:layout_alignLeft="@+id/checkBoxWifiMgr"
+        android:layout_below="@+id/checkBoxWifiMgr"
         android:layout_marginTop="26dp"
         android:ems="10"
         android:inputType="number"

@@ -28,11 +28,13 @@ public class MainService extends Service {
 	DataHandler dataHandler = null;
 
 	// SharedPreferences
-	SharedPreferences prefs = null;
-	SharedPrefsEditor sharedPrefsEditor = null;
+	private SharedPreferences prefs = null;
+	private SharedPrefsEditor sharedPrefsEditor = null;
 
 	// screen broadcast receiver
-	BroadcastReceiver mReceiver = null;
+	private BroadcastReceiver mReceiver = null;
+	
+	private DataActivation dataActivation = null;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -64,7 +66,8 @@ public class MainService extends Service {
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
-		sharedPrefsEditor = new SharedPrefsEditor(prefs);
+		 dataActivation = new DataActivation(getBaseContext());
+		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
 		// register service start in preferences
 		sharedPrefsEditor.setServiceActivation(true);
@@ -90,15 +93,17 @@ public class MainService extends Service {
 				Toast.LENGTH_SHORT).show();*/
 
 		// if screen is on
-		if (screenOff) {
+		if (!screenOff) {
 
 			// stop all timers if there are running
 			CancelTimeOff();
 			CancelTimerOn();
 
-			// activate data
+			// activate data or wifi
 			try {
-				setMobileDataEnabled(true, true); // activate autosync too
+				dataActivation.setConnectivityEnabled(sharedPrefsEditor);
+				// activate autosync too
+				dataActivation.setAutoSync(true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -162,19 +167,7 @@ public class MainService extends Service {
 		}
 	}
 
-	/**
-	 * Enable or disable data
-	 * 
-	 * @param enabled
-	 * @throws Exception
-	 */
-	public void setMobileDataEnabled(boolean enabled, boolean enableAutoSync)
-			throws Exception {
 
-		DataActivation dataActivation = new DataActivation(getBaseContext());
-		// auto sync disabled too
-		dataActivation.setMobileDataEnabled(enabled, enableAutoSync);
-	}
 
 	@Override
 	public void onDestroy() {
@@ -198,6 +191,16 @@ public class MainService extends Service {
 
 		super.onDestroy();
 
+	}
+	
+	public DataActivation getDataActivator()
+	{
+		return dataActivation;
+	}
+	
+	public SharedPrefsEditor getSharedPrefsEditor()
+	{
+		return sharedPrefsEditor;
 	}
 
 }
