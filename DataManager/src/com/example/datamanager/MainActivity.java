@@ -123,6 +123,18 @@ public class MainActivity extends Activity implements OnClickListener, OnChecked
 
 		boolean wifiMgrIsActivated = sharedPrefsEditor.isWifiManagerActivated();
 		cbWifiMgr.setChecked(wifiMgrIsActivated);
+		
+		//hide managers checkboxes if necessary
+
+		if(!dataIsActivated)
+		{
+			cbDataMgr.setVisibility(View.INVISIBLE);
+		}
+		
+		if(!wifiIsActivated)
+		{
+			cbWifiMgr.setVisibility(View.INVISIBLE);
+		}
 
 
 	}
@@ -178,7 +190,7 @@ public class MainActivity extends Activity implements OnClickListener, OnChecked
 				}
 				
 				// if data manager and wifi manager are disabled, service is stopped
-				if (!dataMgrIsActivated && !wifiMgrIsActivated) {
+				if ( (!dataMgrIsActivated && !wifiMgrIsActivated) || (!dataIsActivated && ! wifiIsActivated) ){
 					stopDataManagerService();
 				}
 				
