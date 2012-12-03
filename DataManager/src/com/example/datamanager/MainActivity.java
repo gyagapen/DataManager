@@ -18,13 +18,15 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener, OnCheckedChangeListener {
+public class MainActivity extends Activity implements OnClickListener,
+		OnCheckedChangeListener {
 
 	// ui components
 	CheckBox cbData = null;
 	CheckBox cbDataMgr = null;
 	CheckBox cbWifi = null;
 	CheckBox cbWifiMgr = null;
+	CheckBox cbAutoSync = null;
 	EditText edTimeOn = null;
 	EditText edTimeOff = null;
 	EditText edInterval = null;
@@ -33,7 +35,7 @@ public class MainActivity extends Activity implements OnClickListener, OnChecked
 	// SharedPreferences
 	SharedPreferences prefs = null;
 	SharedPrefsEditor sharedPrefsEditor = null;
-	
+
 	private DataActivation dataActivation;
 
 	@Override
@@ -46,12 +48,11 @@ public class MainActivity extends Activity implements OnClickListener, OnChecked
 
 		dataActivation = new DataActivation(getBaseContext());
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
-		
-		/*try {
-			sharedPrefsEditor.resetPreferences();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}*/
+
+		/*
+		 * try { sharedPrefsEditor.resetPreferences(); } catch (IOException e1)
+		 * { e1.printStackTrace(); }
+		 */
 
 		try {
 			sharedPrefsEditor.initializePreferences();
@@ -65,9 +66,10 @@ public class MainActivity extends Activity implements OnClickListener, OnChecked
 			// instanciate save button
 			buttonSave = (Button) findViewById(R.id.buttonSave);
 			buttonSave.setOnClickListener(this);
-			
+
 			cbData.setOnCheckedChangeListener(this);
 			cbWifi.setOnCheckedChangeListener(this);
+			cbAutoSync.setOnCheckedChangeListener(this);
 
 		} catch (IOException e) {
 
@@ -89,9 +91,11 @@ public class MainActivity extends Activity implements OnClickListener, OnChecked
 	private void loadUiComponents() {
 		cbData = (CheckBox) findViewById(R.id.checkBoxData);
 		cbDataMgr = (CheckBox) findViewById(R.id.checkBoxDataMgr);
-		
+
 		cbWifi = (CheckBox) findViewById(R.id.checkBoxWifi);
 		cbWifiMgr = (CheckBox) findViewById(R.id.checkBoxWifiMgr);
+
+		cbAutoSync = (CheckBox) findViewById(R.id.checkBoxAutoSync);
 
 		edTimeOn = (EditText) findViewById(R.id.editTextTimeOn);
 		edTimeOff = (EditText) findViewById(R.id.editTextTimeOff);
@@ -117,25 +121,25 @@ public class MainActivity extends Activity implements OnClickListener, OnChecked
 
 		boolean dataMgrIsActivated = sharedPrefsEditor.isDataMgrActivated();
 		cbDataMgr.setChecked(dataMgrIsActivated);
-		
+
 		boolean wifiIsActivated = sharedPrefsEditor.isWifiActivated();
 		cbWifi.setChecked(wifiIsActivated);
 
 		boolean wifiMgrIsActivated = sharedPrefsEditor.isWifiManagerActivated();
 		cbWifiMgr.setChecked(wifiMgrIsActivated);
-		
-		//hide managers checkboxes if necessary
 
-		if(!dataIsActivated)
-		{
+		boolean autoSyncIsActivated = sharedPrefsEditor.isAutoSyncActivated();
+		cbAutoSync.setChecked(autoSyncIsActivated);
+
+		// hide managers checkboxes if necessary
+
+		if (!dataIsActivated) {
 			cbDataMgr.setVisibility(View.INVISIBLE);
 		}
-		
-		if(!wifiIsActivated)
-		{
+
+		if (!wifiIsActivated) {
 			cbWifiMgr.setVisibility(View.INVISIBLE);
 		}
-
 
 	}
 
@@ -155,53 +159,67 @@ public class MainActivity extends Activity implements OnClickListener, OnChecked
 
 			boolean dataIsActivated = cbData.isChecked();
 			boolean dataMgrIsActivated = cbDataMgr.isChecked();
-			
+
 			boolean wifiIsActivated = cbWifi.isChecked();
 			boolean wifiMgrIsActivated = cbWifiMgr.isChecked();
 
+			boolean autoSyncIsActivated = cbAutoSync.isChecked();
+
 			// save all these preferences
 			sharedPrefsEditor.setAllValues(timeOn, timeOff, intervalCheck,
-					dataIsActivated, dataMgrIsActivated,wifiIsActivated, wifiMgrIsActivated);
+					dataIsActivated, dataMgrIsActivated, wifiIsActivated,
+					wifiMgrIsActivated, autoSyncIsActivated);
 
 			try {
 				// if data is disabled; data connection is stopped
 				if (!dataIsActivated) {
 
-					//keep auto sync (in case of wifi connection)
+					// keep auto sync (in case of wifi connection)
 					dataActivation.setMobileDataEnabled(false);
-					//dataActivation.setAutoSync(true);
+					// dataActivation.setAutoSync(true);
 				} else {
 					// activate data
 					dataActivation.setMobileDataEnabled(true);
-					//dataActivation.setAutoSync(true);
+					// dataActivation.setAutoSync(true);
+				}
+
+				// if wifi is disabled, wifi connection is stopped
+				if (!wifiIsActivated) {
+					dataActivation.setWifiConnectionEnabled(false);
+					// dataActivation.setAutoSync(true);
+				} else {
+					dataActivation.setWifiConnectionEnabled(true);
+					// dataActivation.setAutoSync(true);
 				}
 				
 				
-				//if wifi is disabled, wifi connection is stopped
-				if(!wifiIsActivated)
-				{
-					dataActivation.setWifiConnectionEnabled(false);
-					//dataActivation.setAutoSync(true);
+				
+				// enable/disable autosync
+				if(autoSyncIsActivated)
+				{	
+					dataActivation.setAutoSync(true, sharedPrefsEditor);
 				}
 				else
 				{
-					dataActivation.setWifiConnectionEnabled(true);
-					//dataActivation.setAutoSync(true);
+					dataActivation.setAutoSync(false, sharedPrefsEditor);
 				}
-				
-				// if data manager and wifi manager are disabled, service is stopped
-				if ( (!dataMgrIsActivated && !wifiMgrIsActivated) || (!dataIsActivated && ! wifiIsActivated) ){
+
+				// if data manager and wifi manager are disabled, service is
+				// stopped
+				if ((!dataMgrIsActivated && !wifiMgrIsActivated)
+						|| (!dataIsActivated && !wifiIsActivated)) {
 					stopDataManagerService();
 				}
-				
-				
-				//if data and data manager enable or if wifi and wifi manager enable, service is started
-				if ( (dataIsActivated && dataMgrIsActivated) ||  (wifiIsActivated && wifiMgrIsActivated) ){
-					//Toast.makeText(this, "service is started : "+sharedPrefsEditor.isDataMgrActivated(), Toast.LENGTH_SHORT).show();
+
+				// if data and data manager enable or if wifi and wifi manager
+				// enable, service is started
+				if ((dataIsActivated && dataMgrIsActivated)
+						|| (wifiIsActivated && wifiMgrIsActivated)) {
+					// Toast.makeText(this,
+					// "service is started : "+sharedPrefsEditor.isDataMgrActivated(),
+					// Toast.LENGTH_SHORT).show();
 					StartDataManagerService();
 				}
-				
-				
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -216,18 +234,17 @@ public class MainActivity extends Activity implements OnClickListener, OnChecked
 	 */
 	public void stopDataManagerService() {
 		// if service is started
-		//if (sharedPrefsEditor.isServiceActivated()) {
-			stopService(new Intent(this, MainService.class));
-		//}
+		// if (sharedPrefsEditor.isServiceActivated()) {
+		stopService(new Intent(this, MainService.class));
+		// }
 	}
-
 
 	public void StartDataManagerService() {
 		// if service is not started
-		//if (!sharedPrefsEditor.isServiceActivated()) {
-			Intent serviceIntent = new Intent(this, MainService.class);
-			startService(serviceIntent);
-		//}
+		// if (!sharedPrefsEditor.isServiceActivated()) {
+		Intent serviceIntent = new Intent(this, MainService.class);
+		startService(serviceIntent);
+		// }
 	}
 
 	/**
@@ -235,39 +252,28 @@ public class MainActivity extends Activity implements OnClickListener, OnChecked
 	 */
 
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		
 
-		if(buttonView == cbData)
-		{
-			if(isChecked)
-			{
-				//enable dataManager checkBox
+		if (buttonView == cbData) {
+			if (isChecked) {
+				// enable dataManager checkBox
 				cbDataMgr.setVisibility(View.VISIBLE);
-			
-			}
-			else
-			{
-				//disable dataManager checkBoc
+
+			} else {
+				// disable dataManager checkBoc
 				cbDataMgr.setVisibility(View.INVISIBLE);
 			}
-			
-		}
-		else if(buttonView == cbWifi)
-		{
-			if(isChecked)
-			{
-				//enable dataManager checkBox
+
+		} else if (buttonView == cbWifi) {
+			if (isChecked) {
+				// enable dataManager checkBox
 				cbWifiMgr.setVisibility(View.VISIBLE);
-			
-			}
-			else
-			{
-				//disable dataManager checkBoc
+
+			} else {
+				// disable dataManager checkBoc
 				cbWifiMgr.setVisibility(View.INVISIBLE);
 			}
 		}
-		
+
 	}
-	
 
 }

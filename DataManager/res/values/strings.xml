@@ -8,9 +8,11 @@
     <string name="toggle_data_manager">Data Manager</string>
     <string name="toggle_wifi">Wifi Connection</string>
     <string name="toggle_wifi_manager">Wifi Manager</string>
+    <string name="toggle_auto_sync">Auto-Sync</string>
     <string name="time_on">Time On (min)</string>
     <string name="time_off">Time Off (min)</string>
     <string name="interval_check">Usage check interval (s)</string>
     <string name="button_save">Save preferences</string>
+    
 
 </resources>

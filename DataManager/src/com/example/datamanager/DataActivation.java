@@ -53,8 +53,16 @@ public class DataActivation {
 	 * 
 	 * @param isEnabled
 	 */
-	public void setAutoSync(boolean isEnabled) {
-		ContentResolver.setMasterSyncAutomatically(isEnabled);
+	public void setAutoSync(boolean isEnabled, SharedPrefsEditor sharedPrefsEditor) {
+		
+		if(sharedPrefsEditor.isAutoSyncActivated() && isEnabled)
+		{
+			ContentResolver.setMasterSyncAutomatically(true);
+		}
+		else
+		{
+			ContentResolver.setMasterSyncAutomatically(false);
+		}
 	}
 
 	/**
@@ -126,5 +134,14 @@ public class DataActivation {
 	{
 		setMobileDataEnabled(false);
 		setWifiConnectionEnabled(false);
+	}
+	
+	/**
+	 * Is Auto-Sync activated
+	 * @return
+	 */
+	public boolean isAutoSyncIsActivated()
+	{
+		return ContentResolver.getMasterSyncAutomatically();
 	}
 }

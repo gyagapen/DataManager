@@ -25,6 +25,8 @@ public class DataHandler extends Handler {
 	public void handleMessage(Message msg)
 	{
 
+		//get shared preferences editor
+		SharedPrefsEditor sharedPrefsEditor = parentService.getSharedPrefsEditor();
 		
 		if(msg.what == 0)
 		{
@@ -46,7 +48,7 @@ public class DataHandler extends Handler {
 				//wifi and 3g off
 				parentService.getDataActivator().setConnectivityDisabled();
 				//disable autosync too
-				parentService.getDataActivator().setAutoSync(false);
+				parentService.getDataActivator().setAutoSync(false, sharedPrefsEditor);
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -64,12 +66,11 @@ public class DataHandler extends Handler {
 		{
 			//enable data
 			try {
-				//get shared preferences editor
-				SharedPrefsEditor sharedPrefsEditor = parentService.getSharedPrefsEditor();
+				
 				
 				parentService.getDataActivator().setConnectivityEnabled(sharedPrefsEditor); 
 				//activate autosync
-				parentService.getDataActivator().setAutoSync(true);
+				parentService.getDataActivator().setAutoSync(true, sharedPrefsEditor);
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

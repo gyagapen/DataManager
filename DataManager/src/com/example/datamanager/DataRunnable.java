@@ -1,7 +1,5 @@
 package com.example.datamanager;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.TrafficStats;
 
 
@@ -13,7 +11,10 @@ import android.net.TrafficStats;
 public class DataRunnable implements Runnable {
 	
 	//interval when 3G usage is cheked (ms)
-	private  int dataInterval = 5000; 
+	private  int dataInterval = 5000;
+	
+	//limit, above that number of bytes, will consider that data is used
+	private int bytesLimit = 5000;
 
 	//data handler is the interface to communicate to activities
 	private DataHandler dataHandler = null;;
@@ -46,12 +47,14 @@ public class DataRunnable implements Runnable {
 			long nbBytesReceived2 = TrafficStats.getTotalRxBytes();
 			long nbBytesSent2 = TrafficStats.getTotalTxBytes();
 
-			boolean dataIsReceived = (nbBytesReceived1 != nbBytesReceived2);
+			int bytesUsed = (int) (nbBytesReceived2 - nbBytesReceived1);
+			boolean dataIsReceived = (bytesUsed > bytesLimit);
 			
 
 			// if no data received then check if data is sent
 			if (!dataIsReceived) {
-				dataIsUsed = (nbBytesSent1 != nbBytesSent2);
+				bytesUsed = (int) (nbBytesSent2 - nbBytesSent1);
+				dataIsUsed = (bytesUsed > bytesLimit);;
 			} else {
 				// data connection is used
 				dataIsUsed = true;

@@ -19,11 +19,11 @@ public class MainService extends Service {
 	private TimerOnTask timerOnTask = null;
 	private TimerOffTask timerOffTask = null;
 
-	//time values
-	private int timeOnValue =0;
-	private int timeOffValue =0;
+	// time values
+	private int timeOnValue = 0;
+	private int timeOffValue = 0;
 	private int timeCheckData = 5000;
-	
+
 	// data handler
 	DataHandler dataHandler = null;
 
@@ -33,7 +33,7 @@ public class MainService extends Service {
 
 	// screen broadcast receiver
 	private BroadcastReceiver mReceiver = null;
-	
+
 	private DataActivation dataActivation = null;
 
 	@Override
@@ -66,7 +66,7 @@ public class MainService extends Service {
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
-		 dataActivation = new DataActivation(getBaseContext());
+		dataActivation = new DataActivation(getBaseContext());
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
 		// register service start in preferences
@@ -89,8 +89,10 @@ public class MainService extends Service {
 			screenOff = false;
 		}
 
-		/*Toast.makeText(getBaseContext(), "Screen on : " + screenOff,
-				Toast.LENGTH_SHORT).show();*/
+		/*
+		 * Toast.makeText(getBaseContext(), "Screen on : " + screenOff,
+		 * Toast.LENGTH_SHORT).show();
+		 */
 
 		// if screen is on
 		if (!screenOff) {
@@ -103,7 +105,7 @@ public class MainService extends Service {
 			try {
 				dataActivation.setConnectivityEnabled(sharedPrefsEditor);
 				// activate autosync too
-				dataActivation.setAutoSync(true);
+				dataActivation.setAutoSync(true, sharedPrefsEditor);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -122,13 +124,16 @@ public class MainService extends Service {
 	 */
 	public void StartTimerOn() {
 		// start timer on
-		/*Toast.makeText(getBaseContext(), "Start timer on", Toast.LENGTH_SHORT)
-				.show();*/
-		
-		
-		timeOnValue = sharedPrefsEditor.getTimeOn()*60*1000; //from min to ms
-		timeCheckData = sharedPrefsEditor.getIntervalCheck()*1000; //from s to ms
-		
+		/*
+		 * Toast.makeText(getBaseContext(), "Start timer on",
+		 * Toast.LENGTH_SHORT) .show();
+		 */
+
+		timeOnValue = sharedPrefsEditor.getTimeOn() * 60 * 1000; // from min to
+																	// ms
+		timeCheckData = sharedPrefsEditor.getIntervalCheck() * 1000; // from s
+																		// to ms
+
 		timerOnTask = new TimerOnTask(dataHandler, timeCheckData);
 		timerOn.schedule(timerOnTask, timeOnValue, timeOnValue);
 	}
@@ -139,11 +144,13 @@ public class MainService extends Service {
 	public void StartTimerOff() {
 
 		// start timer off
-		/*Toast.makeText(getBaseContext(), "Start timer off", Toast.LENGTH_SHORT)
-				.show();*/
-		
-		timeOffValue = sharedPrefsEditor.getTimeOff()*60*1000; //in ms
-		
+		/*
+		 * Toast.makeText(getBaseContext(), "Start timer off",
+		 * Toast.LENGTH_SHORT) .show();
+		 */
+
+		timeOffValue = sharedPrefsEditor.getTimeOff() * 60 * 1000; // in ms
+
 		timerOffTask = new TimerOffTask(dataHandler);
 		timerOff.schedule(timerOffTask, timeOffValue, timeOffValue);
 
@@ -166,8 +173,6 @@ public class MainService extends Service {
 			timerOffTask.cancel();
 		}
 	}
-
-
 
 	@Override
 	public void onDestroy() {
@@ -192,14 +197,12 @@ public class MainService extends Service {
 		super.onDestroy();
 
 	}
-	
-	public DataActivation getDataActivator()
-	{
+
+	public DataActivation getDataActivator() {
 		return dataActivation;
 	}
-	
-	public SharedPrefsEditor getSharedPrefsEditor()
-	{
+
+	public SharedPrefsEditor getSharedPrefsEditor() {
 		return sharedPrefsEditor;
 	}
 
