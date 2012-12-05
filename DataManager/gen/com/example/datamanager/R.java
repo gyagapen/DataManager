@@ -15,36 +15,58 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int buttonSave=0x7f070008;
+        public static final int buttonSave=0x7f07000e;
+        public static final int buttonSaveSleepHours=0x7f070013;
+        public static final int button_edit_sleep_hours=0x7f070009;
         public static final int checkBoxAutoSync=0x7f070004;
+        public static final int checkBoxAutoWifiOff=0x7f070005;
         public static final int checkBoxData=0x7f070000;
         public static final int checkBoxDataMgr=0x7f070001;
+        public static final int checkBoxSleepHours=0x7f070006;
         public static final int checkBoxWifi=0x7f070002;
         public static final int checkBoxWifiMgr=0x7f070003;
-        public static final int editTextInterval=0x7f070007;
-        public static final int editTextTimeOff=0x7f070006;
-        public static final int editTextTimeOn=0x7f070005;
-        public static final int linearLayout1=0x7f070009;
-        public static final int menu_settings=0x7f07000a;
+        public static final int editTextInterval=0x7f07000d;
+        public static final int editTextTimeOff=0x7f07000b;
+        public static final int editTextTimeOn=0x7f070007;
+        public static final int menu_settings=0x7f070015;
+        public static final int timePickerSleepOff=0x7f070014;
+        public static final int timerPickerSleepOn=0x7f070011;
+        public static final int tvSetSleepOff=0x7f070012;
+        public static final int tvSetSleepOn=0x7f070010;
+        public static final int tvSleepHours=0x7f070008;
+        public static final int tvTimeInterval=0x7f07000f;
+        public static final int tvTimeOff=0x7f07000c;
+        public static final int tvTimeOn=0x7f07000a;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
+        public static final int sleeptimepicker=0x7f030001;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
-        public static final int button_save=0x7f04000c;
+        public static final int button_change_sleep_hours=0x7f040010;
+        public static final int button_save=0x7f04000d;
+        public static final int button_save_sleep_hours=0x7f040016;
         public static final int hello_world=0x7f040001;
-        public static final int interval_check=0x7f04000b;
+        public static final int interval_check=0x7f04000c;
+        public static final int label_sleep_hours=0x7f04000f;
+        public static final int label_sleep_off=0x7f040014;
+        public static final int label_sleep_on=0x7f040015;
+        public static final int label_time_Interval=0x7f040013;
+        public static final int label_time_off=0x7f040012;
+        public static final int label_time_on=0x7f040011;
         public static final int menu_settings=0x7f040002;
-        public static final int time_off=0x7f04000a;
-        public static final int time_on=0x7f040009;
+        public static final int time_off=0x7f04000b;
+        public static final int time_on=0x7f04000a;
         public static final int title_activity_main=0x7f040003;
         public static final int toggle_auto_sync=0x7f040008;
+        public static final int toggle_auto_wifi_off=0x7f040009;
         public static final int toggle_data=0x7f040004;
         public static final int toggle_data_manager=0x7f040005;
+        public static final int toggle_sleep_hours=0x7f04000e;
         public static final int toggle_wifi=0x7f040006;
         public static final int toggle_wifi_manager=0x7f040007;
     }

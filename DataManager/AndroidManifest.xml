@@ -34,6 +34,7 @@
             </intent-filter>
         </activity>
         <service android:name="MainService"></service>
+        <activity android:name="SleepTimerPickerActivity"></activity>
     </application>
 
 </manifest>

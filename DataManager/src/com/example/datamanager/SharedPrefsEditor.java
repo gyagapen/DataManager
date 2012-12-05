@@ -21,6 +21,10 @@ public class SharedPrefsEditor {
 	static final String STR_INTERVAL_CHECK = "IntervalCheckTime";
 	static final String STR_SERVICE_RUNNING = "ServiceIsRunning";
 	static final String STR_AUTO_SYNC = "AutoSync";
+	static final String STR_SLEEP_IS_ACTIVATED="SleepHours";
+	static final String STR_SLEEP_ON_HOUR="SleepHoursTimeOn";
+	static final String STR_SLEEP_OFF_HOUR="SleepHoursTimeOff";
+	static final String STR_AUTO_WIFI_OFF_IS_ACTIVATED="AutoWifiOff";
 
 	// Default values
 	static final int TIME_ON = 3; // min
@@ -33,6 +37,10 @@ public class SharedPrefsEditor {
 	static final boolean WIFI_MGR_IS_ACTIVATED = true;
 	static final boolean SERVICE_IS_STARTED = false;
 	static final boolean AUTO_SYNC_IS_ACTIVATED = false;
+	static final boolean SLEEP_IS_ACTIVATED = false;
+	static final boolean AUTO_WIFI_OFF_IS_ACTIVATED= false;
+	static final String SLEEP_ON="00:00"; //hh:mm
+	static final String SLEEP_OFF="06:00"; //hh:mm
 	static final String PREFERENCE_NAME = "DataManagerPreferences";
 
 	// gives access to connection states
@@ -71,6 +79,10 @@ public class SharedPrefsEditor {
 			// original state of auto-sync activation
 			prefEditor.putBoolean(STR_AUTO_SYNC,
 					dataConnectionState.isAutoSyncIsActivated());
+			prefEditor.putBoolean(STR_SLEEP_IS_ACTIVATED, SLEEP_IS_ACTIVATED);
+			prefEditor.putString(STR_SLEEP_OFF_HOUR, SLEEP_OFF);
+			prefEditor.putString(STR_SLEEP_ON_HOUR, SLEEP_ON);
+			prefEditor.putBoolean(STR_AUTO_WIFI_OFF_IS_ACTIVATED, AUTO_WIFI_OFF_IS_ACTIVATED);
 
 			prefEditor.commit();
 		}
@@ -95,6 +107,10 @@ public class SharedPrefsEditor {
 		// original state of auto-sync activation
 		prefEditor.putBoolean(STR_AUTO_SYNC,
 				dataConnectionState.isAutoSyncIsActivated());
+		prefEditor.putBoolean(STR_SLEEP_IS_ACTIVATED, SLEEP_IS_ACTIVATED);
+		prefEditor.putString(STR_SLEEP_OFF_HOUR, SLEEP_OFF);
+		prefEditor.putString(STR_SLEEP_ON_HOUR, SLEEP_ON);
+		prefEditor.putBoolean(STR_AUTO_WIFI_OFF_IS_ACTIVATED, AUTO_WIFI_OFF_IS_ACTIVATED);
 		prefEditor.commit();
 	}
 
@@ -124,6 +140,17 @@ public class SharedPrefsEditor {
 		return dataManagerSettings.getBoolean(STR_WIFI_IS_ACTIVATED,
 				dataConnectionState.isWifiChipActivated());
 	}
+	
+	public boolean isAutoWifiOffActivated() {
+		return dataManagerSettings.getBoolean(STR_AUTO_WIFI_OFF_IS_ACTIVATED,
+				AUTO_WIFI_OFF_IS_ACTIVATED);
+	}
+	
+	public boolean isSleepHoursActivated() {
+		return dataManagerSettings.getBoolean(STR_SLEEP_IS_ACTIVATED,
+				SLEEP_IS_ACTIVATED);
+	}
+
 
 	public boolean isWifiManagerActivated() {
 		return dataManagerSettings.getBoolean(STR_WIFI_MANAGER_IS_ACTIVATED,
@@ -138,6 +165,28 @@ public class SharedPrefsEditor {
 	public boolean isAutoSyncActivated() {
 		return dataManagerSettings.getBoolean(STR_AUTO_SYNC,
 				dataConnectionState.isAutoSyncIsActivated());
+	}
+	
+	public String getSleepTimeOn()
+	{
+		return dataManagerSettings.getString(STR_SLEEP_ON_HOUR, SLEEP_ON);
+	}
+	
+	public String getSleepTimeOff()
+	{
+		return dataManagerSettings.getString(STR_SLEEP_OFF_HOUR, SLEEP_OFF);
+	}
+	
+	public void setSleepTimeOn(String sleepTimeOn)
+	{
+		prefEditor.putString(STR_SLEEP_ON_HOUR, sleepTimeOn);
+		prefEditor.commit();
+	}
+	
+	public void setSleepTimeOff(String sleepTimeOff)
+	{
+		prefEditor.putString(STR_SLEEP_OFF_HOUR, sleepTimeOff);
+		prefEditor.commit();
 	}
 
 	public void setTimeOn(int timeOn) {
@@ -184,10 +233,22 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_SERVICE_RUNNING, isEnabled);
 		prefEditor.commit();
 	}
+	
+	public void setSleepHoursActivation(boolean isEnabled)
+	{
+		prefEditor.putBoolean(STR_SLEEP_IS_ACTIVATED, isEnabled);
+		prefEditor.commit();
+	}
+	
+	public void setAutoWifiOffActivation(boolean isEnabled)
+	{
+		prefEditor.putBoolean(STR_AUTO_WIFI_OFF_IS_ACTIVATED, isEnabled);
+		prefEditor.commit();
+	}
 
 	public void setAllValues(int timeOn, int timeOff, int checkTime,
 			boolean dataIsEnabled, boolean dataMgrIsEnabled,
-			boolean wifiIsEnabled, boolean wifiMgrIsEnabled, boolean autoSyncIsActivated) {
+			boolean wifiIsEnabled, boolean wifiMgrIsEnabled, boolean autoSyncIsActivated, boolean autoWifiOffIsActivated, boolean sleepHoursIsActivated) {
 		prefEditor.putInt(STR_TIME_ON, timeOn);
 		prefEditor.putInt(STR_TIME_OFF, timeOff);
 		prefEditor.putInt(STR_INTERVAL_CHECK, checkTime);
@@ -196,6 +257,8 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_WIFI_IS_ACTIVATED, wifiIsEnabled);
 		prefEditor.putBoolean(STR_WIFI_MANAGER_IS_ACTIVATED, wifiMgrIsEnabled);
 		prefEditor.putBoolean(STR_AUTO_SYNC, autoSyncIsActivated);
+		prefEditor.putBoolean(STR_SLEEP_IS_ACTIVATED, sleepHoursIsActivated);
+		prefEditor.putBoolean(STR_AUTO_WIFI_OFF_IS_ACTIVATED, autoWifiOffIsActivated);
 		prefEditor.commit();
 	}
 

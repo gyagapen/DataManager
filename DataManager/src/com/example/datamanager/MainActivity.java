@@ -1,12 +1,12 @@
 package com.example.datamanager;
 
 import java.io.IOException;
+import java.util.Timer;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -16,7 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener,
 		OnCheckedChangeListener {
@@ -27,10 +27,16 @@ public class MainActivity extends Activity implements OnClickListener,
 	CheckBox cbWifi = null;
 	CheckBox cbWifiMgr = null;
 	CheckBox cbAutoSync = null;
+	CheckBox cbAutoWifiOff = null;
+	CheckBox cbSleepHours = null;
+	TextView edSleepHours = null;
 	EditText edTimeOn = null;
 	EditText edTimeOff = null;
 	EditText edInterval = null;
 	Button buttonSave = null;
+	Button buttonEditSleepHours = null;
+
+	int RETURN_CODE = 0;
 
 	// SharedPreferences
 	SharedPreferences prefs = null;
@@ -63,9 +69,12 @@ public class MainActivity extends Activity implements OnClickListener,
 			loadUiComponents();
 			initializeUiComponentsData();
 
-			// instanciate save button
+			// instanciate buttons
 			buttonSave = (Button) findViewById(R.id.buttonSave);
 			buttonSave.setOnClickListener(this);
+
+			buttonEditSleepHours = (Button) findViewById(R.id.button_edit_sleep_hours);
+			buttonEditSleepHours.setOnClickListener(this);
 
 			cbData.setOnCheckedChangeListener(this);
 			cbWifi.setOnCheckedChangeListener(this);
@@ -96,6 +105,10 @@ public class MainActivity extends Activity implements OnClickListener,
 		cbWifiMgr = (CheckBox) findViewById(R.id.checkBoxWifiMgr);
 
 		cbAutoSync = (CheckBox) findViewById(R.id.checkBoxAutoSync);
+		cbAutoWifiOff = (CheckBox) findViewById(R.id.checkBoxAutoWifiOff);
+		cbSleepHours = (CheckBox) findViewById(R.id.checkBoxSleepHours);
+
+		edSleepHours = (TextView) findViewById(R.id.tvSleepHours);
 
 		edTimeOn = (EditText) findViewById(R.id.editTextTimeOn);
 		edTimeOff = (EditText) findViewById(R.id.editTextTimeOff);
@@ -131,6 +144,19 @@ public class MainActivity extends Activity implements OnClickListener,
 		boolean autoSyncIsActivated = sharedPrefsEditor.isAutoSyncActivated();
 		cbAutoSync.setChecked(autoSyncIsActivated);
 
+		boolean autoWifiOffIsActivated = sharedPrefsEditor
+				.isAutoWifiOffActivated();
+		cbAutoWifiOff.setChecked(autoWifiOffIsActivated);
+
+		boolean sleepHoursIsActivated = sharedPrefsEditor
+				.isSleepHoursActivated();
+		cbSleepHours.setChecked(sleepHoursIsActivated);
+
+		String sleepTimeOn = sharedPrefsEditor.getSleepTimeOn();
+		String sleepTimeOff = sharedPrefsEditor.getSleepTimeOff();
+
+		edSleepHours.setText(sleepTimeOn + "-" + sleepTimeOff);
+
 		// hide managers checkboxes if necessary
 
 		if (!dataIsActivated) {
@@ -165,10 +191,15 @@ public class MainActivity extends Activity implements OnClickListener,
 
 			boolean autoSyncIsActivated = cbAutoSync.isChecked();
 
+			boolean autoWifiIsActivated = cbAutoWifiOff.isChecked();
+
+			boolean sleepHoursIsActivated = cbSleepHours.isChecked();
+
 			// save all these preferences
 			sharedPrefsEditor.setAllValues(timeOn, timeOff, intervalCheck,
 					dataIsActivated, dataMgrIsActivated, wifiIsActivated,
-					wifiMgrIsActivated, autoSyncIsActivated);
+					wifiMgrIsActivated, autoSyncIsActivated,
+					autoWifiIsActivated, sleepHoursIsActivated);
 
 			try {
 				// if data is disabled; data connection is stopped
@@ -191,16 +222,11 @@ public class MainActivity extends Activity implements OnClickListener,
 					dataActivation.setWifiConnectionEnabled(true);
 					// dataActivation.setAutoSync(true);
 				}
-				
-				
-				
+
 				// enable/disable autosync
-				if(autoSyncIsActivated)
-				{	
+				if (autoSyncIsActivated) {
 					dataActivation.setAutoSync(true, sharedPrefsEditor);
-				}
-				else
-				{
+				} else {
 					dataActivation.setAutoSync(false, sharedPrefsEditor);
 				}
 
@@ -225,6 +251,12 @@ public class MainActivity extends Activity implements OnClickListener,
 				e.printStackTrace();
 			}
 
+		} else if (v == buttonEditSleepHours) // if edit sleep hours button
+		{
+			// open new activity
+			Intent sleepTimePickerIntent = new Intent(this,
+					SleepTimerPickerActivity.class);
+			startActivityForResult(sleepTimePickerIntent, RETURN_CODE);
 		}
 
 	}
@@ -274,6 +306,27 @@ public class MainActivity extends Activity implements OnClickListener,
 			}
 		}
 
+	}
+
+	// manage result from other activity
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// verify return code
+
+		if (requestCode == RETURN_CODE) {
+
+			// refresh sleep hours time off/on
+			if (resultCode == RESULT_OK) {
+				String sleepTimeOn = sharedPrefsEditor.getSleepTimeOn();
+				String sleepTimeOff = sharedPrefsEditor.getSleepTimeOff();
+
+				edSleepHours.setText(sleepTimeOn + "-" + sleepTimeOff);
+				
+				Timer sleepOn = new Timer();
+				
+				//sleepOn.scheduleAtFixedRate(task, when, period)
+
+			}
+		}
 	}
 
 }

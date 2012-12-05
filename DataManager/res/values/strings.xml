@@ -9,10 +9,20 @@
     <string name="toggle_wifi">Wifi Connection</string>
     <string name="toggle_wifi_manager">Wifi Manager</string>
     <string name="toggle_auto_sync">Auto-Sync</string>
+    <string name="toggle_auto_wifi_off">Auto-Wifi Off</string>
     <string name="time_on">Time On (min)</string>
     <string name="time_off">Time Off (min)</string>
     <string name="interval_check">Usage check interval (s)</string>
     <string name="button_save">Save preferences</string>
+    <string name="toggle_sleep_hours">Sleep Hours</string>
+    <string name="label_sleep_hours">Sleep Hours :</string>
+    <string name="button_change_sleep_hours">Edit</string>
+    <string name="label_time_on">Time On(min)</string>
+    <string name="label_time_off">Time Off(min)</string>
+    <string name="label_time_Interval">Interval Check(sec)</string>
+    <string name="label_sleep_off">Connectivity off</string>
+    <string name="label_sleep_on">Connectivity on</string>
+    <string name="button_save_sleep_hours">Save sleep hours</string>
     
 
 </resources>

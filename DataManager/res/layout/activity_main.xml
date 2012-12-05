@@ -49,13 +49,34 @@
         android:layout_marginLeft="16dp"
         android:text="@string/toggle_auto_sync" />
 
+    <CheckBox
+        android:id="@+id/checkBoxAutoWifiOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/checkBoxAutoSync"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/checkBoxAutoSync"
+        android:layout_marginLeft="16dp"
+        android:text="@string/toggle_auto_wifi_off" />
+
+    <CheckBox
+        android:id="@+id/checkBoxSleepHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/checkBoxAutoWifiOff"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/checkBoxAutoWifiOff"
+        android:layout_marginLeft="16dp"
+        android:text="@string/toggle_sleep_hours" />
+
     <EditText
         android:id="@+id/editTextTimeOn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBoxAutoSync"
-        android:layout_below="@+id/checkBoxAutoSync"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/checkBoxSleepHours"
         android:layout_marginTop="26dp"
+        android:layout_toLeftOf="@+id/tvSleepHours"
         android:ems="10"
         android:inputType="number"
         android:text="@string/time_on" >
@@ -63,24 +84,63 @@
         <requestFocus />
     </EditText>
 
+    <TextView
+        android:id="@+id/tvSleepHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/checkBoxDataMgr"
+        android:layout_below="@+id/checkBoxSleepHours"
+        android:text="@string/label_sleep_hours"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="15dp" />
+
+    <Button
+        android:id="@+id/button_edit_sleep_hours"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tvSleepHours"
+        android:layout_alignBottom="@+id/tvSleepHours"
+        android:layout_toRightOf="@+id/checkBoxWifi"
+        android:text="@string/button_change_sleep_hours" />
+
+    <TextView
+        android:id="@+id/tvTimeOn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/editTextTimeOn"
+        android:layout_centerHorizontal="true"
+        android:text="@string/time_on"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
     <EditText
         android:id="@+id/editTextTimeOff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editTextTimeOn"
         android:layout_below="@+id/editTextTimeOn"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="15dp"
+        android:layout_toLeftOf="@+id/tvSleepHours"
         android:ems="10"
         android:inputType="number"
         android:text="@string/time_off" />
+
+    <TextView
+        android:id="@+id/tvTimeOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editTextTimeOff"
+        android:layout_alignBottom="@+id/editTextTimeOff"
+        android:layout_alignLeft="@+id/tvTimeOn"
+        android:text="@string/time_off"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/editTextInterval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editTextTimeOff"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/editTextTimeOff"
-        android:layout_marginTop="30dp"
+        android:layout_toLeftOf="@+id/tvSleepHours"
         android:ems="10"
         android:inputType="number"
         android:text="@string/interval_check" />
@@ -89,9 +149,18 @@
         android:id="@+id/buttonSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/linearLayout1"
-        android:layout_below="@+id/editTextInterval"
-        android:layout_marginTop="44dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:text="@string/button_save" />
+
+    <TextView
+        android:id="@+id/tvTimeInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editTextInterval"
+        android:layout_alignBottom="@+id/editTextInterval"
+        android:layout_alignLeft="@+id/tvTimeOff"
+        android:text="@string/interval_check"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
