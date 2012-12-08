@@ -88,15 +88,13 @@ public class MainService extends Service {
 			// first run
 			screenOff = false;
 		}
-
-		/*
-		 * Toast.makeText(getBaseContext(), "Screen on : " + screenOff,
-		 * Toast.LENGTH_SHORT).show();
-		 */
+		
+		
 
 		// if screen is on
 		if (!screenOff) {
 
+			
 			// stop all timers if there are running
 			CancelTimeOff();
 			CancelTimerOn();
@@ -112,7 +110,26 @@ public class MainService extends Service {
 
 		} else { // screen is off
 
-			StartTimerOn();
+			//get sleep state
+			boolean isSleeping = sharedPrefsEditor.isSleeping();
+			
+			if(isSleeping)
+			{
+				//desactivate all connectivity
+				try {
+					dataActivation.setConnectivityDisabled();
+					dataActivation.setAutoSync(false, sharedPrefsEditor);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else
+			{
+				//start timer
+				StartTimerOn();
+			}
+			
 
 		}
 
@@ -135,7 +152,7 @@ public class MainService extends Service {
 																		// to ms
 
 		timerOnTask = new TimerOnTask(dataHandler, timeCheckData);
-		timerOn.schedule(timerOnTask, timeOnValue, timeOnValue);
+		timerOn.schedule(timerOnTask, timeOnValue);
 	}
 
 	/**
@@ -152,7 +169,7 @@ public class MainService extends Service {
 		timeOffValue = sharedPrefsEditor.getTimeOff() * 60 * 1000; // in ms
 
 		timerOffTask = new TimerOffTask(dataHandler);
-		timerOff.schedule(timerOffTask, timeOffValue, timeOffValue);
+		timerOff.schedule(timerOffTask, timeOffValue);
 
 	}
 

@@ -25,6 +25,7 @@ public class SharedPrefsEditor {
 	static final String STR_SLEEP_ON_HOUR="SleepHoursTimeOn";
 	static final String STR_SLEEP_OFF_HOUR="SleepHoursTimeOff";
 	static final String STR_AUTO_WIFI_OFF_IS_ACTIVATED="AutoWifiOff";
+	static final String STR_IS_SLEEPING="IS_SLEEPING";
 
 	// Default values
 	static final int TIME_ON = 3; // min
@@ -42,6 +43,7 @@ public class SharedPrefsEditor {
 	static final String SLEEP_ON="00:00"; //hh:mm
 	static final String SLEEP_OFF="06:00"; //hh:mm
 	static final String PREFERENCE_NAME = "DataManagerPreferences";
+	static final boolean IS_SLEEPING=false;
 
 	// gives access to connection states
 	DataActivation dataConnectionState;
@@ -83,6 +85,7 @@ public class SharedPrefsEditor {
 			prefEditor.putString(STR_SLEEP_OFF_HOUR, SLEEP_OFF);
 			prefEditor.putString(STR_SLEEP_ON_HOUR, SLEEP_ON);
 			prefEditor.putBoolean(STR_AUTO_WIFI_OFF_IS_ACTIVATED, AUTO_WIFI_OFF_IS_ACTIVATED);
+			prefEditor.putBoolean(STR_IS_SLEEPING, IS_SLEEPING);
 
 			prefEditor.commit();
 		}
@@ -111,6 +114,7 @@ public class SharedPrefsEditor {
 		prefEditor.putString(STR_SLEEP_OFF_HOUR, SLEEP_OFF);
 		prefEditor.putString(STR_SLEEP_ON_HOUR, SLEEP_ON);
 		prefEditor.putBoolean(STR_AUTO_WIFI_OFF_IS_ACTIVATED, AUTO_WIFI_OFF_IS_ACTIVATED);
+		prefEditor.putBoolean(STR_IS_SLEEPING, IS_SLEEPING);
 		prefEditor.commit();
 	}
 
@@ -120,6 +124,11 @@ public class SharedPrefsEditor {
 
 	public int getTimeOff() {
 		return dataManagerSettings.getInt(STR_TIME_OFF, TIME_OFF);
+	}
+	
+	public boolean isSleeping()
+	{
+		return dataManagerSettings.getBoolean(STR_IS_SLEEPING, IS_SLEEPING);
 	}
 
 	public int getIntervalCheck() {
@@ -237,6 +246,12 @@ public class SharedPrefsEditor {
 	public void setSleepHoursActivation(boolean isEnabled)
 	{
 		prefEditor.putBoolean(STR_SLEEP_IS_ACTIVATED, isEnabled);
+		prefEditor.commit();
+	}
+	
+	public void setIsSleeping(boolean isSleeping)
+	{
+		prefEditor.putBoolean(STR_IS_SLEEPING, isSleeping);
 		prefEditor.commit();
 	}
 	

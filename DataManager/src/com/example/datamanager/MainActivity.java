@@ -1,13 +1,19 @@
 package com.example.datamanager;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.TimeZone;
 import java.util.Timer;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,26 +27,31 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements OnClickListener,
 		OnCheckedChangeListener {
 
-	// ui components
-	CheckBox cbData = null;
-	CheckBox cbDataMgr = null;
-	CheckBox cbWifi = null;
-	CheckBox cbWifiMgr = null;
-	CheckBox cbAutoSync = null;
-	CheckBox cbAutoWifiOff = null;
-	CheckBox cbSleepHours = null;
-	TextView edSleepHours = null;
-	EditText edTimeOn = null;
-	EditText edTimeOff = null;
-	EditText edInterval = null;
-	Button buttonSave = null;
-	Button buttonEditSleepHours = null;
+	static final String STR_ACTIVATE_CONNECTIVITY = "activateConnectivity";
 
-	int RETURN_CODE = 0;
+	static final int ID_ALARM_TIME_ON = 1879;
+	static final int ID_ALARM_TIME_OFF = 1899;
+
+	// ui components
+	private CheckBox cbData = null;
+	private CheckBox cbDataMgr = null;
+	private CheckBox cbWifi = null;
+	private CheckBox cbWifiMgr = null;
+	private CheckBox cbAutoSync = null;
+	private CheckBox cbAutoWifiOff = null;
+	private CheckBox cbSleepHours = null;
+	private TextView edSleepHours = null;
+	private EditText edTimeOn = null;
+	private EditText edTimeOff = null;
+	private EditText edInterval = null;
+	private Button buttonSave = null;
+	private Button buttonEditSleepHours = null;
+
+	private int RETURN_CODE = 0;
 
 	// SharedPreferences
-	SharedPreferences prefs = null;
-	SharedPrefsEditor sharedPrefsEditor = null;
+	private SharedPreferences prefs = null;
+	private SharedPrefsEditor sharedPrefsEditor = null;
 
 	private DataActivation dataActivation;
 
@@ -247,6 +258,10 @@ public class MainActivity extends Activity implements OnClickListener,
 					StartDataManagerService();
 				}
 
+				// sleeping hours
+				manageSleepingHours(sharedPrefsEditor.getSleepTimeOff(),
+						sharedPrefsEditor.getSleepTimeOn());
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -320,13 +335,143 @@ public class MainActivity extends Activity implements OnClickListener,
 				String sleepTimeOff = sharedPrefsEditor.getSleepTimeOff();
 
 				edSleepHours.setText(sleepTimeOn + "-" + sleepTimeOff);
-				
-				Timer sleepOn = new Timer();
-				
-				//sleepOn.scheduleAtFixedRate(task, when, period)
+
+				manageSleepingHours(sleepTimeOff, sleepTimeOn);
 
 			}
 		}
+	}
+
+	public void manageSleepingHours(String sleepTimeOff, String sleepTimeOn) {
+
+		// decides wether to activate/desactivate sleeping hours now
+		if (cbSleepHours.isChecked()) {
+
+			// schedule alarms
+			setUpAlarm(sleepTimeOff, getBaseContext(), true);
+			setUpAlarm(sleepTimeOn, getBaseContext(), false);
+
+			
+			if (time1IsAftertimer2(sleepTimeOff, sleepTimeOn)) {
+				// if time sleep on has passed and not time sleep off then
+				// activate sleeping
+				if (timeIsPassed(sleepTimeOn) && !timeIsPassed(sleepTimeOff)) {
+					Log.i("TimePassed", sleepTimeOn + " passed and "
+							+ sleepTimeOff + " not passed");
+					sharedPrefsEditor.setIsSleeping(true);
+				} else {
+					sharedPrefsEditor.setIsSleeping(false);
+				}
+			} else {
+				Log.i("Timer", sleepTimeOff+" is before "+sleepTimeOn);
+				if (timeIsPassed(sleepTimeOn)) {
+					Log.i("Timer", sleepTimeOn+" is passed");
+					sharedPrefsEditor.setIsSleeping(true);
+				} else {
+					Log.i("Timer", sleepTimeOn+" is NOT passed");
+					sharedPrefsEditor.setIsSleeping(false);
+				}
+			}
+		} else {
+			// cancel alarms
+			Intent intent = new Intent(this, AlarmReceiver.class);
+			PendingIntent timeOn = PendingIntent.getBroadcast(this,
+					ID_ALARM_TIME_ON, intent, 0);
+			PendingIntent timeOff = PendingIntent.getBroadcast(this,
+					ID_ALARM_TIME_OFF, intent, 0);
+			AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+			alarmManager.cancel(timeOn);
+			alarmManager.cancel(timeOff);
+			
+			//set sleeping to false
+			sharedPrefsEditor.setIsSleeping(false);
+		}
+
+	}
+
+	public void setUpAlarm(String time, Context context,
+			boolean activateConnectivity) {
+
+		// get hour and minute from time
+		String[] splittedTime = time.split(":");
+		int hour = Integer.valueOf(splittedTime[0]);
+		int minute = Integer.valueOf(splittedTime[1]);
+
+		// setting alarm
+		Calendar updateTime = Calendar.getInstance();
+		updateTime.set(Calendar.HOUR_OF_DAY, hour);
+		updateTime.set(Calendar.MINUTE, minute);
+
+		Intent alarmLauncher = new Intent(context, AlarmReceiver.class);
+		alarmLauncher.putExtra(STR_ACTIVATE_CONNECTIVITY, activateConnectivity);
+
+		PendingIntent recurringAlarm = null;
+
+		if (activateConnectivity) {
+			recurringAlarm = PendingIntent.getBroadcast(context,
+					ID_ALARM_TIME_OFF, alarmLauncher,
+					PendingIntent.FLAG_CANCEL_CURRENT);
+		} else {
+			recurringAlarm = PendingIntent.getBroadcast(context,
+					ID_ALARM_TIME_ON, alarmLauncher,
+					PendingIntent.FLAG_CANCEL_CURRENT);
+		}
+
+		AlarmManager alarms = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+		alarms.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+				updateTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY,
+				recurringAlarm);
+	}
+
+	public boolean timeIsPassed(String time) {
+		// get hour and minute from time
+		String[] splittedTime = time.split(":");
+		int hour = Integer.valueOf(splittedTime[0]);
+		int minute = Integer.valueOf(splittedTime[1]);
+
+		// get current time
+		Calendar currentTime = Calendar.getInstance();
+		//currentTime.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+		Log.i("current hour", currentTime.toString());
+
+		// setting alarm time
+		Calendar instanceTime = Calendar.getInstance();
+		//instanceTime.setTimeZone(TimeZone.getTimeZone("GMT"));
+		instanceTime.set(Calendar.HOUR_OF_DAY, hour);
+		instanceTime.set(Calendar.MINUTE, minute);
+		
+		Log.i("alarm hour", instanceTime.toString());
+
+		return currentTime.after(instanceTime);
+	}
+
+	public boolean time1IsAftertimer2(String time1, String time2) {
+		// building time1
+
+		String[] splittedTime1 = time1.split(":");
+		int hour1 = Integer.valueOf(splittedTime1[0]);
+		int minute1 = Integer.valueOf(splittedTime1[1]);
+
+		Calendar calTime1 = Calendar.getInstance();
+		calTime1.setTimeZone(TimeZone.getTimeZone("GMT"));
+		calTime1.set(Calendar.HOUR_OF_DAY, hour1);
+		calTime1.set(Calendar.MINUTE, minute1);
+
+		// building time2
+		String[] splittedTime2 = time2.split(":");
+		int hour2 = Integer.valueOf(splittedTime2[0]);
+		int minute2 = Integer.valueOf(splittedTime2[1]);
+
+		Calendar calTime2 = Calendar.getInstance();
+		calTime2.setTimeZone(TimeZone.getTimeZone("GMT"));
+		calTime2.set(Calendar.HOUR_OF_DAY, hour2);
+		calTime2.set(Calendar.MINUTE, minute2);
+
+		return calTime1.after(calTime2);
+
 	}
 
 }

@@ -78,14 +78,15 @@ public class SleepTimerPickerActivity extends Activity implements
 		if(v == buttonSave)
 		{
 			//getting value from sleep time on
-			String hourSleepOn = timePickerSleepOn.getCurrentHour().toString();
-			String minuteSleepOn = timePickerSleepOn.getCurrentMinute().toString();
-			String timeOn = hourSleepOn+":"+minuteSleepOn;
+			int hourSleepOn = timePickerSleepOn.getCurrentHour();
+			int minuteSleepOn = timePickerSleepOn.getCurrentMinute();
+			String timeOn = String.format("%02d:%02d", hourSleepOn, minuteSleepOn);
 			
 			//getting value from sleep time off
-			String hourSleepOff = timePickerSleepOff.getCurrentHour().toString();
-			String minuteSleepOff = timePickerSleepOff.getCurrentMinute().toString();
-			String timeOff = hourSleepOff+":"+minuteSleepOff;
+			int hourSleepOff = timePickerSleepOff.getCurrentHour();
+			int minuteSleepOff = timePickerSleepOff.getCurrentMinute();
+			String timeOff = String.format("%02d:%02d", hourSleepOff, minuteSleepOff);
+			
 			
 			//saving in preferences
 			sharedPrefsEditor.setSleepTimeOn(timeOn);
