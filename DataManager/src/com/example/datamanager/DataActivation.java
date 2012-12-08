@@ -8,6 +8,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.PowerManager;
 import android.util.Log;
 
 public class DataActivation {
@@ -26,10 +27,9 @@ public class DataActivation {
 	 * @param enableAutoSync
 	 * @throws Exception
 	 */
-	public void setMobileDataEnabled(boolean enabled)
-			throws Exception {
-		
-		Log.i("Data activation", "Data is activate : "+enabled);
+	public void setMobileDataEnabled(boolean enabled) throws Exception {
+
+		Log.i("Data activation", "Data is activate : " + enabled);
 
 		final ConnectivityManager conman = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -53,14 +53,12 @@ public class DataActivation {
 	 * 
 	 * @param isEnabled
 	 */
-	public void setAutoSync(boolean isEnabled, SharedPrefsEditor sharedPrefsEditor) {
-		
-		if(sharedPrefsEditor.isAutoSyncActivated() && isEnabled)
-		{
+	public void setAutoSync(boolean isEnabled,
+			SharedPrefsEditor sharedPrefsEditor) {
+
+		if (sharedPrefsEditor.isAutoSyncActivated() && isEnabled) {
 			ContentResolver.setMasterSyncAutomatically(true);
-		}
-		else
-		{
+		} else {
 			ContentResolver.setMasterSyncAutomatically(false);
 		}
 	}
@@ -101,47 +99,51 @@ public class DataActivation {
 
 		return mobile.isConnectedOrConnecting();
 	}
-	
-	
+
 	/**
 	 * Enable 3G or Wifi depending of sharedPrefs
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
-	public void setConnectivityEnabled(SharedPrefsEditor sharedPrefsEditor) throws Exception
-	{
-		if(sharedPrefsEditor.isWifiManagerActivated() && sharedPrefsEditor.isWifiActivated()) //activate wifi
+	public void setConnectivityEnabled(SharedPrefsEditor sharedPrefsEditor)
+			throws Exception {
+		if (sharedPrefsEditor.isWifiManagerActivated()
+				&& sharedPrefsEditor.isWifiActivated()) // activate wifi
 		{
 			setWifiConnectionEnabled(true);
-			
-			if(sharedPrefsEditor.isDataActivated() && sharedPrefsEditor.isDataMgrActivated())
-			{
-				//activate data
+
+			if (sharedPrefsEditor.isDataActivated()
+					&& sharedPrefsEditor.isDataMgrActivated()) {
+				// activate data
 				setMobileDataEnabled(true);
 			}
-		}
-		else
-		{
-			//enable data
+		} else {
+			// enable data
 			setMobileDataEnabled(true);
 		}
 
 	}
-	
-	
-	//disable all connectivity
-	public void setConnectivityDisabled() throws Exception
-	{
+
+	// disable all connectivity
+	public void setConnectivityDisabled() throws Exception {
 		setMobileDataEnabled(false);
 		setWifiConnectionEnabled(false);
 	}
-	
+
 	/**
 	 * Is Auto-Sync activated
+	 * 
 	 * @return
 	 */
-	public boolean isAutoSyncIsActivated()
-	{
+	public boolean isAutoSyncIsActivated() {
 		return ContentResolver.getMasterSyncAutomatically();
+	}
+
+	public boolean isScreenIsOn() {
+		PowerManager pm = (PowerManager) context
+				.getSystemService(Context.POWER_SERVICE);
+		boolean isScreenOn = pm.isScreenOn();
+		return isScreenOn;
 	}
 }
