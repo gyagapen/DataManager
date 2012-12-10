@@ -11,7 +11,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -48,6 +50,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	private Button buttonEditSleepHours = null;
 
 	private int RETURN_CODE = 0;
+	
 
 	// SharedPreferences
 	private SharedPreferences prefs = null;
@@ -59,6 +62,10 @@ public class MainActivity extends Activity implements OnClickListener,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		//initialize connectivity positions
+		SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(getApplicationContext());
+		connPrefs.saveAllConnectionSettingInSharedPrefs();
+		
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
@@ -66,10 +73,6 @@ public class MainActivity extends Activity implements OnClickListener,
 		dataActivation = new DataActivation(getBaseContext());
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
-		/*
-		 * try { sharedPrefsEditor.resetPreferences(); } catch (IOException e1)
-		 * { e1.printStackTrace(); }
-		 */
 
 		try {
 			sharedPrefsEditor.initializePreferences();
@@ -473,5 +476,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		return calTime1.after(calTime2);
 
 	}
+	
+
 
 }

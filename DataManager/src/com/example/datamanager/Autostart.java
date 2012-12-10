@@ -20,6 +20,11 @@ public class Autostart extends BroadcastReceiver {
 	SharedPrefsEditor sharedPrefsEditor = null;
 
 	public void onReceive(Context arg0, Intent arg1) {
+		
+		//initialize connectivity positions
+		SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(arg0);
+		connPrefs.saveAllConnectionSettingInSharedPrefs();
+		
 		// shared prefs init
 		DataActivation dataActivation = new DataActivation(arg0);
 		prefs = arg0.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,

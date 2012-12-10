@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -23,22 +25,25 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".ToggleWifiReceiver" >
+        
+       <!--  <receiver android:name=".ToggleWifiReceiver" >
             <intent-filter>
-                <action android:name="android.net.wifi.STATE_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE" />
             </intent-filter>
         </receiver>
         <receiver android:name=".ToggleDataReceiver" >
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.net.conn.BACKGROUND_DATA_SETTING_CHANGED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.intent.action.ANY_DATA_STATE"/>
             </intent-filter>
-        </receiver>
+        </receiver>    
         <receiver android:name=".ToggleSync" >
             <intent-filter>
                 <action android:name="com.android.sync.SYNC_CONN_STATUS_CHANGED" />	
             </intent-filter>
-        </receiver>
+        </receiver> -->
+        
         <receiver android:name=".receiver.AlarmReceiver" >
         </receiver>
 

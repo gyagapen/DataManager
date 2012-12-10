@@ -69,6 +69,7 @@ public class DataActivation {
 	 * @param enabled
 	 */
 	public void setWifiConnectionEnabled(boolean enabled) {
+		
 		WifiManager wifiManager = (WifiManager) this.context
 				.getSystemService(Context.WIFI_SERVICE);
 		wifiManager.setWifiEnabled(enabled);
@@ -78,26 +79,50 @@ public class DataActivation {
 	 * Indicates wether the wifi is activated
 	 */
 	public boolean isWifiChipActivated() {
-		ConnectivityManager connec = (ConnectivityManager) context
+		
+		/**ConnectivityManager connec = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		NetworkInfo mobile = connec
 				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-		return mobile.isConnectedOrConnecting();
+		return mobile.isConnectedOrConnecting();**/
+		
+		WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		
+		return wifiManager.isWifiEnabled();
 	}
 
 	/**
 	 * Indicates wether data connection is activated
 	 */
 	public boolean isDataChipActivated() {
+		
+		
 		ConnectivityManager connec = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 
+		
 		NetworkInfo mobile = connec
 				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-
-		return mobile.isConnectedOrConnecting();
+		
+		boolean mobileIsConnected =  mobile.isConnectedOrConnecting();
+		
+		//workaround for problem as 3g is reported as disconneted if wifi is disable
+		if(isWifiChipActivated())
+		{
+			//disconnect wifi
+			//setWifiConnectionEnabled(false);
+			
+			//check 3g connection
+			mobileIsConnected =  true;
+			
+			//reconnect wifi
+			//setWifiConnectionEnabled(true);
+		}
+		
+		return mobileIsConnected;
+		
 	}
 
 	/**
@@ -108,7 +133,7 @@ public class DataActivation {
 	 */
 	public void setConnectivityEnabled(SharedPrefsEditor sharedPrefsEditor)
 			throws Exception {
-		if (sharedPrefsEditor.isWifiManagerActivated()
+		/**if (sharedPrefsEditor.isWifiManagerActivated()
 				&& sharedPrefsEditor.isWifiActivated()) // activate wifi
 		{
 			setWifiConnectionEnabled(true);
@@ -118,8 +143,23 @@ public class DataActivation {
 				// activate data
 				setMobileDataEnabled(true);
 			}
-		} else {
+		} 
+		
+		
+		else {
 			// enable data
+			setMobileDataEnabled(true);
+		}**/
+		
+		if(sharedPrefsEditor.isWifiActivated())
+		{
+			//activate wifi
+			setWifiConnectionEnabled(true);
+		}
+		
+		if(sharedPrefsEditor.isDataActivated())
+		{
+			//activate data connection
 			setMobileDataEnabled(true);
 		}
 

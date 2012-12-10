@@ -17,6 +17,10 @@ public class ScreenReceiver extends BroadcastReceiver {
 		
 		if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
 
+			//initialize connectivity positions
+			SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(context);
+			connPrefs.saveAllConnectionSettingInSharedPrefs();
+			
 			screenOff = true;
 
 		} else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
