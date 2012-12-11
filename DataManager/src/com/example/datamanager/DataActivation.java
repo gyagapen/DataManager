@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 public class DataActivation {
@@ -99,7 +100,7 @@ public class DataActivation {
 	public boolean isDataChipActivated() {
 		
 		
-		ConnectivityManager connec = (ConnectivityManager) context
+		/*ConnectivityManager connec = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		
@@ -121,8 +122,43 @@ public class DataActivation {
 			//setWifiConnectionEnabled(true);
 		}
 		
-		return mobileIsConnected;
+		return mobileIsConnected;*/
+
+		/*boolean isEnabled = true;
 		
+		TelephonyManager telephonyManager = (TelephonyManager) context
+	            .getSystemService(Context.TELEPHONY_SERVICE);
+		
+		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+
+
+		Log.i("Data TOGGLE", telephonyManager.getDataActivity()+" "+telephonyManager.getDataState()+" "+TelephonyManager.DATA_SUSPENDED);
+		
+	    if(telephonyManager.getDataState() == TelephonyManager.DATA_SUSPENDED){
+	        isEnabled = true;
+	    }else{
+	        isEnabled = false;  
+	    }
+	    
+	    return isEnabled;*/
+		
+		boolean mobileDataEnabled = false; // Assume disabled
+	    ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    try {
+	        Class cmClass = Class.forName(cm.getClass().getName());
+	        Method method = cmClass.getDeclaredMethod("getMobileDataEnabled");
+	        method.setAccessible(true); // Make the method callable
+	        // get the setting for "mobile data"
+	        mobileDataEnabled = (Boolean)method.invoke(cm);
+	    } catch (Exception e) {
+	        // Some problem accessible private API
+	        // TODO do whatever error handling you want here
+	    }
+		
+	    Log.i("Data TOGGLE", String.valueOf(mobileDataEnabled));
+	    
+	    return mobileDataEnabled;
 	}
 
 	/**
