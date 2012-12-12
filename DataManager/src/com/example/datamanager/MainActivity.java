@@ -410,20 +410,30 @@ public class MainActivity extends Activity implements OnClickListener,
 		alarmLauncher.putExtra(STR_ACTIVATE_CONNECTIVITY, activateConnectivity);
 
 		PendingIntent recurringAlarm = null;
+		
+		AlarmManager alarms = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
 		if (activateConnectivity) {
 			recurringAlarm = PendingIntent.getBroadcast(context,
 					ID_ALARM_TIME_OFF, alarmLauncher,
-					PendingIntent.FLAG_CANCEL_CURRENT);
+					PendingIntent.FLAG_UPDATE_CURRENT);
+			Log.i("Alarm set up off", time);
+			
 		} else {
+			
+			
 			recurringAlarm = PendingIntent.getBroadcast(context,
 					ID_ALARM_TIME_ON, alarmLauncher,
-					PendingIntent.FLAG_CANCEL_CURRENT);
+					PendingIntent.FLAG_UPDATE_CURRENT);
+			
+			Log.i("Alarm set up on", time);
 		}
 
-		AlarmManager alarms = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		
 
-		alarms.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+		alarms.cancel(recurringAlarm);
+		
+		alarms.setRepeating(AlarmManager.RTC_WAKEUP,
 				updateTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY,
 				recurringAlarm);
 	}

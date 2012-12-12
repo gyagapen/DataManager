@@ -100,49 +100,6 @@ public class DataActivation {
 	public boolean isDataChipActivated() {
 		
 		
-		/*ConnectivityManager connec = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		
-		NetworkInfo mobile = connec
-				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-		
-		boolean mobileIsConnected =  mobile.isConnectedOrConnecting();
-		
-		//workaround for problem as 3g is reported as disconneted if wifi is disable
-		if(isWifiChipActivated())
-		{
-			//disconnect wifi
-			//setWifiConnectionEnabled(false);
-			
-			//check 3g connection
-			mobileIsConnected =  true;
-			
-			//reconnect wifi
-			//setWifiConnectionEnabled(true);
-		}
-		
-		return mobileIsConnected;*/
-
-		/*boolean isEnabled = true;
-		
-		TelephonyManager telephonyManager = (TelephonyManager) context
-	            .getSystemService(Context.TELEPHONY_SERVICE);
-		
-		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		
-
-
-		Log.i("Data TOGGLE", telephonyManager.getDataActivity()+" "+telephonyManager.getDataState()+" "+TelephonyManager.DATA_SUSPENDED);
-		
-	    if(telephonyManager.getDataState() == TelephonyManager.DATA_SUSPENDED){
-	        isEnabled = true;
-	    }else{
-	        isEnabled = false;  
-	    }
-	    
-	    return isEnabled;*/
-		
 		boolean mobileDataEnabled = false; // Assume disabled
 	    ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 	    try {
