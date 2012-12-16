@@ -77,7 +77,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		try {
 			sharedPrefsEditor.initializePreferences();
 
-			setContentView(R.layout.activity_main);
+			setContentView(R.layout.main_application);
 
 			// init ui
 			loadUiComponents();
@@ -171,15 +171,6 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		edSleepHours.setText(sleepTimeOn + "-" + sleepTimeOff);
 
-		// hide managers checkboxes if necessary
-
-		if (!dataIsActivated) {
-			cbDataMgr.setVisibility(View.INVISIBLE);
-		}
-
-		if (!wifiIsActivated) {
-			cbWifiMgr.setVisibility(View.INVISIBLE);
-		}
 
 	}
 
@@ -302,27 +293,6 @@ public class MainActivity extends Activity implements OnClickListener,
 	 */
 
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-		if (buttonView == cbData) {
-			if (isChecked) {
-				// enable dataManager checkBox
-				cbDataMgr.setVisibility(View.VISIBLE);
-
-			} else {
-				// disable dataManager checkBoc
-				cbDataMgr.setVisibility(View.INVISIBLE);
-			}
-
-		} else if (buttonView == cbWifi) {
-			if (isChecked) {
-				// enable dataManager checkBox
-				cbWifiMgr.setVisibility(View.VISIBLE);
-
-			} else {
-				// disable dataManager checkBoc
-				cbWifiMgr.setVisibility(View.INVISIBLE);
-			}
-		}
 
 	}
 
