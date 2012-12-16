@@ -179,4 +179,19 @@ public class DataActivation {
 		boolean isScreenOn = pm.isScreenOn();
 		return isScreenOn;
 	}
+	
+	
+	/**
+	 * Check wifi scan results to know if a known is available, else wifi will be disconnected
+	 * @return
+	 */
+	public void checkWifiScanResults()
+	{
+		Log.i("CHECK WIFI", "check wifi scan results");
+		WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		//results will be handle WifiScanreceiver
+		wifi.startScan();
+		
+		
+	}
 }

@@ -46,6 +46,12 @@
         
         <receiver android:name=".AlarmReceiver" >
         </receiver>
+        
+        <receiver android:name=".WifiScanReceiver" >
+            <intent-filter>
+                <action android:name="android.net.wifi.SCAN_RESULTS" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".MainActivity"

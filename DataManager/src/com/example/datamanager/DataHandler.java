@@ -45,10 +45,26 @@ public class DataHandler extends Handler {
 			Log.i("Data usage", "Data NOT used");
 			
 			try {
-				//wifi and 3g off
-				parentService.getDataActivator().setConnectivityDisabled();
-				//disable autosync too
-				parentService.getDataActivator().setAutoSync(false, sharedPrefsEditor);
+				
+				//auto wifi off
+				if(sharedPrefsEditor.isAutoWifiOffActivated() && sharedPrefsEditor.isWifiActivated())
+				{
+					Log.i("Auto Wifi Off", "Launch check");
+					parentService.getDataActivator().checkWifiScanResults();
+					
+					//3g and auto sync off
+					parentService.getDataActivator().setMobileDataEnabled(false);
+					parentService.getDataActivator().setAutoSync(false, sharedPrefsEditor);
+				}
+				else
+				{
+					//wifi and 3g off
+					parentService.getDataActivator().setConnectivityDisabled();
+					//disable autosync too
+					parentService.getDataActivator().setAutoSync(false, sharedPrefsEditor);
+				}
+				
+				
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

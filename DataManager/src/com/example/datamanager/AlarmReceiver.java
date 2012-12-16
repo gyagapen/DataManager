@@ -58,10 +58,14 @@ public class AlarmReceiver extends BroadcastReceiver {
 	    	{
 	    		//sleep off
 	    		sharedPrefsEditor.setIsSleeping(false);
+	    		
+	    		//start service
+		    	Intent i = new Intent(context, MainService.class);
+				context.startService(i);
+		    	
 	    	}
 
 	        
-	    	
 	        
 	    }
 
