@@ -31,10 +31,15 @@
     <string name="label_time_off">Time Off(min)</string>
     <string name="label_time_Interval">Interval Check(sec)</string>
     <string name="label_sleep_off">Connectivity off</string>
+    <string name="label_sleep_off_desc">All connectivity (3G/Wifi/Sync) will be turn off at this specific time. The ON-OFF cycle will be stopped. Connections will be automatically disabled only when screen is off</string>
     <string name="label_sleep_on">Connectivity on</string>
+    <string name="label_sleep_on_desc">The ON-OFF cycle will be resumed at this specific time.</string>
     <string name="button_save_sleep_hours">Save sleep hours</string>
+    <string name="SleepHoursActivityName">Change sleep hours</string>
+    <string name="developerName">© gyagapen</string>
     
-    <color name="white">#FFFFFF</color>
+    <color name="separator">#B2E0FF</color>
+    <color name="name">#666699</color>
     
 
 </resources>

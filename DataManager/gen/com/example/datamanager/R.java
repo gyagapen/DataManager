@@ -11,7 +11,8 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int white=0x7f050000;
+        public static final int name=0x7f050001;
+        public static final int separator=0x7f050000;
     }
     public static final class drawable {
         public static final int ic_action_search=0x7f020000;
@@ -19,7 +20,7 @@ public final class R {
     }
     public static final class id {
         public static final int buttonSave=0x7f08000e;
-        public static final int buttonSaveSleepHours=0x7f080031;
+        public static final int buttonSaveSleepHours=0x7f080033;
         public static final int button_edit_sleep_hours=0x7f080009;
         public static final int checkBoxAutoSync=0x7f080004;
         public static final int checkBoxAutoWifiOff=0x7f080005;
@@ -31,7 +32,7 @@ public final class R {
         public static final int editTextInterval=0x7f08000d;
         public static final int editTextTimeOff=0x7f08000b;
         public static final int editTextTimeOn=0x7f080007;
-        public static final int menu_settings=0x7f080033;
+        public static final int menu_settings=0x7f080034;
         public static final int tableRow1=0x7f080010;
         public static final int tableRow10=0x7f08001c;
         public static final int tableRow11=0x7f08001d;
@@ -60,12 +61,13 @@ public final class R {
         public static final int textView4=0x7f08001b;
         public static final int textView5=0x7f08001e;
         public static final int textView6=0x7f080021;
+        public static final int textView7=0x7f08002e;
         public static final int textView8=0x7f080024;
         public static final int textView9=0x7f080026;
         public static final int timePickerSleepOff=0x7f080032;
-        public static final int timerPickerSleepOn=0x7f08002f;
-        public static final int tvSetSleepOff=0x7f080030;
-        public static final int tvSetSleepOn=0x7f08002e;
+        public static final int timerPickerSleepOn=0x7f080030;
+        public static final int tvSetSleepOff=0x7f080031;
+        public static final int tvSetSleepOn=0x7f08002f;
         public static final int tvSleepHours=0x7f080008;
         public static final int tvTimeInterval=0x7f08000f;
         public static final int tvTimeOff=0x7f08000c;
@@ -80,16 +82,20 @@ public final class R {
         public static final int activity_main=0x7f070000;
     }
     public static final class string {
+        public static final int SleepHoursActivityName=0x7f040023;
         public static final int app_name=0x7f040000;
         public static final int button_change_sleep_hours=0x7f04001a;
         public static final int button_save=0x7f040016;
-        public static final int button_save_sleep_hours=0x7f040020;
+        public static final int button_save_sleep_hours=0x7f040022;
+        public static final int developerName=0x7f040024;
         public static final int hello_world=0x7f040001;
         public static final int interval_check=0x7f040014;
         public static final int interval_check_desc=0x7f040015;
         public static final int label_sleep_hours=0x7f040019;
         public static final int label_sleep_off=0x7f04001e;
-        public static final int label_sleep_on=0x7f04001f;
+        public static final int label_sleep_off_desc=0x7f04001f;
+        public static final int label_sleep_on=0x7f040020;
+        public static final int label_sleep_on_desc=0x7f040021;
         public static final int label_time_Interval=0x7f04001d;
         public static final int label_time_off=0x7f04001c;
         public static final int label_time_on=0x7f04001b;

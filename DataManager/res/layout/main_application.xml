@@ -74,7 +74,7 @@
                 android:layout_width="329dp"
                 android:layout_height="5dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/white"
+                android:background="@color/separator"
                 />
 
             <TableRow
@@ -133,7 +133,7 @@
                 android:layout_width="329dp"
                 android:layout_height="5dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/white" />
+                android:background="@color/separator" />
 
             <TableRow
                 android:id="@+id/tableRow10"
@@ -165,7 +165,7 @@
                 android:layout_width="329dp"
                 android:layout_height="5dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/white"
+                android:background="@color/separator"
  />
 
             <TableRow
@@ -198,7 +198,7 @@
                 android:layout_width="329dp"
                 android:layout_height="5dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/white" />
+                android:background="@color/separator" />
 
             <TableRow
                 android:id="@+id/tableRow13"
@@ -258,7 +258,7 @@
                 android:layout_width="329dp"
                 android:layout_height="5dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/white" />
+                android:background="@color/separator" />
 
             <TableRow
                 android:id="@+id/tableRow15"
@@ -351,13 +351,13 @@
                 android:layout_width="329dp"
                 android:layout_height="5dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/white" />
+                android:background="@color/separator" />
 
             <TableRow
                 android:id="@+id/tableRow16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
-
+
                 <Button
                     android:id="@+id/buttonSave"
                     android:layout_width="wrap_content"
@@ -371,6 +371,16 @@
                 android:id="@+id/tableRow17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/developerName"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/name" />
+
             </TableRow>
 
         </TableLayout>
