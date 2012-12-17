@@ -77,6 +77,10 @@ public class SleepTimerPickerActivity extends Activity implements
 		//if save button is clicked
 		if(v == buttonSave)
 		{
+			// force the timepickers to loose focus and the typed value is available !
+			timePickerSleepOn.clearFocus();
+			timePickerSleepOff.clearFocus();
+			
 			//getting value from sleep time on
 			int hourSleepOn = timePickerSleepOn.getCurrentHour();
 			int minuteSleepOn = timePickerSleepOn.getCurrentMinute();
