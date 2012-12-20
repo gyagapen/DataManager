@@ -11,6 +11,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.util.Log;
+import com.example.cleverconnectivity.R;
 
 public class WifiScanReceiver extends BroadcastReceiver {
 

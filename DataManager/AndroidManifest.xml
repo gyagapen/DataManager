@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.datamanager"
+    package="com.example.cleverconnectivity"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -19,25 +19,25 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Black" >
-        <receiver android:name=".Autostart" >
+        android:theme="@android:style/Theme.Black" android:logo="@drawable/ic_launcher">
+        <receiver android:name="com.example.datamanager.Autostart" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         
-        <receiver android:name=".AlarmReceiver" >
+        <receiver android:name="com.example.datamanager.AlarmReceiver" >
         </receiver>
         
-        <receiver android:name=".WifiScanReceiver" >
+        <receiver android:name="com.example.datamanager.WifiScanReceiver" >
             <intent-filter>
                 <action android:name="android.net.wifi.SCAN_RESULTS" />
             </intent-filter>
         </receiver>
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.datamanager.MainActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,10 +46,10 @@
             </intent-filter>
         </activity>
 
-        <service android:name="MainService" >
+        <service android:name="com.example.datamanager.MainService" >
         </service>
 
-        <activity android:name="SleepTimerPickerActivity" >
+        <activity android:name="com.example.datamanager.SleepTimerPickerActivity" >
         </activity>
     </application>
 

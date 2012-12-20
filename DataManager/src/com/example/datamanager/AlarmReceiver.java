@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
+import com.example.cleverconnectivity.R;
 
 public class AlarmReceiver extends BroadcastReceiver {
 	

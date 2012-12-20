@@ -3,6 +3,7 @@ package com.example.datamanager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.example.cleverconnectivity.R;
 
 public class SaveConnectionPreferences {
 

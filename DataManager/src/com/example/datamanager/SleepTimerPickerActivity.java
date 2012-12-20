@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.TimePicker;
+import com.example.cleverconnectivity.R;
 
 public class SleepTimerPickerActivity extends Activity implements
 		OnClickListener {
@@ -108,5 +109,7 @@ public class SleepTimerPickerActivity extends Activity implements
 		}
 
 	}
+	
+
 
 }

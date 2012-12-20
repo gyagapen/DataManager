@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import com.example.cleverconnectivity.R;
 
 public class SharedPrefsEditor {
 
@@ -28,9 +29,9 @@ public class SharedPrefsEditor {
 	static final String STR_IS_SLEEPING="IS_SLEEPING";
 
 	// Default values
-	static final int TIME_ON = 3; // min
-	static final int TIME_OFF = 15; // min
-	static final int INTERVAL_CHECK = 5; // seconds
+	static final int TIME_ON = 1; // min
+	static final int TIME_OFF = 10; // min
+	static final int INTERVAL_CHECK = 2; // seconds
 	static final boolean PREFS_ARE_ESTABLISHED = true;
 	static final boolean DATA_IS_ACTIVATED = true;
 	static final boolean DATA_MGR_IS_ACTIVATED = true;

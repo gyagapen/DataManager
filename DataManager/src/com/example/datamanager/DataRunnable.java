@@ -1,6 +1,7 @@
 package com.example.datamanager;
 
 import android.net.TrafficStats;
+import com.example.cleverconnectivity.R;
 
 
 /**

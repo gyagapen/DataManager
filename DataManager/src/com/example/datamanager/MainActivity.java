@@ -25,6 +25,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.example.cleverconnectivity.R;
 
 public class MainActivity extends Activity implements OnClickListener,
 		OnCheckedChangeListener {
@@ -33,6 +34,10 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	static final int ID_ALARM_TIME_ON = 1879;
 	static final int ID_ALARM_TIME_OFF = 1899;
+
+	// mail data
+	private final String MAIL_RECIPIENT = "gyagapen@gmail.com";
+	private final String MAIL_SUBJECT = "CleverConnectivity Bug Report";
 
 	// ui components
 	private CheckBox cbData = null;
@@ -48,9 +53,9 @@ public class MainActivity extends Activity implements OnClickListener,
 	private EditText edInterval = null;
 	private Button buttonSave = null;
 	private Button buttonEditSleepHours = null;
+	private Button buttonReportBug = null;
 
 	private int RETURN_CODE = 0;
-	
 
 	// SharedPreferences
 	private SharedPreferences prefs = null;
@@ -62,17 +67,17 @@ public class MainActivity extends Activity implements OnClickListener,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//initialize connectivity positions
-		SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(getApplicationContext());
+		// initialize connectivity positions
+		SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(
+				getApplicationContext());
 		connPrefs.saveAllConnectionSettingInSharedPrefs();
-		
+
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
 
 		dataActivation = new DataActivation(getBaseContext());
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
-
 
 		try {
 			sharedPrefsEditor.initializePreferences();
@@ -89,6 +94,9 @@ public class MainActivity extends Activity implements OnClickListener,
 
 			buttonEditSleepHours = (Button) findViewById(R.id.button_edit_sleep_hours);
 			buttonEditSleepHours.setOnClickListener(this);
+
+			buttonReportBug = (Button) findViewById(R.id.buttonReportBug);
+			buttonReportBug.setOnClickListener(this);
 
 			cbData.setOnCheckedChangeListener(this);
 			cbWifi.setOnCheckedChangeListener(this);
@@ -171,7 +179,6 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		edSleepHours.setText(sleepTimeOn + "-" + sleepTimeOff);
 
-
 	}
 
 	@TargetApi(11)
@@ -179,86 +186,8 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		// if saved button is click
 		if (v == buttonSave) {
-			// load ui compenents
-			loadUiComponents();
 
-			// get settings values
-			int timeOn = Integer.parseInt(edTimeOn.getText().toString());
-			int timeOff = Integer.parseInt(edTimeOff.getText().toString());
-			int intervalCheck = Integer.parseInt(edInterval.getText()
-					.toString());
-
-			boolean dataIsActivated = cbData.isChecked();
-			boolean dataMgrIsActivated = cbDataMgr.isChecked();
-
-			boolean wifiIsActivated = cbWifi.isChecked();
-			boolean wifiMgrIsActivated = cbWifiMgr.isChecked();
-
-			boolean autoSyncIsActivated = cbAutoSync.isChecked();
-
-			boolean autoWifiIsActivated = cbAutoWifiOff.isChecked();
-
-			boolean sleepHoursIsActivated = cbSleepHours.isChecked();
-
-			// save all these preferences
-			sharedPrefsEditor.setAllValues(timeOn, timeOff, intervalCheck,
-					dataIsActivated, dataMgrIsActivated, wifiIsActivated,
-					wifiMgrIsActivated, autoSyncIsActivated,
-					autoWifiIsActivated, sleepHoursIsActivated);
-
-			try {
-				// if data is disabled; data connection is stopped
-				if (!dataIsActivated) {
-
-					// keep auto sync (in case of wifi connection)
-					dataActivation.setMobileDataEnabled(false);
-					// dataActivation.setAutoSync(true);
-				} else {
-					// activate data
-					dataActivation.setMobileDataEnabled(true);
-					// dataActivation.setAutoSync(true);
-				}
-
-				// if wifi is disabled, wifi connection is stopped
-				if (!wifiIsActivated) {
-					dataActivation.setWifiConnectionEnabled(false);
-					// dataActivation.setAutoSync(true);
-				} else {
-					dataActivation.setWifiConnectionEnabled(true);
-					// dataActivation.setAutoSync(true);
-				}
-
-				// enable/disable autosync
-				if (autoSyncIsActivated) {
-					dataActivation.setAutoSync(true, sharedPrefsEditor);
-				} else {
-					dataActivation.setAutoSync(false, sharedPrefsEditor);
-				}
-
-				// if data manager and wifi manager are disabled, service is
-				// stopped
-				if ((!dataMgrIsActivated && !wifiMgrIsActivated)
-						|| (!dataIsActivated && !wifiIsActivated)) {
-					stopDataManagerService();
-				}
-
-				// if data and data manager enable or if wifi and wifi manager
-				// enable, service is started
-				if ((dataIsActivated && dataMgrIsActivated)
-						|| (wifiIsActivated && wifiMgrIsActivated)) {
-					// Toast.makeText(this,
-					// "service is started : "+sharedPrefsEditor.isDataMgrActivated(),
-					// Toast.LENGTH_SHORT).show();
-					StartDataManagerService();
-				}
-
-				// sleeping hours
-				manageSleepingHours(sharedPrefsEditor.getSleepTimeOff(),
-						sharedPrefsEditor.getSleepTimeOn());
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			validateSettings();
 
 		} else if (v == buttonEditSleepHours) // if edit sleep hours button
 		{
@@ -266,6 +195,16 @@ public class MainActivity extends Activity implements OnClickListener,
 			Intent sleepTimePickerIntent = new Intent(this,
 					SleepTimerPickerActivity.class);
 			startActivityForResult(sleepTimePickerIntent, RETURN_CODE);
+		} else if (v == buttonReportBug) {
+			// send mail to dev
+			Intent email = new Intent(Intent.ACTION_SEND);
+			email.putExtra(Intent.EXTRA_EMAIL, new String[] { MAIL_RECIPIENT });
+			email.putExtra(Intent.EXTRA_SUBJECT, MAIL_SUBJECT);
+			// email.putExtra(Intent.EXTRA_TEXT, "message");
+			email.setType("message/rfc822");
+			startActivity(Intent.createChooser(email,
+					"Choose an Email client :"));
+
 		}
 
 	}
@@ -324,7 +263,6 @@ public class MainActivity extends Activity implements OnClickListener,
 			setUpAlarm(sleepTimeOff, getBaseContext(), true);
 			setUpAlarm(sleepTimeOn, getBaseContext(), false);
 
-			
 			if (time1IsAftertimer2(sleepTimeOff, sleepTimeOn)) {
 				// if time sleep on has passed and not time sleep off then
 				// activate sleeping
@@ -336,12 +274,12 @@ public class MainActivity extends Activity implements OnClickListener,
 					sharedPrefsEditor.setIsSleeping(false);
 				}
 			} else {
-				Log.i("Timer", sleepTimeOff+" is before "+sleepTimeOn);
+				Log.i("Timer", sleepTimeOff + " is before " + sleepTimeOn);
 				if (timeIsPassed(sleepTimeOn)) {
-					Log.i("Timer", sleepTimeOn+" is passed");
+					Log.i("Timer", sleepTimeOn + " is passed");
 					sharedPrefsEditor.setIsSleeping(true);
 				} else {
-					Log.i("Timer", sleepTimeOn+" is NOT passed");
+					Log.i("Timer", sleepTimeOn + " is NOT passed");
 					sharedPrefsEditor.setIsSleeping(false);
 				}
 			}
@@ -356,8 +294,8 @@ public class MainActivity extends Activity implements OnClickListener,
 
 			alarmManager.cancel(timeOn);
 			alarmManager.cancel(timeOff);
-			
-			//set sleeping to false
+
+			// set sleeping to false
 			sharedPrefsEditor.setIsSleeping(false);
 		}
 
@@ -380,7 +318,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		alarmLauncher.putExtra(STR_ACTIVATE_CONNECTIVITY, activateConnectivity);
 
 		PendingIntent recurringAlarm = null;
-		
+
 		AlarmManager alarms = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
 		if (activateConnectivity) {
@@ -388,21 +326,18 @@ public class MainActivity extends Activity implements OnClickListener,
 					ID_ALARM_TIME_OFF, alarmLauncher,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 			Log.i("Alarm set up off", time);
-			
+
 		} else {
-			
-			
+
 			recurringAlarm = PendingIntent.getBroadcast(context,
 					ID_ALARM_TIME_ON, alarmLauncher,
 					PendingIntent.FLAG_UPDATE_CURRENT);
-			
+
 			Log.i("Alarm set up on", time);
 		}
 
-		
-
 		alarms.cancel(recurringAlarm);
-		
+
 		alarms.setRepeating(AlarmManager.RTC_WAKEUP,
 				updateTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY,
 				recurringAlarm);
@@ -416,16 +351,16 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		// get current time
 		Calendar currentTime = Calendar.getInstance();
-		//currentTime.setTimeZone(TimeZone.getTimeZone("GMT"));
+		// currentTime.setTimeZone(TimeZone.getTimeZone("GMT"));
 
 		Log.i("current hour", currentTime.toString());
 
 		// setting alarm time
 		Calendar instanceTime = Calendar.getInstance();
-		//instanceTime.setTimeZone(TimeZone.getTimeZone("GMT"));
+		// instanceTime.setTimeZone(TimeZone.getTimeZone("GMT"));
 		instanceTime.set(Calendar.HOUR_OF_DAY, hour);
 		instanceTime.set(Calendar.MINUTE, minute);
-		
+
 		Log.i("alarm hour", instanceTime.toString());
 
 		return currentTime.after(instanceTime);
@@ -456,7 +391,119 @@ public class MainActivity extends Activity implements OnClickListener,
 		return calTime1.after(calTime2);
 
 	}
-	
 
+	/*
+	 * Save all settings in application
+	 */
+	public void validateSettings() {
+		// load ui compenents
+		loadUiComponents();
+
+		// get settings values
+		int timeOn = Integer.parseInt(edTimeOn.getText().toString());
+		int timeOff = Integer.parseInt(edTimeOff.getText().toString());
+		int intervalCheck = Integer.parseInt(edInterval.getText().toString());
+
+		boolean dataIsActivated = cbData.isChecked();
+		boolean dataMgrIsActivated = cbDataMgr.isChecked();
+
+		boolean wifiIsActivated = cbWifi.isChecked();
+		boolean wifiMgrIsActivated = cbWifiMgr.isChecked();
+
+		boolean autoSyncIsActivated = cbAutoSync.isChecked();
+
+		boolean autoWifiIsActivated = cbAutoWifiOff.isChecked();
+
+		boolean sleepHoursIsActivated = cbSleepHours.isChecked();
+
+		// save all these preferences
+		sharedPrefsEditor.setAllValues(timeOn, timeOff, intervalCheck,
+				dataIsActivated, dataMgrIsActivated, wifiIsActivated,
+				wifiMgrIsActivated, autoSyncIsActivated, autoWifiIsActivated,
+				sleepHoursIsActivated);
+
+		try {
+			// if data is disabled; data connection is stopped
+			if (!dataIsActivated) {
+
+				// keep auto sync (in case of wifi connection)
+				dataActivation.setMobileDataEnabled(false);
+				// dataActivation.setAutoSync(true);
+			} else {
+				// activate data
+				dataActivation.setMobileDataEnabled(true);
+				// dataActivation.setAutoSync(true);
+			}
+
+			// if wifi is disabled, wifi connection is stopped
+			if (!wifiIsActivated) {
+				dataActivation.setWifiConnectionEnabled(false);
+				// dataActivation.setAutoSync(true);
+			} else {
+				dataActivation.setWifiConnectionEnabled(true);
+				// dataActivation.setAutoSync(true);
+			}
+
+			// enable/disable autosync
+			if (autoSyncIsActivated) {
+				dataActivation.setAutoSync(true, sharedPrefsEditor);
+			} else {
+				dataActivation.setAutoSync(false, sharedPrefsEditor);
+			}
+
+			// if data manager and wifi manager are disabled, service is
+			// stopped
+			if ((!dataMgrIsActivated && !wifiMgrIsActivated)
+					|| (!dataIsActivated && !wifiIsActivated)) {
+				stopDataManagerService();
+			}
+
+			// if data and data manager enable or if wifi and wifi manager
+			// enable, service is started
+			if ((dataIsActivated && dataMgrIsActivated)
+					|| (wifiIsActivated && wifiMgrIsActivated)) {
+				// Toast.makeText(this,
+				// "service is started : "+sharedPrefsEditor.isDataMgrActivated(),
+				// Toast.LENGTH_SHORT).show();
+				StartDataManagerService();
+			}
+
+			// sleeping hours
+			manageSleepingHours(sharedPrefsEditor.getSleepTimeOff(),
+					sharedPrefsEditor.getSleepTimeOn());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Whenever application is closed
+	 */
+
+	protected void onDestroy() {
+
+		// save all settings
+		validateSettings();
+
+		super.onDestroy();
+	}
+
+	/**
+	 * whenever application is bring to foreground
+	 */
+	protected void onResume() {
+
+		// initialize connectivity positions
+		SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(
+				getApplicationContext());
+		connPrefs.saveAllConnectionSettingInSharedPrefs();
+
+		// refresh ui
+		initializeUiComponentsData();
+
+		super.onResume();
+	}
 
 }

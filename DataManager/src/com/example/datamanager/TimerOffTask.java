@@ -4,6 +4,7 @@ import java.util.TimerTask;
 
 import android.content.Context;
 import android.widget.Toast;
+import com.example.cleverconnectivity.R;
 
 public class TimerOffTask extends TimerTask {
 	
