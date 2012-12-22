@@ -10,7 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.widget.Toast;
-import com.example.cleverconnectivity.R;
+import com.gyagapen.cleverconnectivity.R;
 
 public class MainService extends Service {
 

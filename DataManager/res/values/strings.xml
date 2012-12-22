@@ -12,8 +12,8 @@
     <string name="toggle_wifi_desc">Enable or disable wifi connection. You can also enable/disable wifi outside this application, there won\'t be any conflitcts</string>
     <string name="toggle_wifi_manager">Wifi Manager</string>
     <string name="toggle_wifi_manager_desc">Wifi Manager will automatically turn on/off wifi connection after a defined period of time when screen is OFF. Connection will be disabled ONLY if it NOT used. Therefore,  downloads/streaming won\'t be stopped and sync events will be received. Wifi Mananger will work ONLY if wifi is activated</string>
-    <string name="toggle_auto_sync">Auto-Sync Manager</string>
-    <string name="toggle_auto_sync_desc">Auto-Sync Manager will disable all synchronizing functions when there are no data connections (3G/Wifi) and screen is OFF. Synchronizing functions will be enabled when data connection will be available</string>
+    <string name="toggle_auto_sync">Auto-Sync</string>
+    <string name="toggle_auto_sync_desc">Enable or disable synchronizing. You can also enable/disable wifi outside this application, there won\'t be any conflitcts</string>
     <string name="toggle_auto_wifi_off">Auto-Wifi Off</string>
     <string name="toggle_auto_wifi_off_desc">Auto-Wifi Off will automatically disable wifi after after a defined period if screen is OFF and no known networks are available</string>
     <string name="time_on">Time On (min)</string>

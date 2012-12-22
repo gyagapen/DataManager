@@ -6,7 +6,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
         android:orientation="vertical" >
+        
+         <com.google.ads.AdView
+                        android:id="@+id/adViewMainStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        ads:adSize="BANNER"
+                        ads:adUnitId="a150d57cebe0f76"
+                         >
+                    </com.google.ads.AdView>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -343,7 +353,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/button_save" />
-
             </TableRow>
 
             <View
@@ -358,6 +367,7 @@
                 android:layout_height="wrap_content" >
 
                 <LinearLayout
+                    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="fill_horizontal"
@@ -382,9 +392,17 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/name" />
 
+                    <com.google.ads.AdView
+                        android:id="@+id/adViewMainEnd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        ads:adSize="BANNER"
+                        ads:adUnitId="a150d57cebe0f76" >
+                    </com.google.ads.AdView>
+                    
+                    
                 </LinearLayout>
             </TableRow>
-
         </TableLayout>
     </LinearLayout>
 

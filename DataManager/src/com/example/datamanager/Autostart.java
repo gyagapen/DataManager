@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
-import com.example.cleverconnectivity.R;
+import com.gyagapen.cleverconnectivity.R;
 
 /**
  * Called when android starts

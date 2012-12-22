@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,7 +26,10 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.example.cleverconnectivity.R;
+
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
+import com.gyagapen.cleverconnectivity.R;
 
 public class MainActivity extends Activity implements OnClickListener,
 		OnCheckedChangeListener {
@@ -34,6 +38,8 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	static final int ID_ALARM_TIME_ON = 1879;
 	static final int ID_ALARM_TIME_OFF = 1899;
+	
+	static final boolean APPLICATION_IS_FREE = true;
 
 	// mail data
 	private final String MAIL_RECIPIENT = "gyagapen@gmail.com";
@@ -54,6 +60,9 @@ public class MainActivity extends Activity implements OnClickListener,
 	private Button buttonSave = null;
 	private Button buttonEditSleepHours = null;
 	private Button buttonReportBug = null;
+	private AdView mainStartAdView = null;
+	private AdView mainEndAdView = null;
+
 
 	private int RETURN_CODE = 0;
 
@@ -135,6 +144,23 @@ public class MainActivity extends Activity implements OnClickListener,
 		edTimeOn = (EditText) findViewById(R.id.editTextTimeOn);
 		edTimeOff = (EditText) findViewById(R.id.editTextTimeOff);
 		edInterval = (EditText) findViewById(R.id.editTextInterval);
+		
+		mainStartAdView = (AdView)findViewById(R.id.adViewMainStart);
+		mainEndAdView = (AdView)findViewById(R.id.adViewMainEnd);
+
+		if(!APPLICATION_IS_FREE)
+		{
+			//if application is a paid app, then no ads
+			mainStartAdView.destroy();
+			mainEndAdView.destroy();
+			
+		}
+		else
+		{
+			//load ads
+			mainEndAdView.loadAd(new AdRequest());
+			mainStartAdView.loadAd(new AdRequest());
+		}
 
 	}
 
@@ -488,6 +514,15 @@ public class MainActivity extends Activity implements OnClickListener,
 		validateSettings();
 
 		super.onDestroy();
+	}
+	
+	//whenever application is no more in the foreground
+
+	protected void onPause() {
+		// save all settings
+		validateSettings();
+		
+		super.onPause();
 	}
 
 	/**

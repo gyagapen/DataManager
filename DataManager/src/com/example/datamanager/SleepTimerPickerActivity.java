@@ -9,7 +9,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.TimePicker;
-import com.example.cleverconnectivity.R;
+
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
+import com.gyagapen.cleverconnectivity.R;
 
 public class SleepTimerPickerActivity extends Activity implements
 		OnClickListener {
@@ -17,6 +20,10 @@ public class SleepTimerPickerActivity extends Activity implements
 	// time pickers
 	private TimePicker timePickerSleepOn = null;
 	private TimePicker timePickerSleepOff = null;
+	
+	//Ads
+	private AdView sleepActStartAdView = null;
+	private AdView sleepActEndAdView = null;
 
 	// save button
 	private Button buttonSave = null;
@@ -50,6 +57,26 @@ public class SleepTimerPickerActivity extends Activity implements
 	}
 
 	private void initUiComponents() {
+		
+		
+		sleepActStartAdView = (AdView)findViewById(R.id.adViewSleepTimePickerStart);
+		sleepActEndAdView = (AdView)findViewById(R.id.adViewSleepTimePickerEnd);
+		
+		
+		if(!MainActivity.APPLICATION_IS_FREE)
+		{
+			//no ads for paid version
+			sleepActEndAdView.destroy();
+			sleepActStartAdView.destroy();
+		}
+		else
+		{
+			//load ads
+			sleepActEndAdView.loadAd(new AdRequest());
+			sleepActStartAdView.loadAd(new AdRequest());
+		}
+		
+		
 		timePickerSleepOff = (TimePicker) findViewById(R.id.timePickerSleepOff);
 		timePickerSleepOn = (TimePicker) findViewById(R.id.timerPickerSleepOn);
 		buttonSave = (Button)findViewById(R.id.buttonSaveSleepHours);

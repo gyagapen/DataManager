@@ -11,7 +11,7 @@ import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import com.example.cleverconnectivity.R;
+import com.gyagapen.cleverconnectivity.R;
 
 public class DataActivation {
 

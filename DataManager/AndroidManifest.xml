@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cleverconnectivity"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    package="com.gyagapen.cleverconnectivity"
+    android:versionCode="3"
+    android:versionName="1.1" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -51,6 +52,9 @@
 
         <activity android:name="com.example.datamanager.SleepTimerPickerActivity" >
         </activity>
+        
+        <activity android:name="com.google.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />”
+        
     </application>
 
 </manifest>

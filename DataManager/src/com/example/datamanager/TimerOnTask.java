@@ -4,7 +4,7 @@ import java.util.TimerTask;
 
 import android.content.Context;
 import android.widget.Toast;
-import com.example.cleverconnectivity.R;
+import com.gyagapen.cleverconnectivity.R;
 
 public class TimerOnTask extends TimerTask {
 	

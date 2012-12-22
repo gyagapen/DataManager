@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import com.example.cleverconnectivity.R;
+import com.gyagapen.cleverconnectivity.R;
 
 public class SharedPrefsEditor {
 
