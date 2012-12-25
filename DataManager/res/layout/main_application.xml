@@ -3,20 +3,20 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
+    <!-- xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads" -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
         android:orientation="vertical" >
         
-         <com.google.ads.AdView
+         <!-- <com.google.ads.AdView
                         android:id="@+id/adViewMainStart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         ads:adSize="BANNER"
                         ads:adUnitId="a150d57cebe0f76"
                          >
-                    </com.google.ads.AdView>
+                    </com.google.ads.AdView> -->
 
         <TableLayout
             android:layout_width="match_parent"
@@ -374,6 +374,20 @@
                     android:orientation="vertical" >
 
                     <Button
+                        android:id="@+id/buttonLogFile"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/view_log_file" />
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/view_log_details" />
+
+                    <Button
                         android:id="@+id/buttonReportBug"
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
@@ -392,13 +406,13 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/name" />
 
-                    <com.google.ads.AdView
+                    <!-- <com.google.ads.AdView
                         android:id="@+id/adViewMainEnd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         ads:adSize="BANNER"
                         ads:adUnitId="a150d57cebe0f76" >
-                    </com.google.ads.AdView>
+                    </com.google.ads.AdView> -->
                     
                     
                 </LinearLayout>

@@ -22,8 +22,8 @@ public class SleepTimerPickerActivity extends Activity implements
 	private TimePicker timePickerSleepOff = null;
 	
 	//Ads
-	private AdView sleepActStartAdView = null;
-	private AdView sleepActEndAdView = null;
+	//private AdView sleepActStartAdView = null;
+	//private AdView sleepActEndAdView = null;
 
 	// save button
 	private Button buttonSave = null;
@@ -59,7 +59,7 @@ public class SleepTimerPickerActivity extends Activity implements
 	private void initUiComponents() {
 		
 		
-		sleepActStartAdView = (AdView)findViewById(R.id.adViewSleepTimePickerStart);
+		/**sleepActStartAdView = (AdView)findViewById(R.id.adViewSleepTimePickerStart);
 		sleepActEndAdView = (AdView)findViewById(R.id.adViewSleepTimePickerEnd);
 		
 		
@@ -74,7 +74,7 @@ public class SleepTimerPickerActivity extends Activity implements
 			//load ads
 			sleepActEndAdView.loadAd(new AdRequest());
 			sleepActStartAdView.loadAd(new AdRequest());
-		}
+		}**/
 		
 		
 		timePickerSleepOff = (TimePicker) findViewById(R.id.timePickerSleepOff);

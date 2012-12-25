@@ -114,7 +114,7 @@ public class DataActivation {
 	        // TODO do whatever error handling you want here
 	    }
 		
-	    Log.i("Data TOGGLE", String.valueOf(mobileDataEnabled));
+	    //Log.i("Data TOGGLE", String.valueOf(mobileDataEnabled));
 	    
 	    return mobileDataEnabled;
 	}

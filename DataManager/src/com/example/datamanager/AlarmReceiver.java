@@ -30,6 +30,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 					Activity.MODE_PRIVATE);
 			dataActivation = new DataActivation(context);
 			sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
+			
 	    	
 	    	Bundle bundle = intent.getExtras();
 	    	boolean activateConnectivity = bundle.getBoolean(MainActivity.STR_ACTIVATE_CONNECTIVITY);

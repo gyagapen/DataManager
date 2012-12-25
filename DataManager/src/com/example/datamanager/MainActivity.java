@@ -1,9 +1,9 @@
 package com.example.datamanager;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.TimeZone;
-import java.util.Timer;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -11,11 +11,10 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.opengl.Visibility;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -27,8 +26,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
 import com.gyagapen.cleverconnectivity.R;
 
 public class MainActivity extends Activity implements OnClickListener,
@@ -38,6 +35,8 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	static final int ID_ALARM_TIME_ON = 1879;
 	static final int ID_ALARM_TIME_OFF = 1899;
+	
+	static final String LOG_FILE_NAME = "CleverConnectivity.log";
 	
 	static final boolean APPLICATION_IS_FREE = true;
 
@@ -60,8 +59,9 @@ public class MainActivity extends Activity implements OnClickListener,
 	private Button buttonSave = null;
 	private Button buttonEditSleepHours = null;
 	private Button buttonReportBug = null;
-	private AdView mainStartAdView = null;
-	private AdView mainEndAdView = null;
+	private Button buttonViewLogFile = null;
+	//private AdView mainStartAdView = null;
+	//private AdView mainEndAdView = null;
 
 
 	private int RETURN_CODE = 0;
@@ -75,7 +75,9 @@ public class MainActivity extends Activity implements OnClickListener,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
+		Log.d("TEST","test-log");
+		
 		// initialize connectivity positions
 		SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(
 				getApplicationContext());
@@ -106,6 +108,9 @@ public class MainActivity extends Activity implements OnClickListener,
 
 			buttonReportBug = (Button) findViewById(R.id.buttonReportBug);
 			buttonReportBug.setOnClickListener(this);
+			
+			buttonViewLogFile = (Button) findViewById(R.id.buttonLogFile);
+			buttonViewLogFile.setOnClickListener(this);
 
 			cbData.setOnCheckedChangeListener(this);
 			cbWifi.setOnCheckedChangeListener(this);
@@ -145,7 +150,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		edTimeOff = (EditText) findViewById(R.id.editTextTimeOff);
 		edInterval = (EditText) findViewById(R.id.editTextInterval);
 		
-		mainStartAdView = (AdView)findViewById(R.id.adViewMainStart);
+		/*mainStartAdView = (AdView)findViewById(R.id.adViewMainStart);
 		mainEndAdView = (AdView)findViewById(R.id.adViewMainEnd);
 
 		if(!APPLICATION_IS_FREE)
@@ -160,7 +165,7 @@ public class MainActivity extends Activity implements OnClickListener,
 			//load ads
 			mainEndAdView.loadAd(new AdRequest());
 			mainStartAdView.loadAd(new AdRequest());
-		}
+		}*/
 
 	}
 
@@ -232,6 +237,14 @@ public class MainActivity extends Activity implements OnClickListener,
 					"Choose an Email client :"));
 
 		}
+		else if (v==buttonViewLogFile)
+		{
+			//generate log file
+			DumpLogToFile();
+			
+			//display log file
+			readLogFile();
+		}
 
 	}
 
@@ -286,8 +299,9 @@ public class MainActivity extends Activity implements OnClickListener,
 		if (cbSleepHours.isChecked()) {
 
 			// schedule alarms
-			setUpAlarm(sleepTimeOff, getBaseContext(), true);
 			setUpAlarm(sleepTimeOn, getBaseContext(), false);
+			setUpAlarm(sleepTimeOff, getBaseContext(), true);
+			
 
 			if (time1IsAftertimer2(sleepTimeOff, sleepTimeOn)) {
 				// if time sleep on has passed and not time sleep off then
@@ -301,10 +315,17 @@ public class MainActivity extends Activity implements OnClickListener,
 				}
 			} else {
 				Log.i("Timer", sleepTimeOff + " is before " + sleepTimeOn);
-				if (timeIsPassed(sleepTimeOn)) {
+				if (timeIsPassed(sleepTimeOn))
+				{
 					Log.i("Timer", sleepTimeOn + " is passed");
 					sharedPrefsEditor.setIsSleeping(true);
-				} else {
+				} 
+				else if(!timeIsPassed(sleepTimeOff))
+				{
+					Log.i("Timer", sleepTimeOff + " is NOT passed");
+					sharedPrefsEditor.setIsSleeping(true);
+				}
+				else {
 					Log.i("Timer", sleepTimeOn + " is NOT passed");
 					sharedPrefsEditor.setIsSleeping(false);
 				}
@@ -326,6 +347,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		}
 
 	}
+
 
 	public void setUpAlarm(String time, Context context,
 			boolean activateConnectivity) {
@@ -379,7 +401,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		Calendar currentTime = Calendar.getInstance();
 		// currentTime.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-		Log.i("current hour", currentTime.toString());
+		//Log.i("current hour", currentTime.toString());
 
 		// setting alarm time
 		Calendar instanceTime = Calendar.getInstance();
@@ -387,7 +409,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		instanceTime.set(Calendar.HOUR_OF_DAY, hour);
 		instanceTime.set(Calendar.MINUTE, minute);
 
-		Log.i("alarm hour", instanceTime.toString());
+		//Log.i("alarm hour", instanceTime.toString());
 
 		return currentTime.after(instanceTime);
 	}
@@ -539,6 +561,38 @@ public class MainActivity extends Activity implements OnClickListener,
 		initializeUiComponentsData();
 
 		super.onResume();
+	}
+	
+	
+	/**
+	 * Dump logcat of this application to a file 
+	 */
+	public void DumpLogToFile()
+	{
+		try {
+		    File filename = new File(Environment.getExternalStorageDirectory()+"/"+LOG_FILE_NAME); 
+		    boolean deleted = filename.delete();
+			filename.createNewFile(); 
+		    //
+		    String cmd = "logcat -d -v time -f "+filename.getAbsolutePath()+" ";
+		    //String cmd = "logcat -d > "+Environment.getExternalStorageDirectory()+"/"+LOG_FILE_NAME;
+		    Runtime.getRuntime().exec(cmd);
+		} catch (IOException e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Display captured logfile
+	 */
+	public void readLogFile()
+	{
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_VIEW);
+		Uri logFileUri = Uri.parse("file://" + Environment.getExternalStorageDirectory()+"/"+LOG_FILE_NAME);
+		intent.setDataAndType(logFileUri, "text/plain");
+		startActivity(intent);
 	}
 
 }

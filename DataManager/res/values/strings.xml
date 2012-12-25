@@ -38,6 +38,8 @@
     <string name="SleepHoursActivityName">Change sleep hours</string>
     <string name="developerName">© gyagapen</string>
     <string name="report_bug">Report a bug</string>
+    <string name="view_log_file">View log file</string>
+    <string name="view_log_details">Generate a log named "CleverConnectivity.log" at the root of the external storage and then display it. You must have a text viewer in order to read these logs</string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>
