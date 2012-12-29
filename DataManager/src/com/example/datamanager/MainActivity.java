@@ -494,9 +494,9 @@ public class MainActivity extends Activity implements OnClickListener,
 
 			// enable/disable autosync
 			if (autoSyncIsActivated) {
-				dataActivation.setAutoSync(true, sharedPrefsEditor);
+				dataActivation.setAutoSync(true, sharedPrefsEditor, false);
 			} else {
-				dataActivation.setAutoSync(false, sharedPrefsEditor);
+				dataActivation.setAutoSync(false, sharedPrefsEditor, false);
 			}
 
 			// if data manager and wifi manager are disabled, service is
@@ -550,7 +550,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	/**
 	 * whenever application is bring to foreground
 	 */
-	protected void onResume() {
+	/*protected void onResume() {
 
 		// initialize connectivity positions
 		SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(
@@ -561,7 +561,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		initializeUiComponentsData();
 
 		super.onResume();
-	}
+	}*/
 	
 	
 	/**

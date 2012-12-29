@@ -50,7 +50,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 	    		{
 	    			try {
 						dataActivation.setConnectivityDisabled();
-						dataActivation.setAutoSync(false, sharedPrefsEditor);
+						dataActivation.setAutoSync(false, sharedPrefsEditor, false);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

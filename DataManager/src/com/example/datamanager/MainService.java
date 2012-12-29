@@ -1,32 +1,38 @@
 package com.example.datamanager;
 
+import java.util.Calendar;
 import java.util.Timer;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
-import com.gyagapen.cleverconnectivity.R;
 
 public class MainService extends Service {
 
 	// Timers
-	private Timer timerOn = null;
+	/*private Timer timerOn = null;
 	private Timer timerOff = null;
 	private TimerOnTask timerOnTask = null;
-	private TimerOffTask timerOffTask = null;
+	private TimerOffTask timerOffTask = null;*/
+	
+	TimersSetUp timerSetUp = null;
+	
 
 	// time values
 	private int timeOnValue = 0;
 	private int timeOffValue = 0;
 	private int timeCheckData = 5000;
 
-	// data handler
-	DataHandler dataHandler = null;
 
 	// SharedPreferences
 	private SharedPreferences prefs = null;
@@ -58,11 +64,10 @@ public class MainService extends Service {
 		registerReceiver(mReceiver, filter);
 
 		// Timers implementation
-		timerOn = new Timer();
-		timerOff = new Timer();
-
-		// data handler
-		dataHandler = new DataHandler(getBaseContext(), this);
+		/*timerOn = new Timer();
+		timerOff = new Timer();*/
+		
+		timerSetUp = new TimersSetUp(this);
 
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
@@ -76,11 +81,17 @@ public class MainService extends Service {
 		Toast.makeText(getBaseContext(), "DataManager service started",
 				Toast.LENGTH_SHORT).show();
 
+		//start in foreground
+		Notification note = new Notification( 0, null, System.currentTimeMillis() );
+	    note.flags |= Notification.FLAG_NO_CLEAR;
+	    startForeground( 42, note );
 	}
 
 	// when service starts
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
+		Log.i("MainService", "On command received");
+		
 		boolean screenOff = false;
 
 		try {
@@ -97,14 +108,16 @@ public class MainService extends Service {
 
 			
 			// stop all timers if there are running
-			CancelTimeOff();
-			CancelTimerOn();
+			/*CancelTimeOff();
+			CancelTimerOn();*/
+			timerSetUp.CancelTimeOff();
+			timerSetUp.CancelTimerOn();
 
 			// activate data or wifi
 			try {
 				dataActivation.setConnectivityEnabled(sharedPrefsEditor);
 				// activate autosync too
-				dataActivation.setAutoSync(true, sharedPrefsEditor);
+				dataActivation.setAutoSync(true, sharedPrefsEditor, false);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -119,7 +132,7 @@ public class MainService extends Service {
 				//desactivate all connectivity
 				try {
 					dataActivation.setConnectivityDisabled();
-					dataActivation.setAutoSync(false, sharedPrefsEditor);
+					dataActivation.setAutoSync(false, sharedPrefsEditor, false);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -128,7 +141,8 @@ public class MainService extends Service {
 			else
 			{
 				//start timer
-				StartTimerOn();
+				//StartTimerOn();
+				timerSetUp.StartTimerOn();
 			}
 			
 
@@ -137,74 +151,25 @@ public class MainService extends Service {
 		return super.onStartCommand(intent, flags, startId);
 	}
 
-	/**
-	 * Start timer On
-	 */
-	public void StartTimerOn() {
-		// start timer on
-		/*
-		 * Toast.makeText(getBaseContext(), "Start timer on",
-		 * Toast.LENGTH_SHORT) .show();
-		 */
-
-		timeOnValue = sharedPrefsEditor.getTimeOn() * 60 * 1000; // from min to
-																	// ms
-		timeCheckData = sharedPrefsEditor.getIntervalCheck() * 1000; // from s
-																		// to ms
-
-		timerOnTask = new TimerOnTask(dataHandler, timeCheckData);
-		timerOn.schedule(timerOnTask, timeOnValue);
-	}
-
-	/**
-	 * Start timer off
-	 */
-	public void StartTimerOff() {
-
-		// start timer off
-		/*
-		 * Toast.makeText(getBaseContext(), "Start timer off",
-		 * Toast.LENGTH_SHORT) .show();
-		 */
-
-		timeOffValue = sharedPrefsEditor.getTimeOff() * 60 * 1000; // in ms
-
-		timerOffTask = new TimerOffTask(dataHandler);
-		timerOff.schedule(timerOffTask, timeOffValue);
-
-	}
-
-	/**
-	 * Cancel TimerOn
-	 */
-	public void CancelTimerOn() {
-		if (timerOnTask != null) {
-			timerOnTask.cancel();
-		}
-	}
-
-	/**
-	 * Cancel TimerOff
-	 */
-	public void CancelTimeOff() {
-		if (timerOffTask != null) {
-			timerOffTask.cancel();
-		}
-	}
-
+	
+	
+	
 	@Override
 	public void onDestroy() {
 		// unregister service to screen broadcast receiver
 		unregisterReceiver(mReceiver);
 
 		// stops timers
-		if (timerOnTask != null) {
+		/*if (timerOnTask != null) {
 			timerOnTask.cancel();
 		}
 
 		if (timerOffTask != null) {
 			timerOffTask.cancel();
-		}
+		}*/
+		
+		timerSetUp.CancelTimeOff();
+		timerSetUp.CancelTimerOn();
 
 		// register service stopped in preferences
 		sharedPrefsEditor.setServiceActivation(false);
