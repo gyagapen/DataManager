@@ -7,9 +7,12 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SyncAdapterType;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -60,18 +63,16 @@ public class DataActivation {
 	public void setAutoSync(boolean isEnabled,
 			SharedPrefsEditor sharedPrefsEditor, boolean forceSync) {
 
-		if (sharedPrefsEditor.isAutoSyncActivated() && isEnabled) {
-			ContentResolver.setMasterSyncAutomatically(true);
 
-			// launch sync
-			/*if(forceSync)
-			{
-				forceSync();
-			}*/
+			if (sharedPrefsEditor.isAutoSyncActivated() && isEnabled) {
 
-		} else {
-			ContentResolver.setMasterSyncAutomatically(false);
-		}
+				Log.i("Sync", "Auto Sync ON");
+				ContentResolver.setMasterSyncAutomatically(true);
+
+			} else {
+				Log.i("Sync", "Auto Sync OFF");
+				ContentResolver.setMasterSyncAutomatically(false);
+			}
 	}
 
 	/**
@@ -139,35 +140,42 @@ public class DataActivation {
 	 */
 	public void setConnectivityEnabled(SharedPrefsEditor sharedPrefsEditor)
 			throws Exception {
-		/**
-		 * if (sharedPrefsEditor.isWifiManagerActivated() &&
-		 * sharedPrefsEditor.isWifiActivated()) // activate wifi {
-		 * setWifiConnectionEnabled(true);
-		 * 
-		 * if (sharedPrefsEditor.isDataActivated() &&
-		 * sharedPrefsEditor.isDataMgrActivated()) { // activate data
-		 * setMobileDataEnabled(true); } }
-		 * 
-		 * 
-		 * else { // enable data setMobileDataEnabled(true); }
-		 **/
 
-		if (sharedPrefsEditor.isWifiActivated()) {
+
+		if (sharedPrefsEditor.isWifiManagerActivated() && sharedPrefsEditor.isWifiActivated()) {
 			// activate wifi
 			setWifiConnectionEnabled(true);
 		}
 
-		if (sharedPrefsEditor.isDataActivated()) {
+		if (sharedPrefsEditor.isDataMgrActivated() && sharedPrefsEditor.isDataActivated()) {
 			// activate data connection
 			setMobileDataEnabled(true);
+		}
+		
+		if (sharedPrefsEditor.isAutoSyncMgrIsActivated() && sharedPrefsEditor.isAutoSyncActivated()) {
+			// activate sync
+			setAutoSync(true, sharedPrefsEditor, true);
 		}
 
 	}
 
 	// disable all connectivity
-	public void setConnectivityDisabled() throws Exception {
-		setMobileDataEnabled(false);
-		setWifiConnectionEnabled(false);
+	public void setConnectivityDisabled(SharedPrefsEditor sharedPrefsEditor) throws Exception {
+		
+		if (sharedPrefsEditor.isWifiManagerActivated()) {
+			// activate wifi
+			setWifiConnectionEnabled(false);
+		}
+
+		if (sharedPrefsEditor.isDataMgrActivated()) {
+			// activate data connection
+			setMobileDataEnabled(false);
+		}
+		
+		if (sharedPrefsEditor.isAutoSyncMgrIsActivated()) {
+			// activate sync
+			setAutoSync(false, sharedPrefsEditor, false);
+		}
 	}
 
 	/**
@@ -202,24 +210,26 @@ public class DataActivation {
 	}
 
 	public void forceSync() {
-		
-		//acquire partial wakelock
-		PowerManager mgr = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
-		WakeLock wakeLock = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SyncLock");
+
+		// acquire partial wakelock
+		PowerManager mgr = (PowerManager) context
+				.getSystemService(Context.POWER_SERVICE);
+		WakeLock wakeLock = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+				"SyncLock");
 		wakeLock.acquire();
-		
+
 		AccountManager am = AccountManager.get(context);
 		Account[] accounts = am.getAccounts();
 
 		SyncAdapterType[] types = ContentResolver.getSyncAdapterTypes();
-		
+
 		Log.i("SYNC", "sync is launched");
 
 		Bundle bundle = new Bundle();
-		 bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-		 bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-		 bundle.putBoolean(ContentResolver.SYNC_EXTRAS_FORCE, true);
-		
+		bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+		bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+		bundle.putBoolean(ContentResolver.SYNC_EXTRAS_FORCE, true);
+
 		for (int i = 0; i < accounts.length; i++) {
 			Account yourAccount = accounts[i];
 			for (SyncAdapterType type : types) {
@@ -229,14 +239,15 @@ public class DataActivation {
 					if (isSyncable) {
 						ContentResolver.requestSync(yourAccount,
 								type.authority, bundle);
-						
-						Log.i("SYNC", "syncing "+yourAccount.name + type.authority);
+
+						Log.i("SYNC", "syncing " + yourAccount.name
+								+ type.authority);
 					}
 				}
 			}
 		}
-		
-		//release wake lock
+
+		// release wake lock
 		wakeLock.release();
 
 		// retrieve all active syncs
@@ -269,5 +280,20 @@ public class DataActivation {
 		 * ContentResolver.requestSync(null, ContentResolver.g.getAuthority(),
 		 * bundle);
 		 */
+	}
+	
+	/**
+	 * Return true is the phone is in charge
+	 * @return
+	 */
+	public boolean isPhonePlugged()
+	{
+		Intent intent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+        boolean isPlugged = (plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB);
+        
+        Log.i("phone plugged", "phone is plugged : "+isPlugged);
+        
+        return isPlugged;
 	}
 }

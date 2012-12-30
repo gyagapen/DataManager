@@ -32,9 +32,8 @@ public class Autostart extends BroadcastReceiver {
 				Activity.MODE_PRIVATE);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
-		// if data and dataManager are activated
-		if (sharedPrefsEditor.isDataActivated()
-				&& sharedPrefsEditor.isDataMgrActivated()) {
+		// if service is activated
+		if (sharedPrefsEditor.isServiceActivated()) {
 
 			//start data manager service
 			Intent intent = new Intent(arg0, MainService.class);

@@ -13,11 +13,15 @@
     <string name="toggle_wifi_manager">Wifi Manager</string>
     <string name="toggle_wifi_manager_desc">Wifi Manager will automatically turn on/off wifi connection after a defined period of time when screen is OFF. Connection will be disabled ONLY if it NOT used. Therefore,  downloads/streaming won\'t be stopped and sync events will be received. Wifi Mananger will work ONLY if wifi is activated</string>
     <string name="toggle_auto_sync">Auto-Sync</string>
+    <string name="toggle_auto_sync_manager">Auto-Sync Manager</string>
+    <string name="toggle_auto_sync_manager_desc">Auto-Sync Manager will automatically turn off all syncs when there are no connection while screen is OFF. Sync will resume once connections are re-enabled or screen is turned ON. Auto-Sync Mananger will work ONLY if Auto-Sync is activated</string>
     <string name="toggle_auto_sync_desc">Enable or disable synchronizing. You can also enable/disable wifi outside this application, there won\'t be any conflitcts</string>
     <string name="toggle_auto_wifi_off">Auto-Wifi Off</string>
     <string name="toggle_auto_wifi_off_desc">Auto-Wifi Off will automatically disable wifi after after a defined period if screen is OFF and no known networks are available</string>
     <string name="time_on">Time On (min)</string>
     <string name="time_on_desc">Number of minutes where data connectivity is ON when screen is shutdown</string>
+    <string name="time_on_check">Time On Next Check (min)</string>
+    <string name="time_on_check_desc">Number of minutes where data connectivity is kept ON after a positive data usage test done when TIME ON has expired. After this delay, an another data usage test will be executed. If data is used, this timer will restart, else time off will kick in</string>
     <string name="time_off">Time Off (min)</string>
     <string name="time_off_desc">Number of minutes where data connectivity is OFF when screen is shutdown</string>
     <string name="interval_check">Usage check interval (s)</string>
@@ -40,6 +44,11 @@
     <string name="report_bug">Report a bug</string>
     <string name="view_log_file">View log file</string>
     <string name="view_log_details">Generate a log named "CleverConnectivity.log" at the root of the external storage and then display it. You must have a text viewer in order to read these logs</string>
+    <string name="deactivate_service">Deactivate CleverConnectivity</string>
+    <string name="deactivate_service_desc">This will stop the main service of the application e.g all features of the app. It\'s like the app is uninstalled.</string>
+    <string name="deactivate_service_plugged">Deactivate while plugged</string>
+    <string name="deactivate_service__plugged_desc">This will stop the main service of the application e.g all features of the app only when the phone is PLUGGED.</string>
+    
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>

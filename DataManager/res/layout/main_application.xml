@@ -23,6 +23,50 @@
             android:layout_height="wrap_content" >
 
             <TableRow
+                android:id="@+id/tableRow19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <CheckBox
+                        android:id="@+id/checkBoxDeactivateAll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/deactivate_service" />
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/deactivate_service_desc" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxDeactivatePlugged"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/deactivate_service_plugged" />
+
+                    <TextView
+                        android:id="@+id/textView18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/deactivate_service__plugged_desc" />
+
+                </LinearLayout>
+
+            </TableRow>
+
+            <View
+                android:layout_width="329dp"
+                android:layout_height="5dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/separator" />
+
+            <TableRow
                 android:id="@+id/tableRow1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
@@ -142,23 +186,42 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
-                <CheckBox
-                    android:id="@+id/checkBoxAutoSync"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/toggle_auto_sync" />
+                    android:orientation="vertical" >
+
+                    <CheckBox
+                        android:id="@+id/checkBoxAutoSync"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/toggle_auto_sync" />
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/toggle_auto_sync_desc" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxAutoSyncMgr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/toggle_auto_sync_manager" />
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/toggle_auto_sync_manager_desc" />
+
+                </LinearLayout>
             </TableRow>
 
             <TableRow
                 android:id="@+id/tableRow11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/toggle_auto_sync_desc" />
             </TableRow>
 
             <View
@@ -287,6 +350,29 @@
                         android:ems="10"
                         android:inputType="number" >
                     </EditText>
+
+                    <TextView
+                        android:id="@+id/textView19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/time_on_check"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/textView20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/time_on_check_desc" />
+
+                    <EditText
+                        android:id="@+id/EditTextTimeOnCheck"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="number" />
 
                     <TextView
                         android:id="@+id/textView10"
@@ -418,6 +504,7 @@
                 </LinearLayout>
             </TableRow>
         </TableLayout>
+
     </LinearLayout>
 
 </ScrollView>

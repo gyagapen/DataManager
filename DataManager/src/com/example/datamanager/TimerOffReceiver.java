@@ -31,13 +31,12 @@ public class TimerOffReceiver extends BroadcastReceiver {
 		Log.i("Alarme time off", "time off is expired");
 		
 		
-		//enable data
+		//enable connectivity
 		try {
 			
 			
 			dataActivation.setConnectivityEnabled(sharedPrefsEditor); 
-			//activate autosync
-			dataActivation.setAutoSync(true, sharedPrefsEditor, true);
+
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -35,15 +35,14 @@ public class TimersSetUp {
 	/**
 	 * Start timer On
 	 */
-	public void StartTimerOn() {
+	public void StartTimerOn(int minutes) {
 		// start timer on
 
-		// value of timer on
-		int timerOn = sharedPrefsEditor.getTimeOn();
+		
 
 		// setting alarm
 		Calendar onTime = Calendar.getInstance();
-		onTime.add(Calendar.MINUTE, timerOn);
+		onTime.add(Calendar.MINUTE, minutes);
 
 		Intent alarmLauncher = new Intent(context,
 				TimerOnReceiver.class);
@@ -55,7 +54,7 @@ public class TimersSetUp {
 		timeOnAlarm = PendingIntent.getBroadcast(context,
 				TIMER_ON_ID, alarmLauncher, PendingIntent.FLAG_UPDATE_CURRENT);
 
-		Log.i("timer on", "Timer On launched " + timerOn);
+		Log.i("timer on", "Timer On launched " + minutes);
 		//Log.i("desc time on", onTime.toString());
 
 		alarms.cancel(timeOnAlarm);
@@ -63,7 +62,18 @@ public class TimersSetUp {
 		alarms.set(AlarmManager.RTC,
 				onTime.getTimeInMillis(),
 				timeOnAlarm);
+		
+		sharedPrefsEditor.setTimeOffActivation(false);
 	}
+	
+	public void StartTimerOn() {
+		
+		// value of timer on
+		int timerOn = sharedPrefsEditor.getTimeOn();
+	
+		StartTimerOn(timerOn);
+	}
+	
 	
 	/**
 	 * Start timer off
@@ -92,9 +102,11 @@ public class TimersSetUp {
 		
 		alarms.cancel(timeOffAlarm);
 
-		alarms.set(AlarmManager.RTC,
+		alarms.set(AlarmManager.RTC_WAKEUP,
 				offTime.getTimeInMillis(), 
 				timeOffAlarm);
+		
+		sharedPrefsEditor.setTimeOffActivation(true);
 
 	}
 	
@@ -131,8 +143,11 @@ public class TimersSetUp {
 		AlarmManager alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(context.ALARM_SERVICE);
 
 		alarmManager.cancel(timeOff);
+		
+		sharedPrefsEditor.setTimeOffActivation(false);
 	}
 	
+
 
 
 

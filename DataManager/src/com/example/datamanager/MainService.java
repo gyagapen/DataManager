@@ -116,8 +116,6 @@ public class MainService extends Service {
 			// activate data or wifi
 			try {
 				dataActivation.setConnectivityEnabled(sharedPrefsEditor);
-				// activate autosync too
-				dataActivation.setAutoSync(true, sharedPrefsEditor, false);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -131,8 +129,7 @@ public class MainService extends Service {
 			{
 				//desactivate all connectivity
 				try {
-					dataActivation.setConnectivityDisabled();
-					dataActivation.setAutoSync(false, sharedPrefsEditor, false);
+					dataActivation.setConnectivityDisabled(sharedPrefsEditor);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -176,6 +173,7 @@ public class MainService extends Service {
 
 		Toast.makeText(getBaseContext(), "DataManager service stopped",
 				Toast.LENGTH_SHORT).show();
+		
 
 		super.onDestroy();
 

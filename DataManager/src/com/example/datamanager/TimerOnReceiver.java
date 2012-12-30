@@ -20,6 +20,10 @@ public class TimerOnReceiver extends BroadcastReceiver {
 	// SharedPreferences
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
+	
+	
+	//interval to delay timer off when data is used
+	private int delayTimeOff = 1;
 
 	private DataActivation dataActivation;
 	
@@ -39,6 +43,9 @@ public class TimerOnReceiver extends BroadcastReceiver {
 		//getting dataInterval
 		int dataInterval = sharedPrefsEditor.getIntervalCheck() * 1000;
 		
+		//interval to delay timer off when data is used
+		delayTimeOff = sharedPrefsEditor.getTimeOnCheck();
+		
 		//check data usage
 		boolean dataIsUsed = IsDataUsed(dataInterval);
 		
@@ -52,7 +59,7 @@ public class TimerOnReceiver extends BroadcastReceiver {
 			
 			//reset timerOn
 			timerSetUp.CancelTimerOn();
-			timerSetUp.StartTimerOn();
+			timerSetUp.StartTimerOn(delayTimeOff);
 		}
 		else
 		{
@@ -70,15 +77,21 @@ public class TimerOnReceiver extends BroadcastReceiver {
 					dataActivation.checkWifiScanResults();
 					
 					//3g and auto sync off
-					dataActivation.setMobileDataEnabled(false);
-					dataActivation.setAutoSync(false, sharedPrefsEditor, false);
+					if(sharedPrefsEditor.isDataMgrActivated())
+					{
+						dataActivation.setMobileDataEnabled(false);
+					}
+					
+					if(sharedPrefsEditor.isAutoSyncMgrIsActivated())
+					{
+						dataActivation.setAutoSync(false, sharedPrefsEditor, false);
+					}
 				}
 				else
 				{
 					//wifi and 3g off
-					dataActivation.setConnectivityDisabled();
-					//disable autosync too
-					dataActivation.setAutoSync(false, sharedPrefsEditor, false);
+					dataActivation.setConnectivityDisabled(sharedPrefsEditor);
+					
 				}
 				
 				

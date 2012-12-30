@@ -12,6 +12,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,6 +26,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gyagapen.cleverconnectivity.R;
 
@@ -35,14 +37,14 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	static final int ID_ALARM_TIME_ON = 1879;
 	static final int ID_ALARM_TIME_OFF = 1899;
-	
+
 	static final String LOG_FILE_NAME = "CleverConnectivity.log";
-	
+
 	static final boolean APPLICATION_IS_FREE = true;
 
 	// mail data
 	private final String MAIL_RECIPIENT = "gyagapen@gmail.com";
-	private final String MAIL_SUBJECT = "CleverConnectivity Bug Report";
+	private final String MAIL_SUBJECT = "CleverConnectivity Paid Bug Report";
 
 	// ui components
 	private CheckBox cbData = null;
@@ -50,19 +52,23 @@ public class MainActivity extends Activity implements OnClickListener,
 	private CheckBox cbWifi = null;
 	private CheckBox cbWifiMgr = null;
 	private CheckBox cbAutoSync = null;
+	private CheckBox cbAutoSyncMgr = null;
 	private CheckBox cbAutoWifiOff = null;
 	private CheckBox cbSleepHours = null;
+	private CheckBox cbServiceIsDeactivated = null;
+	private CheckBox cbServiceIsDeactivatedPlugged = null;
 	private TextView edSleepHours = null;
 	private EditText edTimeOn = null;
+	private EditText edTimeOnCheck = null;
 	private EditText edTimeOff = null;
 	private EditText edInterval = null;
 	private Button buttonSave = null;
 	private Button buttonEditSleepHours = null;
 	private Button buttonReportBug = null;
 	private Button buttonViewLogFile = null;
-	//private AdView mainStartAdView = null;
-	//private AdView mainEndAdView = null;
-
+	
+	// private AdView mainStartAdView = null;
+	// private AdView mainEndAdView = null;
 
 	private int RETURN_CODE = 0;
 
@@ -75,9 +81,8 @@ public class MainActivity extends Activity implements OnClickListener,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		Log.d("TEST","test-log");
-		
+
+
 		// initialize connectivity positions
 		SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(
 				getApplicationContext());
@@ -108,7 +113,7 @@ public class MainActivity extends Activity implements OnClickListener,
 
 			buttonReportBug = (Button) findViewById(R.id.buttonReportBug);
 			buttonReportBug.setOnClickListener(this);
-			
+
 			buttonViewLogFile = (Button) findViewById(R.id.buttonLogFile);
 			buttonViewLogFile.setOnClickListener(this);
 
@@ -141,31 +146,30 @@ public class MainActivity extends Activity implements OnClickListener,
 		cbWifiMgr = (CheckBox) findViewById(R.id.checkBoxWifiMgr);
 
 		cbAutoSync = (CheckBox) findViewById(R.id.checkBoxAutoSync);
+		cbAutoSyncMgr = (CheckBox) findViewById(R.id.checkBoxAutoSyncMgr);
 		cbAutoWifiOff = (CheckBox) findViewById(R.id.checkBoxAutoWifiOff);
 		cbSleepHours = (CheckBox) findViewById(R.id.checkBoxSleepHours);
+		
+		cbServiceIsDeactivated = (CheckBox) findViewById(R.id.checkBoxDeactivateAll);
+		cbServiceIsDeactivatedPlugged = (CheckBox) findViewById(R.id.checkBoxDeactivatePlugged);
 
 		edSleepHours = (TextView) findViewById(R.id.tvSleepHours);
 
 		edTimeOn = (EditText) findViewById(R.id.editTextTimeOn);
+		edTimeOnCheck = (EditText) findViewById(R.id.EditTextTimeOnCheck);
 		edTimeOff = (EditText) findViewById(R.id.editTextTimeOff);
 		edInterval = (EditText) findViewById(R.id.editTextInterval);
-		
-		/*mainStartAdView = (AdView)findViewById(R.id.adViewMainStart);
-		mainEndAdView = (AdView)findViewById(R.id.adViewMainEnd);
 
-		if(!APPLICATION_IS_FREE)
-		{
-			//if application is a paid app, then no ads
-			mainStartAdView.destroy();
-			mainEndAdView.destroy();
-			
-		}
-		else
-		{
-			//load ads
-			mainEndAdView.loadAd(new AdRequest());
-			mainStartAdView.loadAd(new AdRequest());
-		}*/
+		/*
+		 * mainStartAdView = (AdView)findViewById(R.id.adViewMainStart);
+		 * mainEndAdView = (AdView)findViewById(R.id.adViewMainEnd);
+		 * 
+		 * if(!APPLICATION_IS_FREE) { //if application is a paid app, then no
+		 * ads mainStartAdView.destroy(); mainEndAdView.destroy();
+		 * 
+		 * } else { //load ads mainEndAdView.loadAd(new AdRequest());
+		 * mainStartAdView.loadAd(new AdRequest()); }
+		 */
 
 	}
 
@@ -175,6 +179,9 @@ public class MainActivity extends Activity implements OnClickListener,
 	private void initializeUiComponentsData() {
 		int timeOn = sharedPrefsEditor.getTimeOn();
 		edTimeOn.setText(String.valueOf(timeOn));
+		
+		int timeOnCheck = sharedPrefsEditor.getTimeOnCheck();
+		edTimeOnCheck.setText(String.valueOf(timeOnCheck));
 
 		int timeOff = sharedPrefsEditor.getTimeOff();
 		edTimeOff.setText(String.valueOf(timeOff));
@@ -197,6 +204,10 @@ public class MainActivity extends Activity implements OnClickListener,
 		boolean autoSyncIsActivated = sharedPrefsEditor.isAutoSyncActivated();
 		cbAutoSync.setChecked(autoSyncIsActivated);
 
+		boolean autoSyncMgrIsActivated = sharedPrefsEditor
+				.isAutoSyncMgrIsActivated();
+		cbAutoSyncMgr.setChecked(autoSyncMgrIsActivated);
+
 		boolean autoWifiOffIsActivated = sharedPrefsEditor
 				.isAutoWifiOffActivated();
 		cbAutoWifiOff.setChecked(autoWifiOffIsActivated);
@@ -204,6 +215,12 @@ public class MainActivity extends Activity implements OnClickListener,
 		boolean sleepHoursIsActivated = sharedPrefsEditor
 				.isSleepHoursActivated();
 		cbSleepHours.setChecked(sleepHoursIsActivated);
+		
+		boolean serviceIsDeactivated = sharedPrefsEditor.isServiceDeactivatedAll();
+		cbServiceIsDeactivated.setChecked(serviceIsDeactivated);
+		
+		boolean serviceIsDeactivatedPlugged = sharedPrefsEditor.isDeactivatedWhilePlugged();
+		cbServiceIsDeactivatedPlugged.setChecked(serviceIsDeactivatedPlugged); 
 
 		String sleepTimeOn = sharedPrefsEditor.getSleepTimeOn();
 		String sleepTimeOff = sharedPrefsEditor.getSleepTimeOff();
@@ -230,19 +247,27 @@ public class MainActivity extends Activity implements OnClickListener,
 			// send mail to dev
 			Intent email = new Intent(Intent.ACTION_SEND);
 			email.putExtra(Intent.EXTRA_EMAIL, new String[] { MAIL_RECIPIENT });
-			email.putExtra(Intent.EXTRA_SUBJECT, MAIL_SUBJECT);
+
+			String versionName = "";
+			try {
+				versionName = this.getPackageManager().getPackageInfo(
+						this.getPackageName(), 0).versionName;
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
+			}
+
+			email.putExtra(Intent.EXTRA_SUBJECT, MAIL_SUBJECT + " - "
+					+ versionName);
 			// email.putExtra(Intent.EXTRA_TEXT, "message");
 			email.setType("message/rfc822");
 			startActivity(Intent.createChooser(email,
 					"Choose an Email client :"));
 
-		}
-		else if (v==buttonViewLogFile)
-		{
-			//generate log file
+		} else if (v == buttonViewLogFile) {
+			// generate log file
 			DumpLogToFile();
-			
-			//display log file
+
+			// display log file
 			readLogFile();
 		}
 
@@ -251,18 +276,18 @@ public class MainActivity extends Activity implements OnClickListener,
 	/**
 	 * Stop data manager service
 	 */
-	public void stopDataManagerService() {
+	public static void stopDataManagerService(Context context) {
 		// if service is started
 		// if (sharedPrefsEditor.isServiceActivated()) {
-		stopService(new Intent(this, MainService.class));
+		context.stopService(new Intent(context, MainService.class));
 		// }
 	}
 
-	public void StartDataManagerService() {
+	public static void StartDataManagerService(Context context) {
 		// if service is not started
 		// if (!sharedPrefsEditor.isServiceActivated()) {
-		Intent serviceIntent = new Intent(this, MainService.class);
-		startService(serviceIntent);
+		Intent serviceIntent = new Intent(context, MainService.class);
+		context.startService(serviceIntent);
 		// }
 	}
 
@@ -301,7 +326,6 @@ public class MainActivity extends Activity implements OnClickListener,
 			// schedule alarms
 			setUpAlarm(sleepTimeOn, getBaseContext(), false);
 			setUpAlarm(sleepTimeOff, getBaseContext(), true);
-			
 
 			if (time1IsAftertimer2(sleepTimeOff, sleepTimeOn)) {
 				// if time sleep on has passed and not time sleep off then
@@ -315,17 +339,13 @@ public class MainActivity extends Activity implements OnClickListener,
 				}
 			} else {
 				Log.i("Timer", sleepTimeOff + " is before " + sleepTimeOn);
-				if (timeIsPassed(sleepTimeOn))
-				{
+				if (timeIsPassed(sleepTimeOn)) {
 					Log.i("Timer", sleepTimeOn + " is passed");
 					sharedPrefsEditor.setIsSleeping(true);
-				} 
-				else if(!timeIsPassed(sleepTimeOff))
-				{
+				} else if (!timeIsPassed(sleepTimeOff)) {
 					Log.i("Timer", sleepTimeOff + " is NOT passed");
 					sharedPrefsEditor.setIsSleeping(true);
-				}
-				else {
+				} else {
 					Log.i("Timer", sleepTimeOn + " is NOT passed");
 					sharedPrefsEditor.setIsSleeping(false);
 				}
@@ -347,7 +367,6 @@ public class MainActivity extends Activity implements OnClickListener,
 		}
 
 	}
-
 
 	public void setUpAlarm(String time, Context context,
 			boolean activateConnectivity) {
@@ -401,7 +420,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		Calendar currentTime = Calendar.getInstance();
 		// currentTime.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-		//Log.i("current hour", currentTime.toString());
+		// Log.i("current hour", currentTime.toString());
 
 		// setting alarm time
 		Calendar instanceTime = Calendar.getInstance();
@@ -409,7 +428,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		instanceTime.set(Calendar.HOUR_OF_DAY, hour);
 		instanceTime.set(Calendar.MINUTE, minute);
 
-		//Log.i("alarm hour", instanceTime.toString());
+		// Log.i("alarm hour", instanceTime.toString());
 
 		return currentTime.after(instanceTime);
 	}
@@ -448,9 +467,46 @@ public class MainActivity extends Activity implements OnClickListener,
 		loadUiComponents();
 
 		// get settings values
-		int timeOn = Integer.parseInt(edTimeOn.getText().toString());
-		int timeOff = Integer.parseInt(edTimeOff.getText().toString());
-		int intervalCheck = Integer.parseInt(edInterval.getText().toString());
+		int timeOn = 0;
+		try
+		{
+			timeOn = Integer.parseInt(edTimeOn.getText().toString());
+		}
+		catch(Exception e)
+		{
+			timeOn = sharedPrefsEditor.getTimeOn();
+		}
+		
+		int timeOnCheck=0;
+		try
+		{
+			timeOnCheck = Integer.parseInt(edTimeOnCheck.getText().toString());
+		}
+		catch(Exception e)
+		{
+			timeOnCheck = sharedPrefsEditor.getTimeOnCheck();
+		}
+		
+		int timeOff = 0;
+		
+		try
+		{
+			timeOff = Integer.parseInt(edTimeOff.getText().toString());
+		}
+		catch (Exception e)
+		{
+			timeOff = sharedPrefsEditor.getTimeOff();
+		}
+		
+		int intervalCheck = 0;
+		try
+		{
+			intervalCheck = Integer.parseInt(edInterval.getText().toString());
+		}
+		catch(Exception e)
+		{
+			intervalCheck = sharedPrefsEditor.getIntervalCheck();
+		}
 
 		boolean dataIsActivated = cbData.isChecked();
 		boolean dataMgrIsActivated = cbDataMgr.isChecked();
@@ -464,11 +520,16 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		boolean sleepHoursIsActivated = cbSleepHours.isChecked();
 
+		boolean isAutoSyncMgrIsActivated = cbAutoSyncMgr.isChecked();
+		
+		boolean isServiceDeactived = cbServiceIsDeactivated.isChecked();
+		boolean isServiceDeactivatedPlugged = cbServiceIsDeactivatedPlugged.isChecked();
+
 		// save all these preferences
 		sharedPrefsEditor.setAllValues(timeOn, timeOff, intervalCheck,
 				dataIsActivated, dataMgrIsActivated, wifiIsActivated,
 				wifiMgrIsActivated, autoSyncIsActivated, autoWifiIsActivated,
-				sleepHoursIsActivated);
+				sleepHoursIsActivated, isAutoSyncMgrIsActivated, isServiceDeactived,isServiceDeactivatedPlugged, timeOnCheck);
 
 		try {
 			// if data is disabled; data connection is stopped
@@ -497,6 +558,17 @@ public class MainActivity extends Activity implements OnClickListener,
 				dataActivation.setAutoSync(true, sharedPrefsEditor, false);
 			} else {
 				dataActivation.setAutoSync(false, sharedPrefsEditor, false);
+
+			}
+
+
+
+			// if data and data manager enable or if wifi and wifi manager
+			// enable, service is started
+			/*if ((dataIsActivated && dataMgrIsActivated)
+					|| (wifiIsActivated && wifiMgrIsActivated)) {
+
+				StartDataManagerService();
 			}
 
 			// if data manager and wifi manager are disabled, service is
@@ -504,18 +576,19 @@ public class MainActivity extends Activity implements OnClickListener,
 			if ((!dataMgrIsActivated && !wifiMgrIsActivated)
 					|| (!dataIsActivated && !wifiIsActivated)) {
 				stopDataManagerService();
+			}*/
+			
+			//stop service if deactivate is checked or deactivate while plugged check and phone is plugged
+			if(isServiceDeactived || (isServiceDeactivatedPlugged && dataActivation.isPhonePlugged()))
+			{
+				stopDataManagerService(this);
 			}
-
-			// if data and data manager enable or if wifi and wifi manager
-			// enable, service is started
-			if ((dataIsActivated && dataMgrIsActivated)
-					|| (wifiIsActivated && wifiMgrIsActivated)) {
-				// Toast.makeText(this,
-				// "service is started : "+sharedPrefsEditor.isDataMgrActivated(),
-				// Toast.LENGTH_SHORT).show();
-				StartDataManagerService();
+			else
+			{
+				StartDataManagerService(this);
 			}
-
+			
+			
 			// sleeping hours
 			manageSleepingHours(sharedPrefsEditor.getSleepTimeOff(),
 					sharedPrefsEditor.getSleepTimeOn());
@@ -537,60 +610,61 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		super.onDestroy();
 	}
-	
-	//whenever application is no more in the foreground
+
+	// whenever application is no more in the foreground
 
 	protected void onPause() {
 		// save all settings
 		validateSettings();
-		
+
 		super.onPause();
 	}
 
 	/**
 	 * whenever application is bring to foreground
 	 */
-	/*protected void onResume() {
-
-		// initialize connectivity positions
-		SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(
-				getApplicationContext());
-		connPrefs.saveAllConnectionSettingInSharedPrefs();
-
-		// refresh ui
-		initializeUiComponentsData();
-
-		super.onResume();
-	}*/
-	
-	
-	/**
-	 * Dump logcat of this application to a file 
+	/*
+	 * protected void onResume() {
+	 * 
+	 * // initialize connectivity positions SaveConnectionPreferences connPrefs
+	 * = new SaveConnectionPreferences( getApplicationContext());
+	 * connPrefs.saveAllConnectionSettingInSharedPrefs();
+	 * 
+	 * // refresh ui initializeUiComponentsData();
+	 * 
+	 * super.onResume(); }
 	 */
-	public void DumpLogToFile()
-	{
+
+	/**
+	 * Dump logcat of this application to a file
+	 */
+	public void DumpLogToFile() {
 		try {
-		    File filename = new File(Environment.getExternalStorageDirectory()+"/"+LOG_FILE_NAME); 
-		    boolean deleted = filename.delete();
-			filename.createNewFile(); 
-		    //
-		    String cmd = "logcat -d -v time -f "+filename.getAbsolutePath()+" ";
-		    //String cmd = "logcat -d > "+Environment.getExternalStorageDirectory()+"/"+LOG_FILE_NAME;
-		    Runtime.getRuntime().exec(cmd);
+			File filename = new File(Environment.getExternalStorageDirectory()
+					+ "/" + LOG_FILE_NAME);
+			boolean deleted = filename.delete();
+			filename.createNewFile();
+			//
+			String cmd = "logcat -d -v time -f " + filename.getAbsolutePath()
+					+ " ";
+			// String cmd =
+			// "logcat -d > "+Environment.getExternalStorageDirectory()+"/"+LOG_FILE_NAME;
+			Runtime.getRuntime().exec(cmd);
 		} catch (IOException e) {
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Display captured logfile
 	 */
-	public void readLogFile()
-	{
+	public void readLogFile() {
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_VIEW);
-		Uri logFileUri = Uri.parse("file://" + Environment.getExternalStorageDirectory()+"/"+LOG_FILE_NAME);
+		Uri logFileUri = Uri.parse("file://"
+				+ Environment.getExternalStorageDirectory() + "/"
+				+ LOG_FILE_NAME);
 		intent.setDataAndType(logFileUri, "text/plain");
 		startActivity(intent);
 	}
