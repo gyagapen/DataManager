@@ -62,6 +62,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	private EditText edTimeOnCheck = null;
 	private EditText edTimeOff = null;
 	private EditText edInterval = null;
+	private EditText edScreenOnDelay = null;
 	private Button buttonSave = null;
 	private Button buttonEditSleepHours = null;
 	private Button buttonReportBug = null;
@@ -159,6 +160,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		edTimeOnCheck = (EditText) findViewById(R.id.EditTextTimeOnCheck);
 		edTimeOff = (EditText) findViewById(R.id.editTextTimeOff);
 		edInterval = (EditText) findViewById(R.id.editTextInterval);
+		edScreenOnDelay = (EditText) findViewById(R.id.EditTextScreenDelay);
 
 		/*
 		 * mainStartAdView = (AdView)findViewById(R.id.adViewMainStart);
@@ -185,6 +187,9 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		int timeOff = sharedPrefsEditor.getTimeOff();
 		edTimeOff.setText(String.valueOf(timeOff));
+		
+		int timeScreenOnDelay = sharedPrefsEditor.getScreenDelayTimer();
+		edScreenOnDelay.setText(String.valueOf(timeScreenOnDelay));
 
 		int checkTime = sharedPrefsEditor.getIntervalCheck();
 		edInterval.setText(String.valueOf(checkTime));
@@ -507,6 +512,17 @@ public class MainActivity extends Activity implements OnClickListener,
 		{
 			intervalCheck = sharedPrefsEditor.getIntervalCheck();
 		}
+		
+		
+		int timeScreenOnDelay = 0;
+		try
+		{
+			timeScreenOnDelay = Integer.parseInt(edScreenOnDelay.getText().toString());
+		}
+		catch(Exception e)
+		{
+			timeScreenOnDelay = sharedPrefsEditor.getScreenDelayTimer();
+		}
 
 		boolean dataIsActivated = cbData.isChecked();
 		boolean dataMgrIsActivated = cbDataMgr.isChecked();
@@ -529,7 +545,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		sharedPrefsEditor.setAllValues(timeOn, timeOff, intervalCheck,
 				dataIsActivated, dataMgrIsActivated, wifiIsActivated,
 				wifiMgrIsActivated, autoSyncIsActivated, autoWifiIsActivated,
-				sleepHoursIsActivated, isAutoSyncMgrIsActivated, isServiceDeactived,isServiceDeactivatedPlugged, timeOnCheck);
+				sleepHoursIsActivated, isAutoSyncMgrIsActivated, isServiceDeactived,isServiceDeactivatedPlugged, timeOnCheck,timeScreenOnDelay);
 
 		try {
 			// if data is disabled; data connection is stopped

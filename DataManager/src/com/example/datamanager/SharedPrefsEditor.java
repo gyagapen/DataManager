@@ -32,12 +32,16 @@ public class SharedPrefsEditor {
 	static final String STR_TIME_OFF_IS_ACTIVATED="timeOffIsActivated";
 	static final String STR_DEACTIVATE_PLUGGED="deactivateWhilePlugged";
 	static final String STR_DEACTIVATE_ALL="deactivateAll";
+	static final String STR_DATA_ACTIVATION_DELAYED="dataActivationDelayed";
+	static final String STR_SCREEN_ON_ACTIVATION_DELAYED="screenOnActivationDelayed";
+	static final String STR_SCREEN_DELAY_TIMER="screenDelayTimer";
 
 	// Default values
-	static final int TIME_ON = 3; // min
-	static final int TIME_OFF = 15; // min
+	static final int TIME_ON = 2; // min
+	static final int TIME_OFF = 12; // min
 	static final int TIME_ON_CHECK = 1; // min
 	static final int INTERVAL_CHECK = 2; // seconds
+	static final int SCREEN_DELAY_TIMER = 0; // seconds
 	static final boolean PREFS_ARE_ESTABLISHED = true;
 	static final boolean DATA_IS_ACTIVATED = true;
 	static final boolean DATA_MGR_IS_ACTIVATED = true;
@@ -55,6 +59,8 @@ public class SharedPrefsEditor {
 	static final boolean TIME_OFF_IS_ACTIVATED=false;
 	static final boolean DEACTIVATE_PLUGGED=false;
 	static final boolean DEACTIVATE_ALL=false;
+	static final boolean DATA_ACTIVATION_DELAYED=false;
+	static final boolean SCREEN_ON_ACTIVATION_DELAYED=false;
 
 	// gives access to connection states
 	DataActivation dataConnectionState;
@@ -78,6 +84,7 @@ public class SharedPrefsEditor {
 			prefEditor.putInt(STR_TIME_ON_CHECK, TIME_ON_CHECK);
 			prefEditor.putInt(STR_TIME_OFF, TIME_OFF);
 			prefEditor.putInt(STR_INTERVAL_CHECK, INTERVAL_CHECK);
+			prefEditor.putInt(STR_SCREEN_DELAY_TIMER, SCREEN_DELAY_TIMER);
 			prefEditor.putBoolean(STR_PREFS_ARE_ESTABLISHED,
 					PREFS_ARE_ESTABLISHED);
 			// original state of 3G activation
@@ -102,6 +109,8 @@ public class SharedPrefsEditor {
 			prefEditor.putBoolean(STR_TIME_OFF_IS_ACTIVATED, TIME_OFF_IS_ACTIVATED);
 			prefEditor.putBoolean(STR_DEACTIVATE_PLUGGED, DEACTIVATE_PLUGGED);
 			prefEditor.putBoolean(STR_DEACTIVATE_ALL, DEACTIVATE_ALL);
+			prefEditor.putBoolean(STR_DATA_ACTIVATION_DELAYED, DATA_ACTIVATION_DELAYED);
+			prefEditor.putBoolean(STR_SCREEN_ON_ACTIVATION_DELAYED, SCREEN_ON_ACTIVATION_DELAYED);
 
 			prefEditor.commit();
 		}
@@ -113,6 +122,7 @@ public class SharedPrefsEditor {
 		prefEditor.putInt(STR_TIME_ON_CHECK, TIME_ON_CHECK);
 		prefEditor.putInt(STR_TIME_OFF, TIME_OFF);
 		prefEditor.putInt(STR_INTERVAL_CHECK, INTERVAL_CHECK);
+		prefEditor.putInt(STR_SCREEN_DELAY_TIMER, SCREEN_DELAY_TIMER);
 		prefEditor.putBoolean(STR_PREFS_ARE_ESTABLISHED, PREFS_ARE_ESTABLISHED);
 		// original state of 3G activation
 		prefEditor.putBoolean(STR_DATA_IS_ACTIVATED,
@@ -136,6 +146,8 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_TIME_OFF_IS_ACTIVATED, TIME_OFF_IS_ACTIVATED);
 		prefEditor.putBoolean(STR_DEACTIVATE_PLUGGED, DEACTIVATE_PLUGGED);
 		prefEditor.putBoolean(STR_DEACTIVATE_ALL, DEACTIVATE_ALL);
+		prefEditor.putBoolean(STR_DATA_ACTIVATION_DELAYED, DATA_ACTIVATION_DELAYED);
+		prefEditor.putBoolean(STR_SCREEN_ON_ACTIVATION_DELAYED, SCREEN_ON_ACTIVATION_DELAYED);
 		prefEditor.commit();
 	}
 
@@ -149,6 +161,10 @@ public class SharedPrefsEditor {
 
 	public int getTimeOff() {
 		return dataManagerSettings.getInt(STR_TIME_OFF, TIME_OFF);
+	}
+	
+	public int getScreenDelayTimer() {
+		return dataManagerSettings.getInt(STR_SCREEN_DELAY_TIMER, SCREEN_DELAY_TIMER);
 	}
 	
 	public boolean isSleeping()
@@ -215,10 +231,20 @@ public class SharedPrefsEditor {
 		return dataManagerSettings.getBoolean(STR_DEACTIVATE_ALL,
 				DEACTIVATE_ALL);
 	}
+	
+	public boolean isScreenOnDelayed() {
+		return dataManagerSettings.getBoolean(STR_SCREEN_ON_ACTIVATION_DELAYED,
+				SCREEN_ON_ACTIVATION_DELAYED);
+	}
+
 
 	public boolean isAutoSyncActivated() {
 		return dataManagerSettings.getBoolean(STR_AUTO_SYNC,
 				dataConnectionState.isAutoSyncIsActivated());
+	}
+	
+	public boolean isDataActivationDelayed() {
+		return dataManagerSettings.getBoolean(STR_DATA_ACTIVATION_DELAYED, DATA_ACTIVATION_DELAYED);
 	}
 	
 	public String getSleepTimeOn()
@@ -252,6 +278,11 @@ public class SharedPrefsEditor {
 	
 	public void setTimeOnCheck(int timeOn) {
 		prefEditor.putInt(STR_TIME_ON_CHECK, timeOn);
+		prefEditor.commit();
+	}
+	
+	public void setScreenDelayTimer(int delayTimer) {
+		prefEditor.putInt(STR_SCREEN_DELAY_TIMER, delayTimer);
 		prefEditor.commit();
 	}
 
@@ -310,6 +341,17 @@ public class SharedPrefsEditor {
 		prefEditor.commit();
 	}
 	
+	public void setScreenOnIsDelayed(boolean isDelayed) {
+		prefEditor.putBoolean(STR_SCREEN_ON_ACTIVATION_DELAYED, isDelayed);
+		prefEditor.commit();
+	}
+	
+	
+	public void setDataActivationDelayed(boolean isEnabled) {
+		prefEditor.putBoolean(STR_DATA_ACTIVATION_DELAYED, isEnabled);
+		prefEditor.commit();
+	}
+	
 	public void setTimeOffActivation(boolean isEnabled) {
 		prefEditor.putBoolean(STR_TIME_OFF_IS_ACTIVATED, isEnabled);
 		prefEditor.commit();
@@ -335,10 +377,11 @@ public class SharedPrefsEditor {
 
 	public void setAllValues(int timeOn, int timeOff, int checkTime,
 			boolean dataIsEnabled, boolean dataMgrIsEnabled,
-			boolean wifiIsEnabled, boolean wifiMgrIsEnabled, boolean autoSyncIsActivated, boolean autoWifiOffIsActivated, boolean sleepHoursIsActivated, boolean isAutoSyncMgrIsActivated, boolean serviceIsDeactivated, boolean serviceIsDeactivatedWhilePlugged, int timeOnCheck ) {
+			boolean wifiIsEnabled, boolean wifiMgrIsEnabled, boolean autoSyncIsActivated, boolean autoWifiOffIsActivated, boolean sleepHoursIsActivated, boolean isAutoSyncMgrIsActivated, boolean serviceIsDeactivated, boolean serviceIsDeactivatedWhilePlugged, int timeOnCheck, int screenDelayTimer ) {
 		prefEditor.putInt(STR_TIME_ON, timeOn);
 		prefEditor.putInt(STR_TIME_ON_CHECK, timeOnCheck);
 		prefEditor.putInt(STR_TIME_OFF, timeOff);
+		prefEditor.putInt(STR_SCREEN_DELAY_TIMER, screenDelayTimer);
 		prefEditor.putInt(STR_INTERVAL_CHECK, checkTime);
 		prefEditor.putBoolean(STR_DATA_IS_ACTIVATED, dataIsEnabled);
 		prefEditor.putBoolean(STR_DATA_MANAGER_IS_ACTIVATED, dataMgrIsEnabled);
@@ -350,6 +393,8 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_AUTO_SYNC_MGR_IS_ACTIVATED, isAutoSyncMgrIsActivated);
 		prefEditor.putBoolean(STR_DEACTIVATE_ALL, serviceIsDeactivated);
 		prefEditor.putBoolean(STR_DEACTIVATE_PLUGGED, serviceIsDeactivatedWhilePlugged);
+		prefEditor.putBoolean(STR_SCREEN_ON_ACTIVATION_DELAYED, false);
+		
 		
 		prefEditor.commit();
 	}

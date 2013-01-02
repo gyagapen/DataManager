@@ -7,7 +7,6 @@ import com.gyagapen.cleverconnectivity.R;
 
 public class SaveConnectionPreferences {
 
-
 	// SharedPreferences
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
@@ -22,19 +21,29 @@ public class SaveConnectionPreferences {
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 	}
-	
-	public void saveAllConnectionSettingInSharedPrefs()
-	{
-		boolean autoSyncIsActivated = dataActivation.isAutoSyncIsActivated();
-		sharedPrefsEditor.setAutoSyncActivation(autoSyncIsActivated);
-		
-		boolean wifiConnectionIsActivated = dataActivation.isWifiChipActivated();
-		sharedPrefsEditor.setWifiActivation(wifiConnectionIsActivated); 
-		
-		boolean dataConnectionIsActivated = dataActivation.isDataChipActivated();
-		sharedPrefsEditor.setDataActivation(dataConnectionIsActivated);
-		
-		
+
+	public void saveAllConnectionSettingInSharedPrefs() {
+
+		// if screen on connections not delayed
+		if (!sharedPrefsEditor.isScreenOnDelayed()) {
+
+			boolean autoSyncIsActivated = dataActivation
+					.isAutoSyncIsActivated();
+			sharedPrefsEditor.setAutoSyncActivation(autoSyncIsActivated);
+
+			boolean wifiConnectionIsActivated = dataActivation
+					.isWifiChipActivated();
+			sharedPrefsEditor.setWifiActivation(wifiConnectionIsActivated);
+
+			// if data activation is not delayed
+			if (!sharedPrefsEditor.isDataActivationDelayed()) {
+				boolean dataConnectionIsActivated = dataActivation
+						.isDataChipActivated();
+				sharedPrefsEditor.setDataActivation(dataConnectionIsActivated);
+			}
+
+		}
+
 	}
 
 }

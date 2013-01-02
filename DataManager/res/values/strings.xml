@@ -48,6 +48,8 @@
     <string name="deactivate_service_desc">This will stop the main service of the application e.g all features of the app. It\'s like the app is uninstalled.</string>
     <string name="deactivate_service_plugged">Deactivate while plugged</string>
     <string name="deactivate_service__plugged_desc">This will stop the main service of the application e.g all features of the app only when the phone is PLUGGED.</string>
+    <string name="screen_on_delay">Screen On Connectivity Delay (s)</string>
+    <string name="screen_on_delay_desc">When screen is turned ON, connectivity will be re-enabled after this delay (in seconds). If the screen is turned off before the delay expires, the ON-OFF cycle will continue as normal. For example, this will allow to answer calls without disturbing the ON-OFF cycle</string>
     
     
     <color name="separator">#B2E0FF</color>

@@ -20,7 +20,11 @@ import android.util.Log;
 
 public class DataActivation {
 
-	Context context = null;
+	private Context context = null;
+	
+	//when wifi and data are on, data activation will be delayed
+	private int timeBeforeActivateData = 5000;
+	
 
 	public DataActivation(Context aContext) {
 		context = aContext;
@@ -36,23 +40,29 @@ public class DataActivation {
 	 */
 	public void setMobileDataEnabled(boolean enabled) throws Exception {
 
-		Log.i("Data activation", "Data is activate : " + enabled);
-
-		final ConnectivityManager conman = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		final Class conmanClass = Class.forName(conman.getClass().getName());
-		final Field iConnectivityManagerField = conmanClass
-				.getDeclaredField("mService");
-		iConnectivityManagerField.setAccessible(true);
-		final Object iConnectivityManager = iConnectivityManagerField
-				.get(conman);
-		final Class iConnectivityManagerClass = Class
-				.forName(iConnectivityManager.getClass().getName());
-		final Method setMobileDataEnabledMethod = iConnectivityManagerClass
-				.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-		setMobileDataEnabledMethod.setAccessible(true);
-
-		setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
+		//only if necessary
+		if((!isDataChipActivated() && enabled) || (isDataChipActivated() && !enabled))
+		{
+		
+			Log.i("Data activation", "Data is activate : " + enabled);
+	
+			final ConnectivityManager conman = (ConnectivityManager) context
+					.getSystemService(Context.CONNECTIVITY_SERVICE);
+			final Class conmanClass = Class.forName(conman.getClass().getName());
+			final Field iConnectivityManagerField = conmanClass
+					.getDeclaredField("mService");
+			iConnectivityManagerField.setAccessible(true);
+			final Object iConnectivityManager = iConnectivityManagerField
+					.get(conman);
+			final Class iConnectivityManagerClass = Class
+					.forName(iConnectivityManager.getClass().getName());
+			final Method setMobileDataEnabledMethod = iConnectivityManagerClass
+					.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+			setMobileDataEnabledMethod.setAccessible(true);
+	
+			setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
+		
+		}
 	}
 
 	/**
@@ -63,6 +73,9 @@ public class DataActivation {
 	public void setAutoSync(boolean isEnabled,
 			SharedPrefsEditor sharedPrefsEditor, boolean forceSync) {
 
+			//only if necessary
+		if ( (isAutoSyncIsActivated() && !isEnabled) || (!isAutoSyncIsActivated() && isEnabled) )
+		{
 
 			if (sharedPrefsEditor.isAutoSyncActivated() && isEnabled) {
 
@@ -73,6 +86,8 @@ public class DataActivation {
 				Log.i("Sync", "Auto Sync OFF");
 				ContentResolver.setMasterSyncAutomatically(false);
 			}
+			
+		}
 	}
 
 	/**
@@ -82,9 +97,13 @@ public class DataActivation {
 	 */
 	public void setWifiConnectionEnabled(boolean enabled) {
 
-		WifiManager wifiManager = (WifiManager) this.context
-				.getSystemService(Context.WIFI_SERVICE);
-		wifiManager.setWifiEnabled(enabled);
+		//only if necessary
+		if( (isWifiChipActivated() && !enabled) || (!isWifiChipActivated() && enabled))
+		{
+			WifiManager wifiManager = (WifiManager) this.context
+					.getSystemService(Context.WIFI_SERVICE);
+			wifiManager.setWifiEnabled(enabled);
+		}
 	}
 
 	/**
@@ -140,24 +159,50 @@ public class DataActivation {
 	 */
 	public void setConnectivityEnabled(SharedPrefsEditor sharedPrefsEditor)
 			throws Exception {
-
-
-		if (sharedPrefsEditor.isWifiManagerActivated() && sharedPrefsEditor.isWifiActivated()) {
-			// activate wifi
-			setWifiConnectionEnabled(true);
-		}
-
-		if (sharedPrefsEditor.isDataMgrActivated() && sharedPrefsEditor.isDataActivated()) {
-			// activate data connection
-			setMobileDataEnabled(true);
-		}
 		
 		if (sharedPrefsEditor.isAutoSyncMgrIsActivated() && sharedPrefsEditor.isAutoSyncActivated()) {
 			// activate sync
 			setAutoSync(true, sharedPrefsEditor, true);
 		}
 
+
+		if (sharedPrefsEditor.isWifiManagerActivated() && sharedPrefsEditor.isWifiActivated()) {
+			// activate wifi
+			setWifiConnectionEnabled(true);
+			
+			//if data is activated
+			if(sharedPrefsEditor.isDataActivated())
+			{
+				
+				//if wifi and data are not activated
+				if(!isWifiChipActivated() && !isDataChipActivated())
+				{
+				
+					//wait 5s to activate data
+					sharedPrefsEditor.setDataActivationDelayed(true);
+					try {
+						Log.i("WIFI", "waiting for wifi activation");
+						Thread.sleep(timeBeforeActivateData);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						sharedPrefsEditor.setDataActivationDelayed(false);
+						e.printStackTrace();
+					}
+				}
+				
+				sharedPrefsEditor.setDataActivationDelayed(false);
+			}
+		}
+
+		if (sharedPrefsEditor.isDataMgrActivated() && sharedPrefsEditor.isDataActivated()) {
+			// activate data connection
+			setMobileDataEnabled(true);
+		}
+
 	}
+	
+	
+
 
 	// disable all connectivity
 	public void setConnectivityDisabled(SharedPrefsEditor sharedPrefsEditor) throws Exception {

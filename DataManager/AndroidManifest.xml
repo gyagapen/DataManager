@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gyagapen.cleverconnectivity"
-    android:versionCode="9"
-    android:versionName="1.2.5" >
+    android:versionCode="10"
+    android:versionName="1.2.6" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -39,6 +39,9 @@
         </receiver>
         
         <receiver android:name="com.example.datamanager.TimerOffReceiver" >
+        </receiver>
+        
+         <receiver android:name="com.example.datamanager.TimeScreenDelayReceiver" >
         </receiver>
         
         <receiver android:name="com.example.datamanager.WifiScanReceiver" >

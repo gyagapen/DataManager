@@ -1,11 +1,13 @@
 package com.example.datamanager;
 
+import java.util.Timer;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import com.gyagapen.cleverconnectivity.R;
+import android.util.Log;
 
 public class ScreenReceiver extends BroadcastReceiver {
 
@@ -16,6 +18,11 @@ public class ScreenReceiver extends BroadcastReceiver {
 	private SharedPrefsEditor sharedPrefsEditor = null;
 
 	private DataActivation dataActivation;
+	
+	// Timers for screen delay on
+	private Timer timerScreenDelay= null;
+	private TimerScreenDelayTask timerScreenDelayTask = null;
+	private int timeScreenDelay = 5000;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -43,12 +50,33 @@ public class ScreenReceiver extends BroadcastReceiver {
 				screenOff = false;
 
 			}
+			
+			if(!screenOff && !sharedPrefsEditor.isScreenOnDelayed() && sharedPrefsEditor.getScreenDelayTimer() >0)
+			{
+				Log.i("Screen delay", "screen is delayed for: "+timeScreenDelay+"ms");
+				
+				/*timerScreenDelay = new Timer();
+				timerScreenDelayTask = new TimerScreenDelayTask(context);
+				
+				sharedPrefsEditor.setScreenOnIsDelayed(true);
+				timerScreenDelay.schedule(timerScreenDelayTask, timeScreenDelay);*/
+				TimersSetUp timerSetUp = new TimersSetUp(context);
+				timerSetUp.StartScreenDelayTimer();
+			}
+			else
+			{
 
-			Intent i = new Intent(context, MainService.class);
+				if(!sharedPrefsEditor.isScreenOnDelayed())
+				{
+					Intent i = new Intent(context, MainService.class);
+	
+					i.putExtra("screen_state", screenOff);
+					
+					context.startService(i);
+				}
+			}
 
-			i.putExtra("screen_state", screenOff);
-
-			context.startService(i);
+			
 
 		}
 

@@ -117,6 +117,12 @@ public class TimerOnReceiver extends BroadcastReceiver {
 	{
 		boolean dataIsUsed = false;
 		
+		//workaround for bug
+		if(dataInterval > 8000)
+		{
+			dataInterval = 8000;
+		}
+		
 		if (dataInterval > 0) {
 			// get number of bytes received and sent
 			long nbBytesSent1 = TrafficStats.getTotalTxBytes();

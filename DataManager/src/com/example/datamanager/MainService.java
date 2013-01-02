@@ -19,18 +19,12 @@ import android.widget.Toast;
 
 public class MainService extends Service {
 
-	// Timers
-	/*private Timer timerOn = null;
-	private Timer timerOff = null;
-	private TimerOnTask timerOnTask = null;
-	private TimerOffTask timerOffTask = null;*/
+
 	
 	TimersSetUp timerSetUp = null;
 	
 
 	// time values
-	private int timeOnValue = 0;
-	private int timeOffValue = 0;
 	private int timeCheckData = 5000;
 
 
@@ -64,8 +58,9 @@ public class MainService extends Service {
 		registerReceiver(mReceiver, filter);
 
 		// Timers implementation
-		/*timerOn = new Timer();
-		timerOff = new Timer();*/
+		/*timerScreenDelay = new Timer();
+		timerScreenDelayTask = new TimerScreenDelayTask(getBaseContext());*/
+
 		
 		timerSetUp = new TimersSetUp(this);
 
@@ -105,11 +100,9 @@ public class MainService extends Service {
 
 		// if screen is on
 		if (!screenOff) {
-
 			
 			// stop all timers if there are running
-			/*CancelTimeOff();
-			CancelTimerOn();*/
+
 			timerSetUp.CancelTimeOff();
 			timerSetUp.CancelTimerOn();
 
@@ -121,6 +114,9 @@ public class MainService extends Service {
 			}
 
 		} else { // screen is off
+			
+
+			sharedPrefsEditor.setScreenOnIsDelayed(false);
 
 			//get sleep state
 			boolean isSleeping = sharedPrefsEditor.isSleeping();

@@ -19,11 +19,12 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
+        public static final int EditTextScreenDelay=0x7f080038;
         public static final int EditTextTimeOnCheck=0x7f080031;
-        public static final int buttonLogFile=0x7f080038;
-        public static final int buttonReportBug=0x7f08003a;
+        public static final int buttonLogFile=0x7f08003b;
+        public static final int buttonReportBug=0x7f08003d;
         public static final int buttonSave=0x7f08000e;
-        public static final int buttonSaveSleepHours=0x7f080040;
+        public static final int buttonSaveSleepHours=0x7f080043;
         public static final int button_edit_sleep_hours=0x7f080009;
         public static final int checkBoxAutoSync=0x7f080004;
         public static final int checkBoxAutoSyncMgr=0x7f080023;
@@ -38,7 +39,7 @@ public final class R {
         public static final int editTextInterval=0x7f08000d;
         public static final int editTextTimeOff=0x7f08000b;
         public static final int editTextTimeOn=0x7f080007;
-        public static final int menu_settings=0x7f080041;
+        public static final int menu_settings=0x7f080044;
         public static final int tableRow1=0x7f080015;
         public static final int tableRow10=0x7f080021;
         public static final int tableRow11=0x7f080025;
@@ -46,8 +47,8 @@ public final class R {
         public static final int tableRow13=0x7f080029;
         public static final int tableRow14=0x7f08002a;
         public static final int tableRow15=0x7f08002c;
-        public static final int tableRow16=0x7f080036;
-        public static final int tableRow17=0x7f080037;
+        public static final int tableRow16=0x7f080039;
+        public static final int tableRow17=0x7f08003a;
         public static final int tableRow19=0x7f080010;
         public static final int tableRow2=0x7f080016;
         public static final int tableRow3=0x7f080019;
@@ -63,24 +64,26 @@ public final class R {
         public static final int textView12=0x7f080033;
         public static final int textView13=0x7f080034;
         public static final int textView14=0x7f080035;
-        public static final int textView15=0x7f080039;
+        public static final int textView15=0x7f08003c;
         public static final int textView16=0x7f080024;
         public static final int textView17=0x7f080012;
         public static final int textView18=0x7f080014;
         public static final int textView19=0x7f08002f;
         public static final int textView2=0x7f080017;
         public static final int textView20=0x7f080030;
+        public static final int textView21=0x7f080036;
+        public static final int textView22=0x7f080037;
         public static final int textView3=0x7f08001d;
         public static final int textView4=0x7f080020;
         public static final int textView5=0x7f080022;
         public static final int textView6=0x7f080028;
-        public static final int textView7=0x7f08003b;
+        public static final int textView7=0x7f08003e;
         public static final int textView8=0x7f08002b;
         public static final int textView9=0x7f08002d;
-        public static final int timePickerSleepOff=0x7f08003f;
-        public static final int timerPickerSleepOn=0x7f08003d;
-        public static final int tvSetSleepOff=0x7f08003e;
-        public static final int tvSetSleepOn=0x7f08003c;
+        public static final int timePickerSleepOff=0x7f080042;
+        public static final int timerPickerSleepOn=0x7f080040;
+        public static final int tvSetSleepOff=0x7f080041;
+        public static final int tvSetSleepOn=0x7f08003f;
         public static final int tvSleepHours=0x7f080008;
         public static final int tvTimeInterval=0x7f08000f;
         public static final int tvTimeOff=0x7f08000c;
@@ -118,6 +121,8 @@ public final class R {
         public static final int label_time_on=0x7f04001f;
         public static final int menu_settings=0x7f040002;
         public static final int report_bug=0x7f040029;
+        public static final int screen_on_delay=0x7f040030;
+        public static final int screen_on_delay_desc=0x7f040031;
         public static final int time_off=0x7f040016;
         public static final int time_off_desc=0x7f040017;
         public static final int time_on=0x7f040012;
