@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -623,8 +624,12 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		// save all settings
 		validateSettings();
+		
+		
 
 		super.onDestroy();
+		
+		System.exit(0);
 	}
 
 	// whenever application is no more in the foreground
