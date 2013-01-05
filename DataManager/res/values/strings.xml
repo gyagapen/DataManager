@@ -1,9 +1,9 @@
 <resources>
 
-    <string name="app_name">CleverConnectivity</string>
+    <string name="app_name">CleverConnectivity Ads</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">CleverConnectivity</string>
+    <string name="title_activity_main">CleverConnectivity Ads</string>
     <string name="toggle_data">Data Connection</string>
     <string name="toggle_data_desc">Enable or disable data (3G) connection. You can also enable/disable data outside this application, there won\'t be any conflitcts</string>
     <string name="toggle_data_manager">Data Manager</string>

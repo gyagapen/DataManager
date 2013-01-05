@@ -21,12 +21,12 @@ public final class R {
     public static final class id {
         public static final int EditTextScreenDelay=0x7f080039;
         public static final int EditTextTimeOnCheck=0x7f080032;
-        public static final int adViewMainEnd=0x7f080040;
+        public static final int adViewMainEnd=0x7f080041;
         public static final int adViewMainStart=0x7f080010;
         public static final int buttonLogFile=0x7f08003c;
         public static final int buttonReportBug=0x7f08003e;
         public static final int buttonSave=0x7f08000e;
-        public static final int buttonSaveSleepHours=0x7f080045;
+        public static final int buttonSaveSleepHours=0x7f080046;
         public static final int button_edit_sleep_hours=0x7f080009;
         public static final int checkBoxAutoSync=0x7f080004;
         public static final int checkBoxAutoSyncMgr=0x7f080024;
@@ -41,7 +41,7 @@ public final class R {
         public static final int editTextInterval=0x7f08000d;
         public static final int editTextTimeOff=0x7f08000b;
         public static final int editTextTimeOn=0x7f080007;
-        public static final int menu_settings=0x7f080046;
+        public static final int menu_settings=0x7f080047;
         public static final int tableRow1=0x7f080016;
         public static final int tableRow10=0x7f080022;
         public static final int tableRow11=0x7f080026;
@@ -82,14 +82,15 @@ public final class R {
         public static final int textView7=0x7f08003f;
         public static final int textView8=0x7f08002c;
         public static final int textView9=0x7f08002e;
-        public static final int timePickerSleepOff=0x7f080044;
-        public static final int timerPickerSleepOn=0x7f080042;
-        public static final int tvSetSleepOff=0x7f080043;
-        public static final int tvSetSleepOn=0x7f080041;
+        public static final int timePickerSleepOff=0x7f080045;
+        public static final int timerPickerSleepOn=0x7f080043;
+        public static final int tvSetSleepOff=0x7f080044;
+        public static final int tvSetSleepOn=0x7f080042;
         public static final int tvSleepHours=0x7f080008;
         public static final int tvTimeInterval=0x7f08000f;
         public static final int tvTimeOff=0x7f08000c;
         public static final int tvTimeOn=0x7f08000a;
+        public static final int version=0x7f080040;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

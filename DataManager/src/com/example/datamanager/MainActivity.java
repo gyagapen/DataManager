@@ -45,7 +45,7 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	// mail data
 	private final String MAIL_RECIPIENT = "gyagapen@gmail.com";
-	private final String MAIL_SUBJECT = "CleverConnectivity Paid Bug Report";
+	private final String MAIL_SUBJECT = "CleverConnectivity Bug Report";
 
 	// ui components
 	private CheckBox cbData = null;
@@ -232,6 +232,9 @@ public class MainActivity extends Activity implements OnClickListener,
 		String sleepTimeOff = sharedPrefsEditor.getSleepTimeOff();
 
 		edSleepHours.setText(sleepTimeOn + "-" + sleepTimeOff);
+		
+		TextView versionTv = (TextView)findViewById(R.id.version);
+		versionTv.setText(getVersionName());
 
 	}
 
@@ -254,13 +257,7 @@ public class MainActivity extends Activity implements OnClickListener,
 			Intent email = new Intent(Intent.ACTION_SEND);
 			email.putExtra(Intent.EXTRA_EMAIL, new String[] { MAIL_RECIPIENT });
 
-			String versionName = "";
-			try {
-				versionName = this.getPackageManager().getPackageInfo(
-						this.getPackageName(), 0).versionName;
-			} catch (NameNotFoundException e) {
-				e.printStackTrace();
-			}
+			String versionName = getVersionName();
 
 			email.putExtra(Intent.EXTRA_SUBJECT, MAIL_SUBJECT + " - "
 					+ versionName);
@@ -688,6 +685,21 @@ public class MainActivity extends Activity implements OnClickListener,
 				+ LOG_FILE_NAME);
 		intent.setDataAndType(logFileUri, "text/plain");
 		startActivity(intent);
+	}
+	
+	//get version number of the application
+	public String getVersionName()
+	{
+		String versionName = "";
+		try {
+			versionName = this.getPackageManager().getPackageInfo(
+					this.getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return versionName;
+	
 	}
 
 }
