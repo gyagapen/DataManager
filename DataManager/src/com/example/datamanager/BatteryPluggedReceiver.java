@@ -27,23 +27,7 @@ public class BatteryPluggedReceiver extends BroadcastReceiver {
 
 		if(!sharedPrefsEditor.isServiceDeactivatedAll() && sharedPrefsEditor.isDeactivatedWhilePlugged())
 		{
-		
-			/*int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-			
-			if (plugged == BatteryManager.BATTERY_PLUGGED_AC ||  plugged == BatteryManager.BATTERY_PLUGGED_USB){
-				
-				Log.i("Plug", "Phone is plugged");
-				
-				//deactivate service
-				MainActivity.stopDataManagerService(context);
-	
-			} else{
-				
-				Log.i("Plug", "Phone is UNplugged");
-		
-				MainActivity.StartDataManagerService(context);
-				
-			}*/
+
 			
 			String action = intent.getAction();
 
@@ -51,6 +35,11 @@ public class BatteryPluggedReceiver extends BroadcastReceiver {
 		    	Log.i("Plug", "Phone is plugged");
 				
 				//deactivate service
+		    	try {
+					dataActivation.setConnectivityEnabled(sharedPrefsEditor);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				MainActivity.stopDataManagerService(context);
 	
 		    }
