@@ -44,6 +44,9 @@ public class ScreenReceiver extends BroadcastReceiver {
 				connPrefs.saveAllConnectionSettingInSharedPrefs();
 
 				screenOff = true;
+				
+				//set is firt time on to true
+				sharedPrefsEditor.setIsFirstTimeOn(true);
 
 			} else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 
@@ -51,15 +54,13 @@ public class ScreenReceiver extends BroadcastReceiver {
 
 			}
 			
+			Log.i("CConnectivity", "screen is "+!screenOff);
+			
 			if(!screenOff && !sharedPrefsEditor.isScreenOnDelayed() && sharedPrefsEditor.getScreenDelayTimer() >0)
 			{
 				Log.i("Screen delay", "screen is delayed for: "+timeScreenDelay+"ms");
 				
-				/*timerScreenDelay = new Timer();
-				timerScreenDelayTask = new TimerScreenDelayTask(context);
-				
-				sharedPrefsEditor.setScreenOnIsDelayed(true);
-				timerScreenDelay.schedule(timerScreenDelayTask, timeScreenDelay);*/
+
 				TimersSetUp timerSetUp = new TimersSetUp(context);
 				timerSetUp.StartScreenDelayTimer();
 			}

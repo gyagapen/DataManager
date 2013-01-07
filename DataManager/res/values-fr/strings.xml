@@ -21,18 +21,18 @@
     <string name="time_on">Période active (min)</string>
     <string name="time_on_desc">Nombre de minutes où la connectivité (3G/Wifi/Sync) est gardée active lorsque l\'écran est éteint</string>
     <string name="time_on_check">Période prochain test (min)</string>
-    <string name="time_on_check_desc">Nombre de minutes où la connectivité est gardée active juste après que la période "TIME ON" soit expirée et que le test d\'utilisation des données ait été positif. Après ce délais, un autre test concernant l\'utilisation des données sera fait. Si la connectivité est utilisée, ce "timer" redémarrera, sinon la connectivité sera désactivée et la période "Time Off" débutera.</string>
+    <string name="time_on_check_desc">Nombre de minutes où la connectivité est gardée active juste après que la période active soit expirée et que le test d\'utilisation des données ait été positif. Après ce délais, un autre test concernant l\'utilisation des données sera fait. Si la connectivité est utilisée, ce "timer" redémarrera, sinon la connectivité sera désactivée et la période inactive débutera.</string>
     <string name="time_off">Période morte (min)</string>
     <string name="time_off_desc">Nombre de minutes où la connectivité (3G/Wifi/Sync) est désactivées lorsque l\'écran est éteint</string>
     <string name="interval_check">Période test utilisation (s)</string>
     <string name="interval_check_desc">Nombre de secondes où l\'application va tester si la connectivité (3G/Wifi) est utilisée. Plus la période définie est grande, plus les chances d\'interrompre les téléchargements ou streaming sont faibles. Cependant, la connectivité sera également gardée active plus longtemps et donc entraînement une consommation accrue de la batterie</string>
     <string name="button_save">Sauvegarder</string>
-    <string name="toggle_sleep_hours">Horaires de veille</string>
-    <string name="toggle_sleep_hours_desc">Pendant les horaires de veille, la connectivité (3G/Wifi/Sync) sera désactivée dès que l\'écran est éteint</string>
+    <string name="toggle_sleep_hours">Mode nuit</string>
+    <string name="toggle_sleep_hours_desc">Pendant les horaires de nuit, la connectivité (3G/Wifi/Sync) sera désactivée dès que l\'écran est éteint</string>
     <string name="label_sleep_hours">Sleep Hours :</string>
     <string name="button_change_sleep_hours">Modifier</string>
-    <string name="label_time_on">Time On(min)</string>
-    <string name="label_time_off">Time Off(min)</string>
+    <string name="label_time_on">Période active (min)</string>
+    <string name="label_time_off">Période inactive (min)</string>
     <string name="label_time_Interval">Interval Check(sec)</string>
     <string name="label_sleep_off">Eteindre le service à</string>
     <string name="label_sleep_off_desc">La connectivité (3G/Wifi/Sync) sera désactivée à cette heure (uniquement lorsque l\'écran est éteint). Le service principal de l\'application sera désactivée</string>
@@ -50,6 +50,16 @@
     <string name="deactivate_service__plugged_desc">Cela stoppera définitivement le service principal de l\'application lorsque le téléphone est branché à une source d\'énergie</string>
     <string name="screen_on_delay">Retarder la connexion (s)</string>
     <string name="screen_on_delay_desc">Lorsque l\'écran est allumé, la connectivité sera rétablie après ce délais (en secondes). Si l\'écran est éteint avant que ce délais expire, le cycle actif/inactif continuera normalement. Cela vous permet de consulter rapidement votre écran de verrouillage pendant quelques secondes sans pertuber le service</string>
+    <string name="advanced">Avancées</string>
+    <string name="cbox_diff_first_time_on">Différencier première pèriode active</string>
+    <string name="first_time_on">Première pèriode active</string>
+    <string name="first_time_on_desc">Dès que l\'écran est éteint, les connexions de données resteront actives pendant cette période au lieu de la période active d\'origine. Cependant, après la période INactive, ce sera la période d\'activité d\'origine qui sera prise en compte. Ce "timer" ne sert donc que pour la premère période active</string>
+    <string name="general_title">Général</string>
+    <string name="data_title">Données</string>
+    <string name="wifi_title">Wifi</string>
+    <string name="sync_title">Sync</string>
+    <string name="sleep_title">Mode nuit</string>
+    <string name="timers_title">Périodes</string>
     
     
     <color name="separator">#B2E0FF</color>

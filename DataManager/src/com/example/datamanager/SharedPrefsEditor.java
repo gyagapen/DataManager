@@ -35,6 +35,9 @@ public class SharedPrefsEditor {
 	static final String STR_DATA_ACTIVATION_DELAYED="dataActivationDelayed";
 	static final String STR_SCREEN_ON_ACTIVATION_DELAYED="screenOnActivationDelayed";
 	static final String STR_SCREEN_DELAY_TIMER="screenDelayTimer";
+	static final String STR_FIRST_TIME_ON_IS_ACTIVATED="firstTimeOnIsActivated";
+	static final String STR_FIRST_TIME_ON_VALUE="firstTimeOnValue";
+	static final String STR_IS_FIRST_TIME_ON="isFirstTimeOn";
 
 	// Default values
 	static final int TIME_ON = 2; // min
@@ -42,6 +45,7 @@ public class SharedPrefsEditor {
 	static final int TIME_ON_CHECK = 1; // min
 	static final int INTERVAL_CHECK = 2; // seconds
 	static final int SCREEN_DELAY_TIMER = 0; // seconds
+	static final int FIRST_TIME_ON_VALUE=3;//min
 	static final boolean PREFS_ARE_ESTABLISHED = true;
 	static final boolean DATA_IS_ACTIVATED = true;
 	static final boolean DATA_MGR_IS_ACTIVATED = true;
@@ -61,6 +65,8 @@ public class SharedPrefsEditor {
 	static final boolean DEACTIVATE_ALL=false;
 	static final boolean DATA_ACTIVATION_DELAYED=false;
 	static final boolean SCREEN_ON_ACTIVATION_DELAYED=false;
+	static final boolean FIRST_TIME_ON_IS_ACTIVATED=false;
+	static final boolean IS_FIRST_TIME_ON=false;
 
 	// gives access to connection states
 	DataActivation dataConnectionState;
@@ -111,6 +117,8 @@ public class SharedPrefsEditor {
 			prefEditor.putBoolean(STR_DEACTIVATE_ALL, DEACTIVATE_ALL);
 			prefEditor.putBoolean(STR_DATA_ACTIVATION_DELAYED, DATA_ACTIVATION_DELAYED);
 			prefEditor.putBoolean(STR_SCREEN_ON_ACTIVATION_DELAYED, SCREEN_ON_ACTIVATION_DELAYED);
+			prefEditor.putBoolean(STR_FIRST_TIME_ON_IS_ACTIVATED, FIRST_TIME_ON_IS_ACTIVATED);
+			prefEditor.putInt(STR_FIRST_TIME_ON_VALUE, FIRST_TIME_ON_VALUE);
 
 			prefEditor.commit();
 		}
@@ -148,6 +156,8 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_DEACTIVATE_ALL, DEACTIVATE_ALL);
 		prefEditor.putBoolean(STR_DATA_ACTIVATION_DELAYED, DATA_ACTIVATION_DELAYED);
 		prefEditor.putBoolean(STR_SCREEN_ON_ACTIVATION_DELAYED, SCREEN_ON_ACTIVATION_DELAYED);
+		prefEditor.putBoolean(STR_FIRST_TIME_ON_IS_ACTIVATED, FIRST_TIME_ON_IS_ACTIVATED);
+		prefEditor.putInt(STR_FIRST_TIME_ON_VALUE, FIRST_TIME_ON_VALUE);
 		prefEditor.commit();
 	}
 
@@ -167,10 +177,25 @@ public class SharedPrefsEditor {
 		return dataManagerSettings.getInt(STR_SCREEN_DELAY_TIMER, SCREEN_DELAY_TIMER);
 	}
 	
+	public int getFirstTimeOn(){
+		return dataManagerSettings.getInt(STR_FIRST_TIME_ON_VALUE, FIRST_TIME_ON_VALUE);
+	}
+	
 	public boolean isSleeping()
 	{
 		return dataManagerSettings.getBoolean(STR_IS_SLEEPING, IS_SLEEPING);
 	}
+	
+	public boolean isFirstTimeOn()
+	{
+		return dataManagerSettings.getBoolean(STR_IS_FIRST_TIME_ON, IS_FIRST_TIME_ON);
+	}
+	
+	public boolean isFirstTimeOnIsActivated()
+	{
+		return dataManagerSettings.getBoolean(STR_FIRST_TIME_ON_IS_ACTIVATED, FIRST_TIME_ON_IS_ACTIVATED);
+	}
+	
 
 	public int getIntervalCheck() {
 		return dataManagerSettings.getInt(STR_INTERVAL_CHECK, INTERVAL_CHECK);
@@ -281,6 +306,11 @@ public class SharedPrefsEditor {
 		prefEditor.commit();
 	}
 	
+	public void setFirstTimeOn(int firstTimeOn) {
+		prefEditor.putInt(STR_FIRST_TIME_ON_VALUE, firstTimeOn);
+		prefEditor.commit();
+	}
+	
 	public void setScreenDelayTimer(int delayTimer) {
 		prefEditor.putInt(STR_SCREEN_DELAY_TIMER, delayTimer);
 		prefEditor.commit();
@@ -288,6 +318,11 @@ public class SharedPrefsEditor {
 
 	public void setTimeOff(int timeOff) {
 		prefEditor.putInt(STR_TIME_OFF, timeOff);
+		prefEditor.commit();
+	}
+	
+	public void setIsFirstTimeOn(boolean isFirstTimeon) {
+		prefEditor.putBoolean(STR_IS_FIRST_TIME_ON, isFirstTimeon);
 		prefEditor.commit();
 	}
 
@@ -298,6 +333,11 @@ public class SharedPrefsEditor {
 
 	public void setDataActivation(boolean isEnabled) {
 		prefEditor.putBoolean(STR_DATA_IS_ACTIVATED, isEnabled);
+		prefEditor.commit();
+	}
+	
+	public void setFirstTimeOnIsActivated(boolean isEnabled) {
+		prefEditor.putBoolean(STR_FIRST_TIME_ON_IS_ACTIVATED, isEnabled);
 		prefEditor.commit();
 	}
 	
@@ -377,7 +417,11 @@ public class SharedPrefsEditor {
 
 	public void setAllValues(int timeOn, int timeOff, int checkTime,
 			boolean dataIsEnabled, boolean dataMgrIsEnabled,
-			boolean wifiIsEnabled, boolean wifiMgrIsEnabled, boolean autoSyncIsActivated, boolean autoWifiOffIsActivated, boolean sleepHoursIsActivated, boolean isAutoSyncMgrIsActivated, boolean serviceIsDeactivated, boolean serviceIsDeactivatedWhilePlugged, int timeOnCheck, int screenDelayTimer ) {
+			boolean wifiIsEnabled, boolean wifiMgrIsEnabled, boolean autoSyncIsActivated,
+			boolean autoWifiOffIsActivated, boolean sleepHoursIsActivated, boolean isAutoSyncMgrIsActivated, 
+			boolean serviceIsDeactivated, boolean serviceIsDeactivatedWhilePlugged, int timeOnCheck, int screenDelayTimer,
+			boolean isFirsTimeOnIsActivated, int firstTimeOnValue) {
+		
 		prefEditor.putInt(STR_TIME_ON, timeOn);
 		prefEditor.putInt(STR_TIME_ON_CHECK, timeOnCheck);
 		prefEditor.putInt(STR_TIME_OFF, timeOff);
@@ -394,7 +438,8 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_DEACTIVATE_ALL, serviceIsDeactivated);
 		prefEditor.putBoolean(STR_DEACTIVATE_PLUGGED, serviceIsDeactivatedWhilePlugged);
 		prefEditor.putBoolean(STR_SCREEN_ON_ACTIVATION_DELAYED, false);
-		
+		prefEditor.putBoolean(STR_FIRST_TIME_ON_IS_ACTIVATED, isFirsTimeOnIsActivated);
+		prefEditor.putInt(STR_FIRST_TIME_ON_VALUE, firstTimeOnValue);
 		
 		prefEditor.commit();
 	}

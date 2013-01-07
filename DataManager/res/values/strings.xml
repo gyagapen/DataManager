@@ -50,10 +50,20 @@
     <string name="deactivate_service__plugged_desc">This will stop the main service of the application e.g all features of the app only when the phone is PLUGGED.</string>
     <string name="screen_on_delay">Screen On Connectivity Delay (s)</string>
     <string name="screen_on_delay_desc">When screen is turned ON, connectivity will be re-enabled after this delay (in seconds). If the screen is turned off before the delay expires, the ON-OFF cycle will continue as normal. For example, this will allow to answer calls without disturbing the ON-OFF cycle</string>
-    
+    <string name="advanced">Advanced</string>
+    <string name="cbox_diff_first_time_on">Differentiate first Time On</string>
+    <string name="first_time_on">First Time On</string>
+    <string name="first_time_on_desc">When the screen is just turned off, this timer will kick in instead of the regular Time On. But after expiration of Time Off, it\'s still the regular Time On that will be taken into consideration. </string>
+    <string name="general_title">General</string>
+    <string name="data_title">Data</string>
+    <string name="wifi_title">Wifi</string>
+    <string name="sync_title">Sync</string>
+    <string name="sleep_title">Sleep mode</string>
+    <string name="timers_title">Timers</string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>
+    
     
 
 </resources>

@@ -73,6 +73,23 @@ public class TimersSetUp {
 		
 		// value of timer on
 		int timerOn = sharedPrefsEditor.getTimeOn();
+		
+		//first time on
+		if(sharedPrefsEditor.isFirstTimeOnIsActivated())
+		{
+			if(sharedPrefsEditor.isFirstTimeOn())
+			{
+				Log.i("CConnectivity", "first time on detected");
+				
+				timerOn = sharedPrefsEditor.getFirstTimeOn();
+				
+				//set first time on to false
+				sharedPrefsEditor.setIsFirstTimeOn(false);
+				
+			}
+		}
+		
+		
 	
 		StartTimerOn(timerOn);
 	}

@@ -80,6 +80,25 @@ public class MainService extends Service {
 		Notification note = new Notification( 0, null, System.currentTimeMillis() );
 	    note.flags |= Notification.FLAG_NO_CLEAR;
 	    startForeground( 42, note );
+	    
+	    //start time on if screen is off
+	    if(!dataActivation.isScreenIsOn())
+	    {
+	    	
+	    	if(sharedPrefsEditor.isFirstTimeOn())
+	    	{
+	    		//save connections preferences
+	    		SaveConnectionPreferences saveConPrefs = new SaveConnectionPreferences(getBaseContext());
+	    		saveConPrefs.saveAllConnectionSettingInSharedPrefs();
+	    	}
+	    	
+	    	Intent i = new Intent(getBaseContext(), MainService.class);
+	    	
+			i.putExtra("screen_state", true);
+			
+			getBaseContext().startService(i);
+	    }
+	    
 	}
 
 	// when service starts

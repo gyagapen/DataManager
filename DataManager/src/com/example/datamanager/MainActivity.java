@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import android.R.color;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -15,6 +16,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -68,6 +70,10 @@ public class MainActivity extends Activity implements OnClickListener,
 	private Button buttonEditSleepHours = null;
 	private Button buttonReportBug = null;
 	private Button buttonViewLogFile = null;
+	private CheckBox cboxFirstTimeOn = null;
+	private TextView tvFirstTimeOn = null;
+	private TextView tvFirstTimeOnDesc = null;
+	private EditText edFirstTimeOn = null;
 	
 	// private AdView mainStartAdView = null;
 	// private AdView mainEndAdView = null;
@@ -163,16 +169,13 @@ public class MainActivity extends Activity implements OnClickListener,
 		edInterval = (EditText) findViewById(R.id.editTextInterval);
 		edScreenOnDelay = (EditText) findViewById(R.id.EditTextScreenDelay);
 
-		/*
-		 * mainStartAdView = (AdView)findViewById(R.id.adViewMainStart);
-		 * mainEndAdView = (AdView)findViewById(R.id.adViewMainEnd);
-		 * 
-		 * if(!APPLICATION_IS_FREE) { //if application is a paid app, then no
-		 * ads mainStartAdView.destroy(); mainEndAdView.destroy();
-		 * 
-		 * } else { //load ads mainEndAdView.loadAd(new AdRequest());
-		 * mainStartAdView.loadAd(new AdRequest()); }
-		 */
+		//load fields related to firstTimeOn
+		tvFirstTimeOn = (TextView) findViewById(R.id.textViewFirstTimeOn);
+		tvFirstTimeOnDesc = (TextView) findViewById(R.id.textViewFirstTimeOnDesc);
+		cboxFirstTimeOn = (CheckBox)findViewById(R.id.checkBoxFirstTimeOn);
+		cboxFirstTimeOn.setOnCheckedChangeListener(this);
+		edFirstTimeOn = (EditText)findViewById(R.id.EditTextFirstTimeOn);
+		
 
 	}
 
@@ -228,6 +231,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		boolean serviceIsDeactivatedPlugged = sharedPrefsEditor.isDeactivatedWhilePlugged();
 		cbServiceIsDeactivatedPlugged.setChecked(serviceIsDeactivatedPlugged); 
 
+		//sleep hours
 		String sleepTimeOn = sharedPrefsEditor.getSleepTimeOn();
 		String sleepTimeOff = sharedPrefsEditor.getSleepTimeOff();
 
@@ -235,6 +239,14 @@ public class MainActivity extends Activity implements OnClickListener,
 		
 		TextView versionTv = (TextView)findViewById(R.id.version);
 		versionTv.setText(getVersionName());
+		
+		
+		//show or hide first time on fields
+		cboxFirstTimeOn.setChecked(sharedPrefsEditor.isFirstTimeOnIsActivated());
+		edFirstTimeOn.setText(String.valueOf(sharedPrefsEditor.getFirstTimeOn()));
+		
+		activateFirstTimeOn(sharedPrefsEditor.isFirstTimeOnIsActivated());
+		
 
 	}
 
@@ -300,6 +312,12 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+		 if(buttonView == cboxFirstTimeOn)
+		 {
+			 boolean isFirstTimeOnActivated = cboxFirstTimeOn.isChecked();
+			 activateFirstTimeOn(isFirstTimeOnActivated);
+		 }
+		
 	}
 
 	// manage result from other activity
@@ -521,6 +539,16 @@ public class MainActivity extends Activity implements OnClickListener,
 		{
 			timeScreenOnDelay = sharedPrefsEditor.getScreenDelayTimer();
 		}
+		
+		int firstTimeOn = 0;
+		try
+		{
+			firstTimeOn = Integer.parseInt(edFirstTimeOn.getText().toString());
+		}
+		catch(Exception e)
+		{
+			firstTimeOn = sharedPrefsEditor.getFirstTimeOn();
+		}
 
 		boolean dataIsActivated = cbData.isChecked();
 		boolean dataMgrIsActivated = cbDataMgr.isChecked();
@@ -538,12 +566,16 @@ public class MainActivity extends Activity implements OnClickListener,
 		
 		boolean isServiceDeactived = cbServiceIsDeactivated.isChecked();
 		boolean isServiceDeactivatedPlugged = cbServiceIsDeactivatedPlugged.isChecked();
+		
+		boolean isFirstTimeOnIsActivated = cboxFirstTimeOn.isChecked();
 
 		// save all these preferences
 		sharedPrefsEditor.setAllValues(timeOn, timeOff, intervalCheck,
 				dataIsActivated, dataMgrIsActivated, wifiIsActivated,
 				wifiMgrIsActivated, autoSyncIsActivated, autoWifiIsActivated,
-				sleepHoursIsActivated, isAutoSyncMgrIsActivated, isServiceDeactived,isServiceDeactivatedPlugged, timeOnCheck,timeScreenOnDelay);
+				sleepHoursIsActivated, isAutoSyncMgrIsActivated, 
+				isServiceDeactived,isServiceDeactivatedPlugged, timeOnCheck,timeScreenOnDelay,
+				isFirstTimeOnIsActivated, firstTimeOn);
 
 		try {
 			// if data is disabled; data connection is stopped
@@ -627,6 +659,8 @@ public class MainActivity extends Activity implements OnClickListener,
 		super.onDestroy();
 		
 		System.exit(0);
+		
+		
 	}
 
 	// whenever application is no more in the foreground
@@ -637,6 +671,7 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		super.onPause();
 	}
+	
 
 	/**
 	 * whenever application is bring to foreground
@@ -701,5 +736,42 @@ public class MainActivity extends Activity implements OnClickListener,
 		return versionName;
 	
 	}
+	
+	
+	/**
+	 * SHow or hide fields related to first time off
+	 * @param isActivate
+	 */
+	private void activateFirstTimeOn(boolean isActivate)
+	{
+		//setting background to dark grey
+		/*tvFirstTimeOn.setBackgroundColor(color.background_light);
+		tvFirstTimeOnDesc.setBackgroundColor(color.background_light);
+		edFirstTimeOn.setBackgroundColor(color.background_light);
+		cboxFirstTimeOn.setBackgroundColor(color.background_light);*/
+		
+		if(!isActivate)
+		{
+			//hide fields related to first time off
+			tvFirstTimeOn.setEnabled(false);
+			tvFirstTimeOnDesc.setEnabled(false);
+			edFirstTimeOn.setEnabled(false);
+			
+			//revert backgrounf color of checkbox
+			//cboxFirstTimeOn.setBackgroundColor(color.black);
+		}
+		else
+		{
+			//show fields related to first time off
+			tvFirstTimeOn.setEnabled(true);
+			tvFirstTimeOnDesc.setEnabled(true);
+			edFirstTimeOn.setEnabled(true);
+			
+			
+		}
+	}
+	
+	
+
 
 }
