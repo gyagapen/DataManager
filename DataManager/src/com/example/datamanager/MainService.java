@@ -57,10 +57,6 @@ public class MainService extends Service {
 
 		registerReceiver(mReceiver, filter);
 
-		// Timers implementation
-		/*timerScreenDelay = new Timer();
-		timerScreenDelayTask = new TimerScreenDelayTask(getBaseContext());*/
-
 		
 		timerSetUp = new TimersSetUp(this);
 
@@ -126,8 +122,22 @@ public class MainService extends Service {
 			timerSetUp.CancelTimerOn();
 
 			// activate data or wifi
-			try {
-				dataActivation.setConnectivityEnabled(sharedPrefsEditor);
+			try 
+			{
+				//if auto wifi on is enabled
+				if(sharedPrefsEditor.isAutoWifiOnActivated() && !sharedPrefsEditor.isWifiManagerActivated())
+				{
+					//cheking wether to enable wifi if known networks are avalaible
+					dataActivation.checkWifiScanResults(sharedPrefsEditor);
+					
+					//enable 3g and sync meanwhile
+					dataActivation.setAutoSync(true, sharedPrefsEditor, false);
+					dataActivation.setMobileDataEnabled(true);
+				}
+				else
+				{
+					dataActivation.setConnectivityEnabled(sharedPrefsEditor);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -153,7 +163,6 @@ public class MainService extends Service {
 			else
 			{
 				//start timer
-				//StartTimerOn();
 				timerSetUp.StartTimerOn();
 			}
 			

@@ -34,8 +34,20 @@ public class TimerOffReceiver extends BroadcastReceiver {
 		//enable connectivity
 		try {
 			
-			
-			dataActivation.setConnectivityEnabled(sharedPrefsEditor); 
+			//if auto-wifi on is activated, will check for wifi availability
+			if(!sharedPrefsEditor.isWifiActivated() && sharedPrefsEditor.isAutoWifiOnActivated())
+			{
+				//cheking wether to enable wifi if known networks are avalaible
+				dataActivation.checkWifiScanResults(sharedPrefsEditor);
+				
+				//enable 3g and sync meanwhile
+				dataActivation.setAutoSync(true, sharedPrefsEditor, false);
+				dataActivation.setMobileDataEnabled(true);
+			}
+			else
+			{
+				dataActivation.setConnectivityEnabled(sharedPrefsEditor);
+			}
 
 			
 		} catch (Exception e) {

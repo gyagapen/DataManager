@@ -63,6 +63,24 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 				// start service
 				Intent i = new Intent(context, MainService.class);
+				
+				//if screen is off
+				if(!dataActivation.isScreenIsOn())
+				{
+					
+					//set first time on to false
+					sharedPrefsEditor.setIsFirstTimeOn(false);
+					
+					//restart the cycle
+					try {
+						
+						dataActivation.setConnectivityEnabled(sharedPrefsEditor);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					i.putExtra("screen_state", true);
+				}
+				
 				context.startService(i);
 
 			}

@@ -18,6 +18,8 @@
     <string name="toggle_auto_sync_desc">Active ou désactive toutes les synchronisations. Ces synchronisations peuvent aussi être (dés)activées en dehors de l\'application (dans les paramètres ou sur la barre de notification), cela ne causera aucun conflit.</string>
     <string name="toggle_auto_wifi_off">Auto-Wifi Off</string>
     <string name="toggle_auto_wifi_off_desc">Ce service désactive automatiquement le wifi après une période définie lorsque l\'écran est éteint et qu\'aucun réseau wifi connu n\'est détecté</string>
+    <string name="toggle_auto_wifi_on">Auto-Wifi On</string>
+    <string name="toggle_auto_wifi_on_desc">Ce service dactive automatiquement le wifi lorsqu\' un réseau wifi connu est détecté</string>
     <string name="time_on">Période active (min)</string>
     <string name="time_on_desc">Nombre de minutes où la connectivité (3G/Wifi/Sync) est gardée active lorsque l\'écran est éteint</string>
     <string name="time_on_check">Période prochain test (min)</string>

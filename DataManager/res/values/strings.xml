@@ -18,6 +18,8 @@
     <string name="toggle_auto_sync_desc">Enable or disable synchronizing. You can also enable/disable wifi outside this application, there won\'t be any conflitcts</string>
     <string name="toggle_auto_wifi_off">Auto-Wifi Off</string>
     <string name="toggle_auto_wifi_off_desc">Auto-Wifi Off will automatically disable wifi after after a defined period if screen is OFF and no known networks are available</string>
+    <string name="toggle_auto_wifi_on">Auto-Wifi On</string>
+    <string name="toggle_auto_wifi_on_desc">Auto-Wifi On will automatically enable wifi after after a defined period if wifi is disabled and known networks are available</string>
     <string name="time_on">Time On (min)</string>
     <string name="time_on_desc">Number of minutes where data connectivity is ON when screen is shutdown</string>
     <string name="time_on_check">Time On Next Check (min)</string>
@@ -28,7 +30,7 @@
     <string name="interval_check_desc">Number of seconds where the application will check is  data connections (Wifi/3G) are used. A greater value will decrease the chance of interrupting downloads/streaming/syncing but will keep connections alived for longer and thus consume more battery</string>
     <string name="button_save">Save preferences</string>
     <string name="toggle_sleep_hours">Sleep Hours</string>
-    <string name="toggle_sleep_hours_desc">During sleep hours all data connections will be desactivated when screen is OFF</string>
+    <string name="toggle_sleep_hours_desc">During sleep hours all data connections will be deactivated when screen is OFF</string>
     <string name="label_sleep_hours">Sleep Hours :</string>
     <string name="button_change_sleep_hours">Edit</string>
     <string name="label_time_on">Time On(min)</string>

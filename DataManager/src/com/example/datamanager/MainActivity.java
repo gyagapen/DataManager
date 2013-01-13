@@ -57,6 +57,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	private CheckBox cbAutoSync = null;
 	private CheckBox cbAutoSyncMgr = null;
 	private CheckBox cbAutoWifiOff = null;
+	private CheckBox cbAutoWifiOn = null;
 	private CheckBox cbSleepHours = null;
 	private CheckBox cbServiceIsDeactivated = null;
 	private CheckBox cbServiceIsDeactivatedPlugged = null;
@@ -156,6 +157,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		cbAutoSync = (CheckBox) findViewById(R.id.checkBoxAutoSync);
 		cbAutoSyncMgr = (CheckBox) findViewById(R.id.checkBoxAutoSyncMgr);
 		cbAutoWifiOff = (CheckBox) findViewById(R.id.checkBoxAutoWifiOff);
+		cbAutoWifiOn = (CheckBox) findViewById(R.id.CheckBoxAutoWifiOn);
 		cbSleepHours = (CheckBox) findViewById(R.id.checkBoxSleepHours);
 		
 		cbServiceIsDeactivated = (CheckBox) findViewById(R.id.checkBoxDeactivateAll);
@@ -220,6 +222,10 @@ public class MainActivity extends Activity implements OnClickListener,
 		boolean autoWifiOffIsActivated = sharedPrefsEditor
 				.isAutoWifiOffActivated();
 		cbAutoWifiOff.setChecked(autoWifiOffIsActivated);
+		
+		boolean autoWifiOnIsActivated = sharedPrefsEditor
+				.isAutoWifiOnActivated();
+		cbAutoWifiOn.setChecked(autoWifiOnIsActivated);
 
 		boolean sleepHoursIsActivated = sharedPrefsEditor
 				.isSleepHoursActivated();
@@ -559,6 +565,8 @@ public class MainActivity extends Activity implements OnClickListener,
 		boolean autoSyncIsActivated = cbAutoSync.isChecked();
 
 		boolean autoWifiIsActivated = cbAutoWifiOff.isChecked();
+		
+		boolean autoWifiOnIsActivated = cbAutoWifiOn.isChecked();
 
 		boolean sleepHoursIsActivated = cbSleepHours.isChecked();
 
@@ -575,7 +583,7 @@ public class MainActivity extends Activity implements OnClickListener,
 				wifiMgrIsActivated, autoSyncIsActivated, autoWifiIsActivated,
 				sleepHoursIsActivated, isAutoSyncMgrIsActivated, 
 				isServiceDeactived,isServiceDeactivatedPlugged, timeOnCheck,timeScreenOnDelay,
-				isFirstTimeOnIsActivated, firstTimeOn);
+				isFirstTimeOnIsActivated, firstTimeOn, autoWifiOnIsActivated);
 
 		try {
 			// if data is disabled; data connection is stopped

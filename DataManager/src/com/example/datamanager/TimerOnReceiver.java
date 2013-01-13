@@ -74,7 +74,7 @@ public class TimerOnReceiver extends BroadcastReceiver {
 				if(sharedPrefsEditor.isAutoWifiOffActivated() && sharedPrefsEditor.isWifiActivated())
 				{
 					Log.i("Auto Wifi Off", "Launch check");
-					dataActivation.checkWifiScanResults();
+					dataActivation.checkWifiScanResults(sharedPrefsEditor);
 					
 					//3g and auto sync off
 					if(sharedPrefsEditor.isDataMgrActivated())

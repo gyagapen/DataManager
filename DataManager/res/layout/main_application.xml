@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
         
-           <com.google.ads.AdView
+          <!--  <com.google.ads.AdView
                         android:id="@+id/adViewMainStart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
                         ads:adUnitId="a150d57cebe0f76"
                         ads:loadAdOnCreate="true"
                          >
-          </com.google.ads.AdView>
+          </com.google.ads.AdView> -->
 
         <TableLayout
             android:layout_width="match_parent"
@@ -194,6 +194,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/toggle_auto_wifi_off_desc" />
+
+                    <CheckBox
+                        android:id="@+id/CheckBoxAutoWifiOn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/toggle_auto_wifi_on" />
+
+                    <TextView
+                        android:id="@+id/TextView07"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/toggle_auto_wifi_on_desc" />
 
                 </LinearLayout>
 
@@ -612,14 +624,14 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/name" />
 
-                     <com.google.ads.AdView
+                     <!-- <com.google.ads.AdView
                         android:id="@+id/adViewMainEnd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         ads:adSize="BANNER"
                         ads:adUnitId="a150d57cebe0f76"
                         ads:loadAdOnCreate="true" >
-                    </com.google.ads.AdView>
+                    </com.google.ads.AdView> -->
                     
                     
                 </LinearLayout>

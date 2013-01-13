@@ -36,10 +36,8 @@ public class WifiScanReceiver extends BroadcastReceiver {
 		// if service is running
 		if (sharedPrefsEditor.isServiceActivated()) {
 
-			// only when screen off and datamanager is running
-			if (!dataActivation.isScreenIsOn()
-					&& sharedPrefsEditor.isDataMgrActivated()
-					&& sharedPrefsEditor.isAutoWifiOffActivated()) {
+			// only if app is doing a check for auto wifi off or auto wifi on
+			if (sharedPrefsEditor.isCheckingAutoWifiOn()) {
 				// get scan results
 				WifiManager wifiManager = (WifiManager) context
 						.getSystemService(Context.WIFI_SERVICE);
@@ -97,11 +95,30 @@ public class WifiScanReceiver extends BroadcastReceiver {
 
 				}
 
+				// if time off and wifi manager is enabled
 				if (sharedPrefsEditor.isWifiManagerActivated()
 						&& sharedPrefsEditor.isTimeOffIsActivated()) {
 					// shut down wifi
 					dataActivation.setWifiConnectionEnabled(false);
 				}
+
+				// if not time off and known networks are available
+				if (!sharedPrefsEditor.isTimeOffIsActivated()) {
+
+					if (knownWifiFound) {
+						// enable wifi
+						sharedPrefsEditor.setWifiActivation(true);
+						dataActivation.setWifiConnectionEnabled(true);
+					} else {
+						// disable wifi
+						sharedPrefsEditor.setWifiActivation(false);
+						dataActivation.setWifiConnectionEnabled(false);
+					}
+
+				}
+
+				// set checking to false
+				sharedPrefsEditor.setIsCheckingAutoWifi(false);
 			}
 
 		}

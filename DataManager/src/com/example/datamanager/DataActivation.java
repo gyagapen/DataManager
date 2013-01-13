@@ -245,12 +245,26 @@ public class DataActivation {
 	 * 
 	 * @return
 	 */
-	public void checkWifiScanResults() {
+	public void checkWifiScanResults(SharedPrefsEditor sharedPrefsEditor) {
 		Log.i("CHECK WIFI", "check wifi scan results");
+		
+		//turn wifi on if off
+		if(!isWifiChipActivated())
+		{
+			WifiManager wifiManager = (WifiManager) this.context
+					.getSystemService(Context.WIFI_SERVICE);
+			wifiManager.setWifiEnabled(true);
+		}
+		
+		//set checking to false
+		sharedPrefsEditor.setIsCheckingAutoWifi(true);
+		
 		WifiManager wifi = (WifiManager) context
 				.getSystemService(Context.WIFI_SERVICE);
 		// results will be handle WifiScanreceiver
 		wifi.startScan();
+		
+		
 
 	}
 
