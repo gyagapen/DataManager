@@ -62,6 +62,9 @@
     <string name="sync_title">Sync</string>
     <string name="sleep_title">Mode nuit</string>
     <string name="timers_title">Périodes</string>
+    <string name="switch2G">Mode 2G lorsque écran est éteint - BETA</string>
+    <string name="switch_desc2G">BETA - Lorsque l\'écran du téléphone est éteint, le mode 2G sera automatiquement activé. Lorsque l\'écran est rallumé, le mode 3G est réactivé. Veuillez notez que si vous activez le mode 2G depuis les paramètres, celui-ci aura la priorité (l\'application n\'activera pas le mode 3G)</string>
+    <string name="switch_incompatible2G">Désolé, vous devez avoir une ROM basé sur CYANOGENMOD pour profiter de cette fonctionnalité</string>
     
     
     <color name="separator">#B2E0FF</color>

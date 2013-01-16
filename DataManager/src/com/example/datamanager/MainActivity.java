@@ -8,6 +8,7 @@ import java.util.TimeZone;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -75,6 +76,8 @@ public class MainActivity extends Activity implements OnClickListener,
 	private TextView tvFirstTimeOn = null;
 	private TextView tvFirstTimeOnDesc = null;
 	private EditText edFirstTimeOn = null;
+	private CheckBox cbox2GSwitch = null;
+	private TextView tv2GSwitch = null;
 	
 	//ad mob refs
 	private static String APPLICATION_ID = "50f4159f24813f0e00000008";
@@ -194,6 +197,9 @@ public class MainActivity extends Activity implements OnClickListener,
 		cboxFirstTimeOn.setOnCheckedChangeListener(this);
 		edFirstTimeOn = (EditText)findViewById(R.id.EditTextFirstTimeOn);
 		
+		cbox2GSwitch = (CheckBox)findViewById(R.id.CheckBox2GSwitch);
+		tv2GSwitch = (TextView)findViewById(R.id.TextView2GSwitch);
+		
 
 	}
 
@@ -269,6 +275,10 @@ public class MainActivity extends Activity implements OnClickListener,
 		
 		activateFirstTimeOn(sharedPrefsEditor.isFirstTimeOnIsActivated());
 		
+		//show or hide 2G switch fields
+		ChangeNetworkMode changeNetworkMode = new ChangeNetworkMode(this);
+		activate2GSwitch(changeNetworkMode.isCyanogenMod());
+		
 
 	}
 
@@ -306,6 +316,11 @@ public class MainActivity extends Activity implements OnClickListener,
 
 			// display log file
 			readLogFile();
+		}
+		else if(v == cbox2GSwitch)
+		{
+			//show error message
+			show2GSwitchErrorMessage();
 		}
 
 	}
@@ -600,6 +615,8 @@ public class MainActivity extends Activity implements OnClickListener,
 		boolean isServiceDeactivatedPlugged = cbServiceIsDeactivatedPlugged.isChecked();
 		
 		boolean isFirstTimeOnIsActivated = cboxFirstTimeOn.isChecked();
+		
+		boolean is2GSwitchActivated = cbox2GSwitch.isChecked();
 
 		// save all these preferences
 		sharedPrefsEditor.setAllValues(timeOn, timeOff, intervalCheck,
@@ -607,7 +624,7 @@ public class MainActivity extends Activity implements OnClickListener,
 				wifiMgrIsActivated, autoSyncIsActivated, autoWifiIsActivated,
 				sleepHoursIsActivated, isAutoSyncMgrIsActivated, 
 				isServiceDeactived,isServiceDeactivatedPlugged, timeOnCheck,timeScreenOnDelay,
-				isFirstTimeOnIsActivated, firstTimeOn, autoWifiOnIsActivated);
+				isFirstTimeOnIsActivated, firstTimeOn, autoWifiOnIsActivated, is2GSwitchActivated);
 
 		try {
 			// if data is disabled; data connection is stopped
@@ -776,11 +793,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	 */
 	private void activateFirstTimeOn(boolean isActivate)
 	{
-		//setting background to dark grey
-		/*tvFirstTimeOn.setBackgroundColor(color.background_light);
-		tvFirstTimeOnDesc.setBackgroundColor(color.background_light);
-		edFirstTimeOn.setBackgroundColor(color.background_light);
-		cboxFirstTimeOn.setBackgroundColor(color.background_light);*/
+
 		
 		if(!isActivate)
 		{
@@ -789,8 +802,6 @@ public class MainActivity extends Activity implements OnClickListener,
 			tvFirstTimeOnDesc.setEnabled(false);
 			edFirstTimeOn.setEnabled(false);
 			
-			//revert backgrounf color of checkbox
-			//cboxFirstTimeOn.setBackgroundColor(color.black);
 		}
 		else
 		{
@@ -799,6 +810,37 @@ public class MainActivity extends Activity implements OnClickListener,
 			tvFirstTimeOnDesc.setEnabled(true);
 			edFirstTimeOn.setEnabled(true);
 			
+			
+		}
+	}
+	
+	/**
+	 * SHow or hide fields related to the 2g switch
+	 * @param isActivate
+	 */
+	private void activate2GSwitch(boolean isActivate)
+	{
+
+		
+		if(!isActivate)
+		{
+			//hide fields related to 2G switch
+			tv2GSwitch.setText(R.string.switch_incompatible2G);
+			tv2GSwitch.setEnabled(false);
+			cbox2GSwitch.setEnabled(false);
+			
+			//set an onclicklistener to show an error msg
+			cbox2GSwitch.setOnClickListener(this);
+			
+		}
+		else
+		{
+			//show fields related to 2G switch
+			tv2GSwitch.setEnabled(true);
+			cbox2GSwitch.setEnabled(true);
+			
+			//init checkbox
+			cbox2GSwitch.setChecked(sharedPrefsEditor.is2GSwitchActivated());
 			
 		}
 	}
@@ -821,6 +863,22 @@ public class MainActivity extends Activity implements OnClickListener,
 	    
 	    ad2.removeAllViews();
 	    ad2.addView(banner2);
+	}
+	
+	public void show2GSwitchErrorMessage()
+	{
+		// 1. Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		// 2. Chain together various setter methods to set the dialog characteristics
+		builder.setMessage(R.string.switch_incompatible2G)
+	       .setTitle("Error...");
+		
+
+		// 3. Get the AlertDialog from create()
+		AlertDialog dialog = builder.create();
+		
+		dialog.show();
 	}
 
 

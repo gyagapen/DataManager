@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gyagapen.cleverconnectivity"
-    android:versionCode="16"
-    android:versionName="1.2.10" >
+    android:versionCode="17"
+    android:versionName="1.2.11" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-permission android:name="com.android.phone.CHANGE_NETWORK_MODE" />
 
 
     <application

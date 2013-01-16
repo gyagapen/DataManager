@@ -53,6 +53,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 					try {
 						dataActivation
 								.setConnectivityDisabled(sharedPrefsEditor);
+						
+						//cancel timers
+						TimersSetUp timersSetUp = new TimersSetUp(context);
+						timersSetUp.CancelTimerOn();
+						timersSetUp.CancelTimeOff();
+						
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

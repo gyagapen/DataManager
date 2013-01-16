@@ -32,6 +32,9 @@ public class MainService extends Service {
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
 
+	//for 2g switch
+	private ChangeNetworkMode changeNetworkMode = null;
+	
 	// screen broadcast receiver
 	private BroadcastReceiver mReceiver = null;
 
@@ -57,6 +60,7 @@ public class MainService extends Service {
 
 		registerReceiver(mReceiver, filter);
 
+		changeNetworkMode = new ChangeNetworkMode(getBaseContext());
 		
 		timerSetUp = new TimersSetUp(this);
 
@@ -116,8 +120,20 @@ public class MainService extends Service {
 		// if screen is on
 		if (!screenOff) {
 			
+			//switch to 3G if necessary
+			if(sharedPrefsEditor.is2GSwitchActivated())
+			{
+				Log.i("CConnectivity", "check if 3g will be enabled, original: "+sharedPrefsEditor.getOriginalPreferredMode() );
+				
+				//if original network mode was not 2G
+				if(sharedPrefsEditor.getOriginalPreferredMode() != changeNetworkMode.NETWORK_MODE_GSM_ONLY)
+				{
+					Log.i("CConnectivity", "3g should be swtich on");
+					changeNetworkMode.switchTo3G();
+				}
+			}
+			
 			// stop all timers if there are running
-
 			timerSetUp.CancelTimeOff();
 			timerSetUp.CancelTimerOn();
 
@@ -153,6 +169,14 @@ public class MainService extends Service {
 
 		} else { // screen is off
 			
+			//switch to 2G if necessary
+			if(sharedPrefsEditor.is2GSwitchActivated())
+			{
+				//save original preferred network before change it
+				sharedPrefsEditor.setOriginalPreferredNetwork(changeNetworkMode.getPreferredNetworkMode());
+				
+				changeNetworkMode.switchTo2G();
+			}
 
 			sharedPrefsEditor.setScreenOnIsDelayed(false);
 
