@@ -41,8 +41,16 @@ public class TimerOffReceiver extends BroadcastReceiver {
 				dataActivation.checkWifiScanResults(sharedPrefsEditor);
 				
 				//enable 3g and sync meanwhile
-				dataActivation.setAutoSync(true, sharedPrefsEditor, false);
-				dataActivation.setMobileDataEnabled(true);
+				//enable 3g and sync meanwhile
+				if(sharedPrefsEditor.isAutoSyncActivated())
+				{
+					dataActivation.setAutoSync(true, sharedPrefsEditor, false);
+				}
+				
+				if(sharedPrefsEditor.isDataActivated())
+				{
+					dataActivation.setMobileDataEnabled(true);
+				}
 			}
 			else
 			{

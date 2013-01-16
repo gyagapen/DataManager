@@ -261,7 +261,7 @@ public class DataActivation {
 		
 		WifiManager wifi = (WifiManager) context
 				.getSystemService(Context.WIFI_SERVICE);
-		// results will be handle WifiScanreceiver
+		//results will be handle WifiScanreceiver
 		wifi.startScan();
 		
 		

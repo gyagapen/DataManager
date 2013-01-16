@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads">
+    android:orientation="vertical" >
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-        
-          <!--  <com.google.ads.AdView
+        android:id="@+id/bannerAds1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    </LinearLayout>
+
+    <ScrollView
+        xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!--
+          <com.google.ads.AdView
                         android:id="@+id/adViewMainStart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -16,628 +29,626 @@
                         ads:adUnitId="a150d57cebe0f76"
                         ads:loadAdOnCreate="true"
                          >
-          </com.google.ads.AdView> -->
+          </com.google.ads.AdView>
+            -->
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TableRow
-                android:id="@+id/tableRow19"
-                android:layout_width="wrap_content"
+            <TableLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <LinearLayout
+                <TableRow
+                    android:id="@+id/tableRow19"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/TextView01"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="0dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/general_title"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/separator"
-                        android:textStyle="italic" />
-
-                    <CheckBox
-                        android:id="@+id/checkBoxDeactivateAll"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/deactivate_service" />
-
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/deactivate_service_desc" />
-
-                    <CheckBox
-                        android:id="@+id/checkBoxDeactivatePlugged"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/deactivate_service_plugged" />
-
-                    <TextView
-                        android:id="@+id/textView18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/deactivate_service__plugged_desc" />
-
-                </LinearLayout>
-
-            </TableRow>
-
-            <View
-                android:layout_width="329dp"
-                android:layout_height="5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/separator" />
-
-            <TableRow
-                android:id="@+id/tableRow1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/TextView02"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="0dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/data_title"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/separator"
-                        android:textStyle="italic" />
-
-                    <CheckBox
-                        android:id="@+id/checkBoxData"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_data" />
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_data_desc" />
-
-                    <CheckBox
-                        android:id="@+id/checkBoxDataMgr"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_data_manager" />
-
-                    <TextView
-                        android:id="@+id/textView1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4.50"
-                        android:text="@string/toggle_data_manager_desc" />
-
-                </LinearLayout>
-            </TableRow>
-
-            <View
-                android:layout_width="329dp"
-                android:layout_height="5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/separator" />
-
-            <TableRow
-                android:id="@+id/tableRow6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/TextView03"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/wifi_title"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/separator"
-                        android:textStyle="italic" />
-
-                    <CheckBox
-                        android:id="@+id/checkBoxWifi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_wifi" />
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_wifi_desc" />
-
-                    <CheckBox
-                        android:id="@+id/checkBoxWifiMgr"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_wifi_manager" />
-
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_wifi_manager_desc" />
-
-                    <CheckBox
-                        android:id="@+id/checkBoxAutoWifiOff"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_auto_wifi_off" />
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_auto_wifi_off_desc" />
-
-                    <CheckBox
-                        android:id="@+id/CheckBoxAutoWifiOn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_auto_wifi_on" />
-
-                    <TextView
-                        android:id="@+id/TextView07"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_auto_wifi_on_desc" />
-
-                </LinearLayout>
-
-            </TableRow>
-
-            <View
-                android:layout_width="329dp"
-                android:layout_height="5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/separator" />
-
-            <TableRow
-                android:id="@+id/tableRow10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/TextView04"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="0dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/sync_title"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/separator"
-                        android:textStyle="italic" />
-
-                    <CheckBox
-                        android:id="@+id/checkBoxAutoSync"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_auto_sync" />
-
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_auto_sync_desc" />
-
-                    <CheckBox
-                        android:id="@+id/checkBoxAutoSyncMgr"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_auto_sync_manager" />
-
-                    <TextView
-                        android:id="@+id/textView16"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_auto_sync_manager_desc" />
-
-                </LinearLayout>
-            </TableRow>
-
-            <View
-                android:layout_width="329dp"
-                android:layout_height="5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/separator" />
-
-            <TableRow
-                android:id="@+id/tableRow13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/TextView05"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="0dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/sleep_title"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/separator"
-                        android:textStyle="italic" />
+                    android:layout_height="wrap_content" >
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" >
-
-                        <CheckBox
-                            android:id="@+id/checkBoxSleepHours"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/toggle_sleep_hours" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
 
                         <TextView
-                            android:id="@+id/tvSleepHours"
+                            android:id="@+id/TextView01"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/general_title"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/separator"
+                            android:textStyle="italic" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxDeactivateAll"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:text="@string/label_sleep_hours"
-                            android:textAppearance="?android:attr/textAppearanceSmall" />
+                            android:text="@string/deactivate_service" />
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/deactivate_service_desc" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxDeactivatePlugged"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/deactivate_service_plugged" />
+
+                        <TextView
+                            android:id="@+id/textView18"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/deactivate_service__plugged_desc" />
                     </LinearLayout>
+                </TableRow>
 
-                    <TextView
-                        android:id="@+id/textView8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/toggle_sleep_hours_desc" />
+                <View
+                    android:layout_width="329dp"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/separator" />
 
-                    <Button
-                        android:id="@+id/button_edit_sleep_hours"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/button_change_sleep_hours" />
-                </LinearLayout>
-
-            </TableRow>
-
-            <View
-                android:layout_width="329dp"
-                android:layout_height="5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/separator" />
-
-            <TableRow
-                android:id="@+id/tableRow15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <LinearLayout
+                <TableRow
+                    android:id="@+id/tableRow1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="7dp"
-                    android:orientation="vertical" >
+                    android:layout_height="wrap_content" >
 
-                    <TextView
-                        android:id="@+id/TextView06"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="0dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/timers_title"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/separator"
-                        android:textStyle="italic" />
+                        android:orientation="vertical" >
 
-                    <TextView
-                        android:id="@+id/textView9"
+                        <TextView
+                            android:id="@+id/TextView02"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/data_title"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/separator"
+                            android:textStyle="italic" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxData"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_data" />
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_data_desc" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxDataMgr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_data_manager" />
+
+                        <TextView
+                            android:id="@+id/textView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4.50"
+                            android:text="@string/toggle_data_manager_desc" />
+                    </LinearLayout>
+                </TableRow>
+
+                <View
+                    android:layout_width="329dp"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/separator" />
+
+                <TableRow
+                    android:id="@+id/tableRow6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/label_time_on"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:orientation="vertical" >
 
-                    <TextView
-                        android:id="@+id/textView11"
+                        <TextView
+                            android:id="@+id/TextView03"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="3dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/wifi_title"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/separator"
+                            android:textStyle="italic" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxWifi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_wifi" />
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_wifi_desc" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxWifiMgr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_wifi_manager" />
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_wifi_manager_desc" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxAutoWifiOff"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_auto_wifi_off" />
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_auto_wifi_off_desc" />
+
+                        <CheckBox
+                            android:id="@+id/CheckBoxAutoWifiOn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_auto_wifi_on" />
+
+                        <TextView
+                            android:id="@+id/TextView07"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_auto_wifi_on_desc" />
+                    </LinearLayout>
+                </TableRow>
+
+                <View
+                    android:layout_width="329dp"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/separator" />
+
+                <TableRow
+                    android:id="@+id/tableRow10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/TextView04"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/sync_title"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/separator"
+                            android:textStyle="italic" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxAutoSync"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_auto_sync" />
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_auto_sync_desc" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxAutoSyncMgr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_auto_sync_manager" />
+
+                        <TextView
+                            android:id="@+id/textView16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_auto_sync_manager_desc" />
+                    </LinearLayout>
+                </TableRow>
+
+                <View
+                    android:layout_width="329dp"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/separator" />
+
+                <TableRow
+                    android:id="@+id/tableRow13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/TextView05"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/sleep_title"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/separator"
+                            android:textStyle="italic" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" >
+
+                            <CheckBox
+                                android:id="@+id/checkBoxSleepHours"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/toggle_sleep_hours" />
+
+                            <TextView
+                                android:id="@+id/tvSleepHours"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:text="@string/label_sleep_hours"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toggle_sleep_hours_desc" />
+
+                        <Button
+                            android:id="@+id/button_edit_sleep_hours"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/button_change_sleep_hours" />
+                    </LinearLayout>
+                </TableRow>
+
+                <View
+                    android:layout_width="329dp"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/separator" />
+
+                <TableRow
+                    android:id="@+id/tableRow15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/time_on_desc" />
+                        android:orientation="vertical" >
 
-                    <EditText
-                        android:id="@+id/editTextTimeOn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="number" >
-                    </EditText>
+                        <TextView
+                            android:id="@+id/TextView06"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/timers_title"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/separator"
+                            android:textStyle="italic" />
 
-                    <TextView
-                        android:id="@+id/textView19"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/time_on_check"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/label_time_on"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                    <TextView
-                        android:id="@+id/textView20"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/time_on_check_desc" />
+                        <TextView
+                            android:id="@+id/textView11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="7dp"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/time_on_desc" />
 
-                    <EditText
-                        android:id="@+id/EditTextTimeOnCheck"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="number" />
+                        <EditText
+                            android:id="@+id/editTextTimeOn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number" >
+                        </EditText>
 
-                    <TextView
-                        android:id="@+id/textView10"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/label_time_off"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        <TextView
+                            android:id="@+id/textView19"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/time_on_check"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                    <TextView
-                        android:id="@+id/textView12"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/time_off_desc" />
+                        <TextView
+                            android:id="@+id/textView20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/time_on_check_desc" />
 
-                    <EditText
-                        android:id="@+id/editTextTimeOff"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="number" />
+                        <EditText
+                            android:id="@+id/EditTextTimeOnCheck"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number" />
 
-                    <TextView
-                        android:id="@+id/textView13"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/interval_check"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/label_time_off"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                    <TextView
-                        android:id="@+id/textView14"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/interval_check_desc" />
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/time_off_desc" />
 
-                    <EditText
-                        android:id="@+id/editTextInterval"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="number" />
+                        <EditText
+                            android:id="@+id/editTextTimeOff"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number" />
 
-                </LinearLayout>
-            </TableRow>
+                        <TextView
+                            android:id="@+id/textView13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/interval_check"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <View
-                android:layout_width="329dp"
-                android:layout_height="5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/separator" />
+                        <TextView
+                            android:id="@+id/textView14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/interval_check_desc" />
 
-            <TextView
-                android:id="@+id/textView25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center_horizontal"
-                android:text="@string/advanced"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/separator"
-                android:textStyle="italic" />
+                        <EditText
+                            android:id="@+id/editTextInterval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number" />
+                    </LinearLayout>
+                </TableRow>
 
-            <TableRow
-                android:id="@+id/tableRow18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/textView21"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/screen_on_delay"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/textView22"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/screen_on_delay_desc" />
-
-                    <EditText
-                        android:id="@+id/EditTextScreenDelay"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="number" >
-                    </EditText>
-
-                    <CheckBox
-                        android:id="@+id/checkBoxFirstTimeOn"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/cbox_diff_first_time_on" />
-
-                    <TextView
-                        android:id="@+id/textViewFirstTimeOn"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:text="@string/first_time_on"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/textViewFirstTimeOnDesc"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/first_time_on_desc" />
-
-                    <EditText
-                        android:id="@+id/EditTextFirstTimeOn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:ems="10"
-                        android:inputType="number" />
-
-                </LinearLayout>
-
-            </TableRow>
-
-            <View
-                android:layout_width="329dp"
-                android:layout_height="5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/separator" />
-
-            <TableRow
-                android:id="@+id/tableRow16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <Button
-                    android:id="@+id/buttonSave"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <View
+                    android:layout_width="329dp"
+                    android:layout_height="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/button_save" />
-            </TableRow>
+                    android:background="@color/separator" />
 
-            <View
-                android:layout_width="329dp"
-                android:layout_height="5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/separator" />
-
-            <TableRow
-                android:id="@+id/tableRow17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <LinearLayout
-                    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+                <TextView
+                    android:id="@+id/textView25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="fill_horizontal"
-                    android:orientation="vertical" >
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/advanced"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/separator"
+                    android:textStyle="italic" />
+
+                <TableRow
+                    android:id="@+id/tableRow18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/textView21"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/screen_on_delay"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/textView22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/screen_on_delay_desc" />
+
+                        <EditText
+                            android:id="@+id/EditTextScreenDelay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number" >
+                        </EditText>
+
+                        <CheckBox
+                            android:id="@+id/checkBoxFirstTimeOn"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/cbox_diff_first_time_on" />
+
+                        <TextView
+                            android:id="@+id/textViewFirstTimeOn"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/first_time_on"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/textViewFirstTimeOnDesc"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/first_time_on_desc" />
+
+                        <EditText
+                            android:id="@+id/EditTextFirstTimeOn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                            android:ems="10"
+                            android:inputType="number" />
+                    </LinearLayout>
+                </TableRow>
+
+                <View
+                    android:layout_width="329dp"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/separator" />
+
+                <TableRow
+                    android:id="@+id/tableRow16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
 
                     <Button
-                        android:id="@+id/buttonLogFile"
-                        style="?android:attr/buttonStyleSmall"
+                        android:id="@+id/buttonSave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/view_log_file" />
-
-                    <TextView
-                        android:id="@+id/textView15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/view_log_details" />
-
-                    <Button
-                        android:id="@+id/buttonReportBug"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/report_bug" />
+                        android:text="@string/button_save" />
+                </TableRow>
 
-                    <TextView
-                        android:id="@+id/textView7"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/developerName"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/name" />
-                     <TextView
-                        android:id="@+id/version"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/name" />
+                <View
+                    android:layout_width="329dp"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/separator" />
 
-                     <!-- <com.google.ads.AdView
+                <TableRow
+                    android:id="@+id/tableRow17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_horizontal"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/buttonLogFile"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/view_log_file" />
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/view_log_details" />
+
+                        <Button
+                            android:id="@+id/buttonReportBug"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:text="@string/report_bug" />
+
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/developerName"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/name" />
+
+                        <TextView
+                            android:id="@+id/version"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/name" />
+
+                        <!--
+                    <com.google.ads.AdView
                         android:id="@+id/adViewMainEnd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         ads:adSize="BANNER"
                         ads:adUnitId="a150d57cebe0f76"
                         ads:loadAdOnCreate="true" >
-                    </com.google.ads.AdView> -->
-                    
-                    
-                </LinearLayout>
-            </TableRow>
-        </TableLayout>
+                    </com.google.ads.AdView>
+                        -->
 
-    </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/bannerAds2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" >
+                        </LinearLayout>
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+</LinearLayout>

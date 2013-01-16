@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import android.R.color;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -14,9 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.media.ExifInterface;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -28,10 +25,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gyagapen.cleverconnectivity.R;
+import com.revmob.RevMob;
+import com.revmob.ads.banner.RevMobBanner;
 
 public class MainActivity extends Activity implements OnClickListener,
 		OnCheckedChangeListener {
@@ -47,7 +46,8 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	// mail data
 	private final String MAIL_RECIPIENT = "gyagapen@gmail.com";
-	private final String MAIL_SUBJECT = "CleverConnectivity Bug Report";
+	private  String MAIL_SUBJECT = "CleverConnectivity Bug Report";
+	private final String MAIL_SUBJECT_PAID = "CleverConnectivity Bug Report";
 
 	// ui components
 	private CheckBox cbData = null;
@@ -76,8 +76,10 @@ public class MainActivity extends Activity implements OnClickListener,
 	private TextView tvFirstTimeOnDesc = null;
 	private EditText edFirstTimeOn = null;
 	
-	// private AdView mainStartAdView = null;
-	// private AdView mainEndAdView = null;
+	//ad mob refs
+	private static String APPLICATION_ID = "50f4159f24813f0e00000008";
+	private RevMob revmob;
+	  
 
 	private int RETURN_CODE = 0;
 
@@ -90,6 +92,8 @@ public class MainActivity extends Activity implements OnClickListener,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		
 
 
 		// initialize connectivity positions
@@ -129,6 +133,18 @@ public class MainActivity extends Activity implements OnClickListener,
 			cbData.setOnCheckedChangeListener(this);
 			cbWifi.setOnCheckedChangeListener(this);
 			cbAutoSync.setOnCheckedChangeListener(this);
+			
+			//difference between paid and free app
+			if(APPLICATION_IS_FREE)
+			{
+				//ads
+				populateAdMobs();
+			}
+			else
+			{
+				//change name
+				MAIL_SUBJECT = MAIL_SUBJECT_PAID;
+			}
 
 		} catch (IOException e) {
 
@@ -392,6 +408,7 @@ public class MainActivity extends Activity implements OnClickListener,
 			// set sleeping to false
 			sharedPrefsEditor.setIsSleeping(false);
 		}
+		
 
 	}
 
@@ -407,6 +424,13 @@ public class MainActivity extends Activity implements OnClickListener,
 		Calendar updateTime = Calendar.getInstance();
 		updateTime.set(Calendar.HOUR_OF_DAY, hour);
 		updateTime.set(Calendar.MINUTE, minute);
+		
+		//avoid alarm to be fired up if time has already passed
+		if(timeIsPassed(time))
+		{
+			//add one day
+			updateTime.add(Calendar.DATE, 1);
+		}
 
 		Intent alarmLauncher = new Intent(context, AlarmReceiver.class);
 		alarmLauncher.putExtra(STR_ACTIVATE_CONNECTIVITY, activateConnectivity);
@@ -418,14 +442,14 @@ public class MainActivity extends Activity implements OnClickListener,
 		if (activateConnectivity) {
 			recurringAlarm = PendingIntent.getBroadcast(context,
 					ID_ALARM_TIME_OFF, alarmLauncher,
-					PendingIntent.FLAG_UPDATE_CURRENT);
+					PendingIntent.FLAG_CANCEL_CURRENT);
 			Log.i("Alarm set up off", time);
 
 		} else {
 
 			recurringAlarm = PendingIntent.getBroadcast(context,
 					ID_ALARM_TIME_ON, alarmLauncher,
-					PendingIntent.FLAG_UPDATE_CURRENT);
+					PendingIntent.FLAG_CANCEL_CURRENT);
 
 			Log.i("Alarm set up on", time);
 		}
@@ -779,7 +803,25 @@ public class MainActivity extends Activity implements OnClickListener,
 		}
 	}
 	
-	
+	public void populateAdMobs()
+	{
+		// Starting RevMob session
+	    revmob = RevMob.start(this, APPLICATION_ID);
+	    RevMobBanner banner1 = revmob.createBanner(this);
+	    RevMobBanner banner2 = revmob.createBanner(this);
+	 
+	    // Lookup your LinearLayout (We are assuming it’s been given
+	    // the attribute android:id="@+id/banner")
+	    LinearLayout ad1 = (LinearLayout)findViewById(R.id.bannerAds1);
+	    LinearLayout ad2 = (LinearLayout)findViewById(R.id.bannerAds2);
+	 
+	    // Add the banner to it
+	    ad1.removeAllViews();
+	    ad1.addView(banner1);
+	    
+	    ad2.removeAllViews();
+	    ad2.addView(banner2);
+	}
 
 
 }

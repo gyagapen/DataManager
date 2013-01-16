@@ -125,14 +125,23 @@ public class MainService extends Service {
 			try 
 			{
 				//if auto wifi on is enabled
-				if(sharedPrefsEditor.isAutoWifiOnActivated() && !sharedPrefsEditor.isWifiManagerActivated())
+				if(sharedPrefsEditor.isAutoWifiOnActivated() && !sharedPrefsEditor.isWifiActivated())
 				{
+					Log.i("CConnectivity", "auto wifi on check");
+					
 					//cheking wether to enable wifi if known networks are avalaible
 					dataActivation.checkWifiScanResults(sharedPrefsEditor);
 					
 					//enable 3g and sync meanwhile
-					dataActivation.setAutoSync(true, sharedPrefsEditor, false);
-					dataActivation.setMobileDataEnabled(true);
+					if(sharedPrefsEditor.isAutoSyncActivated())
+					{
+						dataActivation.setAutoSync(true, sharedPrefsEditor, false);
+					}
+					
+					if(sharedPrefsEditor.isDataActivated())
+					{
+						dataActivation.setMobileDataEnabled(true);
+					}
 				}
 				else
 				{
@@ -149,6 +158,8 @@ public class MainService extends Service {
 
 			//get sleep state
 			boolean isSleeping = sharedPrefsEditor.isSleeping();
+			
+			Log.i("CConnectivity", "sleep: "+isSleeping);
 			
 			if(isSleeping)
 			{
