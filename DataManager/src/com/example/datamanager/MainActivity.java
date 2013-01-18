@@ -26,12 +26,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gyagapen.cleverconnectivity.R;
-import com.revmob.RevMob;
-import com.revmob.ads.banner.RevMobBanner;
 
 public class MainActivity extends Activity implements OnClickListener,
 		OnCheckedChangeListener {
@@ -79,9 +76,6 @@ public class MainActivity extends Activity implements OnClickListener,
 	private CheckBox cbox2GSwitch = null;
 	private TextView tv2GSwitch = null;
 	
-	//ad mob refs
-	private static String APPLICATION_ID = "50f4159f24813f0e00000008";
-	private RevMob revmob;
 	  
 
 	private int RETURN_CODE = 0;
@@ -141,7 +135,7 @@ public class MainActivity extends Activity implements OnClickListener,
 			if(APPLICATION_IS_FREE)
 			{
 				//ads
-				populateAdMobs();
+				//populateAdMobs();
 			}
 			else
 			{
@@ -845,7 +839,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		}
 	}
 	
-	public void populateAdMobs()
+	/*public void populateAdMobs()
 	{
 		// Starting RevMob session
 	    revmob = RevMob.start(this, APPLICATION_ID);
@@ -863,7 +857,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	    
 	    ad2.removeAllViews();
 	    ad2.addView(banner2);
-	}
+	}*/
 	
 	public void show2GSwitchErrorMessage()
 	{

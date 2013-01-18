@@ -42,6 +42,8 @@ public class SharedPrefsEditor {
 	static final String STR_CHECKING_AUTO_WIFI="checkingAutoWifi";
 	static final String STR_IS_2G_SWITCH_ACTIVATED="is2gSwitchActivated";
 	static final String STR_ORIGINAL_PREFERRED_NETWORK_MODE="originalPreferredNeworkMode";
+	static final String STR_NETWORK_MODE_IS_SWITCHING = "networkModeIsSwitching";
+	static final String STR_IS_2G_ACTIVATED = "is2GActivated";
 
 	// Default values
 	static final int TIME_ON = 2; // min
@@ -75,7 +77,8 @@ public class SharedPrefsEditor {
 	static final boolean CHECKING_AUTO_WIFI=false;
 	static final boolean IS_2G_SWITCH_ACTIVATED=false;
 	static final int ORIGINAL_PREFERRED_NETWORK_MODE=3;
-
+	static final boolean NETWORK_MODE_IS_SWITCHING = false;
+	static final boolean IS_2G_ACTIVATED = false;
 	// gives access to connection states
 	DataActivation dataConnectionState;
 
@@ -131,6 +134,7 @@ public class SharedPrefsEditor {
 			prefEditor.putBoolean(STR_CHECKING_AUTO_WIFI, CHECKING_AUTO_WIFI);
 			prefEditor.putBoolean(STR_IS_2G_SWITCH_ACTIVATED, IS_2G_SWITCH_ACTIVATED);
 			prefEditor.putInt(STR_ORIGINAL_PREFERRED_NETWORK_MODE, ORIGINAL_PREFERRED_NETWORK_MODE);
+			prefEditor.putBoolean(STR_NETWORK_MODE_IS_SWITCHING, NETWORK_MODE_IS_SWITCHING);
 
 			prefEditor.commit();
 		}
@@ -174,6 +178,7 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_CHECKING_AUTO_WIFI, CHECKING_AUTO_WIFI);
 		prefEditor.putBoolean(STR_IS_2G_SWITCH_ACTIVATED, IS_2G_SWITCH_ACTIVATED);
 		prefEditor.putInt(STR_ORIGINAL_PREFERRED_NETWORK_MODE, ORIGINAL_PREFERRED_NETWORK_MODE);
+		prefEditor.putBoolean(STR_NETWORK_MODE_IS_SWITCHING, NETWORK_MODE_IS_SWITCHING);
 		prefEditor.commit();
 	}
 
@@ -211,6 +216,11 @@ public class SharedPrefsEditor {
 		return dataManagerSettings.getBoolean(STR_IS_2G_SWITCH_ACTIVATED, IS_2G_SWITCH_ACTIVATED);
 	}
 	
+	public boolean is2GActivated()
+	{
+		return dataManagerSettings.getBoolean(STR_IS_2G_ACTIVATED, IS_2G_ACTIVATED);
+	}
+	
 	public boolean isFirstTimeOn()
 	{
 		return dataManagerSettings.getBoolean(STR_IS_FIRST_TIME_ON, IS_FIRST_TIME_ON);
@@ -224,6 +234,11 @@ public class SharedPrefsEditor {
 	public boolean isFirstTimeOnIsActivated()
 	{
 		return dataManagerSettings.getBoolean(STR_FIRST_TIME_ON_IS_ACTIVATED, FIRST_TIME_ON_IS_ACTIVATED);
+	}
+	
+	public boolean isNetworkModeSwitching()
+	{
+		return dataManagerSettings.getBoolean(STR_NETWORK_MODE_IS_SWITCHING, NETWORK_MODE_IS_SWITCHING);
 	}
 	
 
@@ -342,6 +357,12 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_IS_2G_SWITCH_ACTIVATED, isSwitchEnabled);
 		prefEditor.commit();
 	}
+	
+	public void set2GActivation(boolean isActivated)
+	{
+		prefEditor.putBoolean(STR_IS_2G_ACTIVATED, isActivated);
+		prefEditor.commit();
+	}
 
 	public void setTimeOn(int timeOn) {
 		prefEditor.putInt(STR_TIME_ON, timeOn);
@@ -444,6 +465,13 @@ public class SharedPrefsEditor {
 		prefEditor.commit();
 	}
 	
+	
+	public void setNetworkModeIsSwitching(boolean isSwitching) {
+		prefEditor.putBoolean(STR_NETWORK_MODE_IS_SWITCHING, isSwitching);
+		prefEditor.commit();
+	}
+	
+	
 	public void setTimeOffActivation(boolean isEnabled) {
 		prefEditor.putBoolean(STR_TIME_OFF_IS_ACTIVATED, isEnabled);
 		prefEditor.commit();
@@ -502,6 +530,7 @@ public class SharedPrefsEditor {
 		prefEditor.putInt(STR_FIRST_TIME_ON_VALUE, firstTimeOnValue);
 		prefEditor.putBoolean(STR_AUTO_WIFI_ON_IS_ACTIVATED, isAutoWifiOnIsActivated);
 		prefEditor.putBoolean(STR_IS_2G_SWITCH_ACTIVATED, is2GSwitchActivate);
+		prefEditor.putBoolean(STR_NETWORK_MODE_IS_SWITCHING, false);
 		
 		prefEditor.commit();
 	}

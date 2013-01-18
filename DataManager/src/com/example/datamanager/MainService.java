@@ -33,7 +33,7 @@ public class MainService extends Service {
 	private SharedPrefsEditor sharedPrefsEditor = null;
 
 	//for 2g switch
-	private ChangeNetworkMode changeNetworkMode = null;
+	private ChangeNetworkMode changeNetworkMode = null;	
 	
 	// screen broadcast receiver
 	private BroadcastReceiver mReceiver = null;
@@ -60,7 +60,7 @@ public class MainService extends Service {
 
 		registerReceiver(mReceiver, filter);
 
-		changeNetworkMode = new ChangeNetworkMode(getBaseContext());
+		changeNetworkMode = new ChangeNetworkMode(getApplicationContext());
 		
 		timerSetUp = new TimersSetUp(this);
 
@@ -120,18 +120,8 @@ public class MainService extends Service {
 		// if screen is on
 		if (!screenOff) {
 			
-			//switch to 3G if necessary
-			if(sharedPrefsEditor.is2GSwitchActivated())
-			{
-				Log.i("CConnectivity", "check if 3g will be enabled, original: "+sharedPrefsEditor.getOriginalPreferredMode() );
-				
-				//if original network mode was not 2G
-				if(sharedPrefsEditor.getOriginalPreferredMode() != changeNetworkMode.NETWORK_MODE_GSM_ONLY)
-				{
-					Log.i("CConnectivity", "3g should be swtich on");
-					changeNetworkMode.switchTo3G();
-				}
-			}
+			//switch to 3G if necesary
+			changeNetworkMode.switchTo3GIfNecesary();
 			
 			// stop all timers if there are running
 			timerSetUp.CancelTimeOff();
@@ -140,8 +130,8 @@ public class MainService extends Service {
 			// activate data or wifi
 			try 
 			{
-				//if auto wifi on is enabled
-				if(sharedPrefsEditor.isAutoWifiOnActivated() && !sharedPrefsEditor.isWifiActivated())
+				//if auto wifi on or auto wifi off is enabled
+				if( (sharedPrefsEditor.isAutoWifiOnActivated() && !sharedPrefsEditor.isWifiActivated()) || (sharedPrefsEditor.isAutoWifiOffActivated() && sharedPrefsEditor.isWifiActivated()))
 				{
 					Log.i("CConnectivity", "auto wifi on check");
 					
@@ -169,14 +159,8 @@ public class MainService extends Service {
 
 		} else { // screen is off
 			
-			//switch to 2G if necessary
-			if(sharedPrefsEditor.is2GSwitchActivated())
-			{
-				//save original preferred network before change it
-				sharedPrefsEditor.setOriginalPreferredNetwork(changeNetworkMode.getPreferredNetworkMode());
-				
-				changeNetworkMode.switchTo2G();
-			}
+			//switch to 2G if necesary
+			changeNetworkMode.switchTo2GIfNecesary();
 
 			sharedPrefsEditor.setScreenOnIsDelayed(false);
 

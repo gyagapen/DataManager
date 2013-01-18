@@ -31,6 +31,13 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+     
+        
+        <receiver android:name="com.example.datamanager.NetworkModeReceiver" >
+            <intent-filter>
+                <action android:name="com.android.internal.telephony.NETWORK_MODE_CHANGED" />
+            </intent-filter>
+        </receiver>
 
         
         <receiver android:name="com.example.datamanager.AlarmReceiver" >

@@ -7,15 +7,22 @@
         android:layout_height="wrap_content" > -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-     <LinearLayout
-        android:id="@+id/bannerAds1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-    </LinearLayout> 
+
+	   <com.google.ads.AdView
+					android:id="@+id/adViewMainStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        ads:adSize="BANNER"
+                        ads:adUnitId="a150d57cebe0f76"
+                        ads:loadAdOnCreate="true"
+                         >
+          </com.google.ads.AdView>
+ 
 
      <ScrollView
         xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
@@ -27,17 +34,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <!--
-          <com.google.ads.AdView
-                        android:id="@+id/adViewMainStart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        ads:adSize="BANNER"
-                        ads:adUnitId="a150d57cebe0f76"
-                        ads:loadAdOnCreate="true"
-                         >
-          </com.google.ads.AdView>
-            -->
+
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -650,7 +647,7 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/name" />
 
-                        <!--
+
                     <com.google.ads.AdView
                         android:id="@+id/adViewMainEnd"
                         android:layout_width="wrap_content"
@@ -659,13 +656,9 @@
                         ads:adUnitId="a150d57cebe0f76"
                         ads:loadAdOnCreate="true" >
                     </com.google.ads.AdView>
-                        -->
 
-                        <LinearLayout
-                            android:id="@+id/bannerAds2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" >
-                        </LinearLayout>
+
+
                     </LinearLayout>
                 </TableRow>
             </TableLayout>

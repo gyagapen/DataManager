@@ -32,8 +32,8 @@ public final class R {
         public static final int TextView06=0x7f08002d;
         public static final int TextView07=0x7f080023;
         public static final int TextView2GSwitch=0x7f08001c;
-        public static final int bannerAds1=0x7f080010;
-        public static final int bannerAds2=0x7f080047;
+        public static final int adViewMainEnd=0x7f080047;
+        public static final int adViewMainStart=0x7f080010;
         public static final int buttonLogFile=0x7f080042;
         public static final int buttonReportBug=0x7f080044;
         public static final int buttonSave=0x7f08000e;

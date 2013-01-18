@@ -25,9 +25,11 @@ public class DataActivation {
 	//when wifi and data are on, data activation will be delayed
 	private int timeBeforeActivateData = 5000;
 	
+	
 
 	public DataActivation(Context aContext) {
 		context = aContext;
+		
 
 	}
 
@@ -355,4 +357,6 @@ public class DataActivation {
         
         return isPlugged;
 	}
+	
+
 }
