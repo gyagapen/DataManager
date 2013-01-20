@@ -198,7 +198,11 @@ public class DataActivation {
 
 		if (sharedPrefsEditor.isDataMgrActivated() && sharedPrefsEditor.isDataActivated()) {
 			// activate data connection
-			setMobileDataEnabled(true);
+			//else data will be activated by network mode receiver
+			if(!sharedPrefsEditor.isNetworkModeSwitching())
+			{
+				setMobileDataEnabled(true);
+			}
 		}
 
 	}

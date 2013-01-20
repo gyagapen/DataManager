@@ -39,20 +39,48 @@ public class NetworkModeReceiver extends BroadcastReceiver {
 			{
 				Log.i("CConnectivity", "2G real activation");
 				
+				
 				//check if we have to switch to 3G
 				if(dataActivation.isScreenIsOn() && sharedPrefsEditor.is2GSwitchActivated())
 				{
 					changeNetworkMode.switchTo3GIfNecesary();
 				}
+				else
+				{
+					//check if data activation is needed
+					if(sharedPrefsEditor.isDataActivated())
+					{
+						try {
+							dataActivation.setMobileDataEnabled(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
 			}
 			else
 			{
 				Log.i("CConnectivity", "3G real activation");
+
 				//check if we have to switch to 2g
 				if(!dataActivation.isScreenIsOn() && sharedPrefsEditor.is2GSwitchActivated())
 				{
 					changeNetworkMode.switchTo2GIfNecesary();
 				}
+				else
+				{
+					//check if data activation is needed
+					if(sharedPrefsEditor.isDataActivated())
+					{
+						try {
+							dataActivation.setMobileDataEnabled(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				
+				
 			}
 		
 		}

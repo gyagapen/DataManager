@@ -122,6 +122,8 @@ public class ChangeNetworkMode {
 	 */
 	public void switchTo3GIfNecesary()
 	{
+		sharedPrefsEditor.setOriginalPreferredNetwork(NETWORK_MODE_GSM_UMTS);
+		
 		//if network is not already switching
 		if(!sharedPrefsEditor.isNetworkModeSwitching())
 		{

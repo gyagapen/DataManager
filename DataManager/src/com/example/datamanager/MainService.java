@@ -120,12 +120,14 @@ public class MainService extends Service {
 		// if screen is on
 		if (!screenOff) {
 			
-			//switch to 3G if necesary
-			changeNetworkMode.switchTo3GIfNecesary();
+			
 			
 			// stop all timers if there are running
 			timerSetUp.CancelTimeOff();
 			timerSetUp.CancelTimerOn();
+			
+			//switch to 3G if necesary
+			changeNetworkMode.switchTo3GIfNecesary();
 
 			// activate data or wifi
 			try 
@@ -146,28 +148,37 @@ public class MainService extends Service {
 					
 					if(sharedPrefsEditor.isDataActivated())
 					{
-						dataActivation.setMobileDataEnabled(true);
+						//else data will be activated by network mode receiver
+						if(!sharedPrefsEditor.isNetworkModeSwitching())
+						{
+							dataActivation.setMobileDataEnabled(true);
+						}
 					}
 				}
 				else
 				{
 					dataActivation.setConnectivityEnabled(sharedPrefsEditor);
 				}
+				
+				
+				
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 		} else { // screen is off
 			
-			//switch to 2G if necesary
-			changeNetworkMode.switchTo2GIfNecesary();
-
+			
 			sharedPrefsEditor.setScreenOnIsDelayed(false);
 
 			//get sleep state
 			boolean isSleeping = sharedPrefsEditor.isSleeping();
 			
 			Log.i("CConnectivity", "sleep: "+isSleeping);
+			
+			//switch to 2G if necesary
+			changeNetworkMode.switchTo2GIfNecesary();
 			
 			if(isSleeping)
 			{
@@ -184,6 +195,9 @@ public class MainService extends Service {
 				//start timer
 				timerSetUp.StartTimerOn();
 			}
+			
+			
+
 			
 
 		}
