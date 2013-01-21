@@ -62,9 +62,11 @@
     <string name="sync_title">Sync</string>
     <string name="sleep_title">Sleep mode</string>
     <string name="timers_title">Timers</string>
-    <string name="switch2G">2G When Screen Off - BETA</string>
-    <string name="switch_desc2G">BETA - The preferred network mode will be set when screen is OFF. When screen will be turned on, 3G mode will be re-enabled. Kindly note, if you set the preferred network to 2G in settings, it won\'t override it</string>
+    <string name="switch2G">2G When Screen Off</string>
+    <string name="switch_desc2G">The preferred network mode will be set when screen is OFF. When screen will be turned on, 3G mode will be re-enabled. Kindly note, if you set the preferred network to 2G in settings, it won\'t override it</string>
     <string name="switch_incompatible2G">Sorry, you have to be on CYANOGENMOD based rom to unlock this feature</string>
+    <string name="button_create_activation_shortcut">Create (De)Activation Shortcut</string>
+    <string name="shortcut_activation_name">(De)Activate</string>
     
     
     <color name="separator">#B2E0FF</color>

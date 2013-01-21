@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gyagapen.cleverconnectivity"
-    android:versionCode="17"
-    android:versionName="1.2.11" >
+    android:versionCode="18"
+    android:versionName="1.2.12" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.BATTERY_STATS" />
     <uses-permission android:name="com.android.phone.CHANGE_NETWORK_MODE" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
 
 
     <application
@@ -74,6 +75,16 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="com.example.datamanager.ShortcutActivateReceiver"
+            android:label="@string/title_activity_main"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
             </intent-filter>
         </activity>
 

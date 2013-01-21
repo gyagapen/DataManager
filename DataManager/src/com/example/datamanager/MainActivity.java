@@ -75,6 +75,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	private EditText edFirstTimeOn = null;
 	private CheckBox cbox2GSwitch = null;
 	private TextView tv2GSwitch = null;
+	private Button buttonDeactivationStc = null;
 	
 	  
 
@@ -126,6 +127,9 @@ public class MainActivity extends Activity implements OnClickListener,
 
 			buttonViewLogFile = (Button) findViewById(R.id.buttonLogFile);
 			buttonViewLogFile.setOnClickListener(this);
+			
+			buttonDeactivationStc = (Button) findViewById(R.id.button_deactivation_shortcut);
+			buttonDeactivationStc.setOnClickListener(this);
 
 			cbData.setOnCheckedChangeListener(this);
 			cbWifi.setOnCheckedChangeListener(this);
@@ -315,6 +319,12 @@ public class MainActivity extends Activity implements OnClickListener,
 		{
 			//show error message
 			show2GSwitchErrorMessage();
+		}
+		else if(v == buttonDeactivationStc)
+		{
+			//create shortcut
+			Log.i("CConnectivity", "shortcut creation command");
+			createDeactivationShortcut();
 		}
 
 	}
@@ -873,6 +883,29 @@ public class MainActivity extends Activity implements OnClickListener,
 		AlertDialog dialog = builder.create();
 		
 		dialog.show();
+	}
+	
+	
+	/**
+	 * Create deactivation shortcut on homescreen
+	 */
+	public void createDeactivationShortcut()
+	{
+		Intent shortcutIntent = new Intent(getApplicationContext(),
+	            ShortcutActivateReceiver.class);
+	     
+	 
+	    Intent addIntent = new Intent();
+	    addIntent
+	            .putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+	    addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getResources().getString(R.string.shortcut_activation_name));
+	    addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+	            Intent.ShortcutIconResource.fromContext(getApplicationContext(),
+	                    R.drawable.ic_launcher));
+	 
+	    addIntent
+	            .setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+	    getApplicationContext().sendBroadcast(addIntent);
 	}
 
 

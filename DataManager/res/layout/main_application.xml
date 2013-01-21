@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- <ScrollView
+ <!-- <ScrollView
         xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -21,13 +21,13 @@
                         ads:adUnitId="a150d57cebe0f76"
                         ads:loadAdOnCreate="true"
                          >
-          </com.google.ads.AdView>
+          </com.google.ads.AdView> 
  
 
      <ScrollView
         xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent" > 
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -565,6 +565,15 @@
                             android:layout_marginTop="5dp"
                             android:ems="10"
                             android:inputType="number" />
+
+                        <Button
+                            android:id="@+id/button_deactivation_shortcut"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="7dp"
+                            android:text="@string/button_create_activation_shortcut" />
+
                     </LinearLayout>
                 </TableRow>
 
@@ -648,7 +657,7 @@
                             android:textColor="@color/name" />
 
 
-                    <com.google.ads.AdView
+                     <com.google.ads.AdView
                         android:id="@+id/adViewMainEnd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -666,4 +675,4 @@
     </ScrollView>
 
 	</LinearLayout>
-<!-- </ScrollView>  -->
+ <!-- </ScrollView>  -->

@@ -35,8 +35,8 @@ public class SaveConnectionPreferences {
 					.isWifiChipActivated();
 			sharedPrefsEditor.setWifiActivation(wifiConnectionIsActivated);
 
-			// if data activation is not delayed
-			if (!sharedPrefsEditor.isDataActivationDelayed()) {
+			// if data activation is not delayed or data is not switching
+			if (!sharedPrefsEditor.isDataActivationDelayed() && !sharedPrefsEditor.isNetworkModeSwitching()) {
 				boolean dataConnectionIsActivated = dataActivation
 						.isDataChipActivated();
 				sharedPrefsEditor.setDataActivation(dataConnectionIsActivated);
