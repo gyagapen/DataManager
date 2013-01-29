@@ -1,10 +1,10 @@
 package com.example.datamanager;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Set;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
-import com.gyagapen.cleverconnectivity.R;
 
 public class SharedPrefsEditor {
 
@@ -44,6 +44,8 @@ public class SharedPrefsEditor {
 	static final String STR_ORIGINAL_PREFERRED_NETWORK_MODE="originalPreferredNeworkMode";
 	static final String STR_NETWORK_MODE_IS_SWITCHING = "networkModeIsSwitching";
 	static final String STR_IS_2G_ACTIVATED = "is2GActivated";
+	static final String STR_APPLICATION_ON_SET = "applicationOnSet"; 
+	static final String STR_IS_APPLICATION_ON_SET_IS_ACTIVATED= "isApplicationOnSetActivated";
 
 	// Default values
 	static final int TIME_ON = 2; // min
@@ -79,6 +81,9 @@ public class SharedPrefsEditor {
 	static final int ORIGINAL_PREFERRED_NETWORK_MODE=3;
 	static final boolean NETWORK_MODE_IS_SWITCHING = false;
 	static final boolean IS_2G_ACTIVATED = false;
+	static final String APPLICATION_ON_SET = "";
+	static final boolean IS_APPLICATION_ON_SET_IS_ACTIVATED=true;
+	
 	// gives access to connection states
 	DataActivation dataConnectionState;
 
@@ -135,6 +140,8 @@ public class SharedPrefsEditor {
 			prefEditor.putBoolean(STR_IS_2G_SWITCH_ACTIVATED, IS_2G_SWITCH_ACTIVATED);
 			prefEditor.putInt(STR_ORIGINAL_PREFERRED_NETWORK_MODE, ORIGINAL_PREFERRED_NETWORK_MODE);
 			prefEditor.putBoolean(STR_NETWORK_MODE_IS_SWITCHING, NETWORK_MODE_IS_SWITCHING);
+			prefEditor.putBoolean(STR_IS_APPLICATION_ON_SET_IS_ACTIVATED, IS_APPLICATION_ON_SET_IS_ACTIVATED);
+			
 
 			prefEditor.commit();
 		}
@@ -179,6 +186,7 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_IS_2G_SWITCH_ACTIVATED, IS_2G_SWITCH_ACTIVATED);
 		prefEditor.putInt(STR_ORIGINAL_PREFERRED_NETWORK_MODE, ORIGINAL_PREFERRED_NETWORK_MODE);
 		prefEditor.putBoolean(STR_NETWORK_MODE_IS_SWITCHING, NETWORK_MODE_IS_SWITCHING);
+		prefEditor.putBoolean(STR_IS_APPLICATION_ON_SET_IS_ACTIVATED, IS_APPLICATION_ON_SET_IS_ACTIVATED);
 		prefEditor.commit();
 	}
 
@@ -221,6 +229,11 @@ public class SharedPrefsEditor {
 		return dataManagerSettings.getBoolean(STR_IS_2G_ACTIVATED, IS_2G_ACTIVATED);
 	}
 	
+	public boolean isApplicationConnMgrActivated()
+	{
+		return dataManagerSettings.getBoolean(STR_IS_APPLICATION_ON_SET_IS_ACTIVATED, IS_APPLICATION_ON_SET_IS_ACTIVATED);
+	}
+	
 	public boolean isFirstTimeOn()
 	{
 		return dataManagerSettings.getBoolean(STR_IS_FIRST_TIME_ON, IS_FIRST_TIME_ON);
@@ -260,6 +273,14 @@ public class SharedPrefsEditor {
 		return dataManagerSettings.getBoolean(STR_TIME_OFF_IS_ACTIVATED,
 				TIME_OFF_IS_ACTIVATED);
 	}
+	
+	
+	public String getApplicationsOnSet()
+	{
+		return dataManagerSettings.getString(STR_APPLICATION_ON_SET,
+				"");
+	}
+	
 
 	public boolean isWifiActivated() {
 		return dataManagerSettings.getBoolean(STR_WIFI_IS_ACTIVATED,
@@ -355,6 +376,12 @@ public class SharedPrefsEditor {
 	public void set2GSwitchActivation(boolean isSwitchEnabled)
 	{
 		prefEditor.putBoolean(STR_IS_2G_SWITCH_ACTIVATED, isSwitchEnabled);
+		prefEditor.commit();
+	}
+	
+	public void setApplicationConnMgrActivatation(boolean isActivated)
+	{
+		prefEditor.putBoolean(STR_IS_APPLICATION_ON_SET_IS_ACTIVATED, isActivated);
 		prefEditor.commit();
 	}
 	
@@ -495,6 +522,13 @@ public class SharedPrefsEditor {
 		prefEditor.commit();
 	}
 	
+	public void setApplicationOnSet(String apps)
+	{
+		prefEditor.putString(STR_APPLICATION_ON_SET, apps);
+		prefEditor.commit();
+		
+	}
+	
 	
 	public void setAutoWifiOnActivation(boolean isEnabled)
 	{
@@ -534,5 +568,8 @@ public class SharedPrefsEditor {
 		
 		prefEditor.commit();
 	}
+	
+	
+	
 
 }

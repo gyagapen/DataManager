@@ -3,8 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <!-- xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads" -->
-    
+    <!--  xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads" -->
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -121,7 +120,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/name" />
 
-        <!-- <com.google.ads.AdView
+       <!--  <com.google.ads.AdView
             android:id="@+id/adViewSleepTimePickerEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

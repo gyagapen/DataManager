@@ -37,6 +37,8 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	static final int ID_ALARM_TIME_ON = 1879;
 	static final int ID_ALARM_TIME_OFF = 1899;
+	
+	static final String SEPARATOR = "##";
 
 	static final String LOG_FILE_NAME = "CleverConnectivity.log";
 
@@ -76,7 +78,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	private CheckBox cbox2GSwitch = null;
 	private TextView tv2GSwitch = null;
 	private Button buttonDeactivationStc = null;
-	
+	private Button buttonMgConnPerApp = null;
 	  
 
 	private int RETURN_CODE = 0;
@@ -95,9 +97,9 @@ public class MainActivity extends Activity implements OnClickListener,
 
 
 		// initialize connectivity positions
-		SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(
+		/*SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(
 				getApplicationContext());
-		connPrefs.saveAllConnectionSettingInSharedPrefs();
+		connPrefs.saveAllConnectionSettingInSharedPrefs();*/
 
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
@@ -105,6 +107,8 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		dataActivation = new DataActivation(getBaseContext());
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
+		
+		//sharedPrefsEditor.setApplicationOnSet("");
 
 		try {
 			sharedPrefsEditor.initializePreferences();
@@ -131,9 +135,14 @@ public class MainActivity extends Activity implements OnClickListener,
 			buttonDeactivationStc = (Button) findViewById(R.id.button_deactivation_shortcut);
 			buttonDeactivationStc.setOnClickListener(this);
 
+			
+			buttonMgConnPerApp = (Button)findViewById(R.id.button_manage_app);
+			buttonMgConnPerApp.setOnClickListener(this);
+			
 			cbData.setOnCheckedChangeListener(this);
 			cbWifi.setOnCheckedChangeListener(this);
 			cbAutoSync.setOnCheckedChangeListener(this);
+			
 			
 			//difference between paid and free app
 			if(APPLICATION_IS_FREE)
@@ -198,7 +207,6 @@ public class MainActivity extends Activity implements OnClickListener,
 		cbox2GSwitch = (CheckBox)findViewById(R.id.CheckBox2GSwitch);
 		tv2GSwitch = (TextView)findViewById(R.id.TextView2GSwitch);
 		
-
 	}
 
 	/**
@@ -326,22 +334,31 @@ public class MainActivity extends Activity implements OnClickListener,
 			Log.i("CConnectivity", "shortcut creation command");
 			createDeactivationShortcut();
 		}
+		else if(v == buttonMgConnPerApp)
+		{
+			//open new activity
+			Intent myIntent = new Intent(this, ApplicationListActivity.class);
+			startActivity(myIntent);
+		}
 
 	}
 
 	/**
 	 * Stop data manager service
 	 */
-	public static void stopDataManagerService(Context context) {
+	public static void stopDataManagerService(Context context, SharedPrefsEditor sharedPrefsEditor) {
 		// if service is started
 		// if (sharedPrefsEditor.isServiceActivated()) {
+		// register service stopped in preferences
+		sharedPrefsEditor.setServiceActivation(false);
 		context.stopService(new Intent(context, MainService.class));
 		// }
 	}
 
-	public static void StartDataManagerService(Context context) {
+	public static void StartDataManagerService(Context context, SharedPrefsEditor sharedPrefsEditor) {
 		// if service is not started
 		// if (!sharedPrefsEditor.isServiceActivated()) {
+		sharedPrefsEditor.setServiceActivation(true);
 		Intent serviceIntent = new Intent(context, MainService.class);
 		context.startService(serviceIntent);
 		// }
@@ -680,11 +697,11 @@ public class MainActivity extends Activity implements OnClickListener,
 			//stop service if deactivate is checked or deactivate while plugged check and phone is plugged
 			if(isServiceDeactived || (isServiceDeactivatedPlugged && dataActivation.isPhonePlugged()))
 			{
-				stopDataManagerService(this);
+				stopDataManagerService(this, sharedPrefsEditor);
 			}
 			else
 			{
-				StartDataManagerService(this);
+				StartDataManagerService(this, sharedPrefsEditor);
 			}
 			
 			

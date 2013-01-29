@@ -17,6 +17,9 @@ public class TimerOnReceiver extends BroadcastReceiver {
 	// limit, above that number of bytes, will consider that data is used
 	private int bytesLimit = 7000;
 	
+	//delay timer on expiration if selected app is running  - 5min
+	private static int TIME_ON_APP_IS_RUNNING = 5;
+	
 	// SharedPreferences
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
@@ -37,9 +40,47 @@ public class TimerOnReceiver extends BroadcastReceiver {
 				Activity.MODE_PRIVATE);
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
+		timerSetUp = new TimersSetUp(context);
 		
 		Log.i("AlarmReceiverTimeOn", "time on is expired");
 		
+		ApplicationsManager appManager = new ApplicationsManager(context);
+		
+		if(sharedPrefsEditor.isApplicationConnMgrActivated())
+		{
+			Log.i("CConnectivity", "verifying if selected app is running in background");
+			
+			//if one of the selected app is running
+			if(appManager.isSelectedAppIsRunning(sharedPrefsEditor))
+			{
+
+				Log.i("CConnectivity", "app is running in background, next check in 5m");
+				
+				//reset timerOn for 5min
+				timerSetUp.CancelTimerOn();
+				timerSetUp.StartTimerOn(TIME_ON_APP_IS_RUNNING);
+			}
+			else
+			{
+				checkDataUsage(sharedPrefsEditor, context);
+			}
+		}
+		else
+		{
+			checkDataUsage(sharedPrefsEditor, context);
+		}
+		
+		
+
+		
+		
+		
+		
+	}
+	
+	
+	public void checkDataUsage(SharedPrefsEditor sharedPrefsEditor, Context context)
+	{
 		//getting dataInterval
 		int dataInterval = sharedPrefsEditor.getIntervalCheck() * 1000;
 		
@@ -63,7 +104,6 @@ public class TimerOnReceiver extends BroadcastReceiver {
 		}
 		else
 		{
-			//data not used
 			//data not used
 
 			Log.i("Data usage", "Data NOT used");
@@ -108,12 +148,7 @@ public class TimerOnReceiver extends BroadcastReceiver {
 			timerSetUp.StartTimerOff();
 
 		}
-		
-		
-		
-		
 	}
-	
 	
 	public boolean IsDataUsed(int dataInterval)
 	{

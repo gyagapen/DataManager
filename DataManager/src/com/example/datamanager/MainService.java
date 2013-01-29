@@ -20,9 +20,9 @@ import android.widget.Toast;
 public class MainService extends Service {
 
 
-	
+
 	TimersSetUp timerSetUp = null;
-	
+
 
 	// time values
 	private int timeCheckData = 5000;
@@ -34,7 +34,7 @@ public class MainService extends Service {
 
 	//for 2g switch
 	private ChangeNetworkMode changeNetworkMode = null;	
-	
+
 	// screen broadcast receiver
 	private BroadcastReceiver mReceiver = null;
 
@@ -61,7 +61,7 @@ public class MainService extends Service {
 		registerReceiver(mReceiver, filter);
 
 		changeNetworkMode = new ChangeNetworkMode(getApplicationContext());
-		
+
 		timerSetUp = new TimersSetUp(this);
 
 		// shared prefs init
@@ -78,34 +78,37 @@ public class MainService extends Service {
 
 		//start in foreground
 		Notification note = new Notification( 0, null, System.currentTimeMillis() );
-	    note.flags |= Notification.FLAG_NO_CLEAR;
-	    startForeground( 42, note );
-	    
-	    //start time on if screen is off
-	    if(!dataActivation.isScreenIsOn())
-	    {
-	    	
-	    	if(sharedPrefsEditor.isFirstTimeOn())
-	    	{
-	    		//save connections preferences
-	    		SaveConnectionPreferences saveConPrefs = new SaveConnectionPreferences(getBaseContext());
-	    		saveConPrefs.saveAllConnectionSettingInSharedPrefs();
-	    	}
-	    	
-	    	Intent i = new Intent(getBaseContext(), MainService.class);
-	    	
-			i.putExtra("screen_state", true);
+		note.flags |= Notification.FLAG_NO_CLEAR;
+		startForeground( 42, note );
+
+		//start time on if screen is off
+		if(!dataActivation.isScreenIsOn())
+		{
+
+			if(sharedPrefsEditor.isFirstTimeOn())
+			{
+				//save connections preferences
+				//SaveConnectionPreferences saveConPrefs = new SaveConnectionPreferences(getBaseContext());
+				//saveConPrefs.saveAllConnectionSettingInSharedPrefs();
+			}
 			
+			//set first time on
+			sharedPrefsEditor.setIsFirstTimeOn(true);
+
+			Intent i = new Intent(getBaseContext(), MainService.class);
+
+			i.putExtra("screen_state", true);
+
 			getBaseContext().startService(i);
-	    }
-	    
+		}
+
 	}
 
 	// when service starts
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
 		Log.i("MainService", "On command received");
-		
+
 		boolean screenOff = false;
 
 		try {
@@ -114,18 +117,18 @@ public class MainService extends Service {
 			// first run
 			screenOff = false;
 		}
-		
-		
+
+
 
 		// if screen is on
 		if (!screenOff) {
-			
-			
-			
+
+
+
 			// stop all timers if there are running
 			timerSetUp.CancelTimeOff();
 			timerSetUp.CancelTimerOn();
-			
+
 			//switch to 3G if necesary
 			changeNetworkMode.switchTo3GIfNecesary();
 
@@ -136,16 +139,16 @@ public class MainService extends Service {
 				if( (sharedPrefsEditor.isAutoWifiOnActivated() && !sharedPrefsEditor.isWifiActivated()) || (sharedPrefsEditor.isAutoWifiOffActivated() && sharedPrefsEditor.isWifiActivated()))
 				{
 					Log.i("CConnectivity", "auto wifi on check");
-					
+
 					//cheking wether to enable wifi if known networks are avalaible
 					dataActivation.checkWifiScanResults(sharedPrefsEditor);
-					
+
 					//enable 3g and sync meanwhile
 					if(sharedPrefsEditor.isAutoSyncActivated())
 					{
 						dataActivation.setAutoSync(true, sharedPrefsEditor, false);
 					}
-					
+
 					if(sharedPrefsEditor.isDataActivated())
 					{
 						//else data will be activated by network mode receiver
@@ -159,27 +162,27 @@ public class MainService extends Service {
 				{
 					dataActivation.setConnectivityEnabled(sharedPrefsEditor);
 				}
-				
-				
-				
-				
+
+
+
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 		} else { // screen is off
-			
-			
+
+
 			sharedPrefsEditor.setScreenOnIsDelayed(false);
 
 			//get sleep state
 			boolean isSleeping = sharedPrefsEditor.isSleeping();
-			
+
 			Log.i("CConnectivity", "sleep: "+isSleeping);
-			
+
 			//switch to 2G if necesary
 			changeNetworkMode.switchTo2GIfNecesary();
-			
+
 			if(isSleeping)
 			{
 				//desactivate all connectivity
@@ -195,44 +198,47 @@ public class MainService extends Service {
 				//start timer
 				timerSetUp.StartTimerOn();
 			}
-			
-			
 
-			
+
+
+
 
 		}
 
-		return super.onStartCommand(intent, flags, startId);
+		super.onStartCommand(intent, flags, startId);
+
+		return START_STICKY;
 	}
 
-	
-	
-	
+
+
+
 	@Override
 	public void onDestroy() {
-		// unregister service to screen broadcast receiver
-		unregisterReceiver(mReceiver);
 
-		// stops timers
-		/*if (timerOnTask != null) {
-			timerOnTask.cancel();
+		if(!sharedPrefsEditor.isServiceActivated())
+		{
+
+			// unregister service to screen broadcast receiver
+			unregisterReceiver(mReceiver);
+
+			timerSetUp.CancelTimeOff();
+			timerSetUp.CancelTimerOn();
+
+
+			Toast.makeText(getBaseContext(), "DataManager service stopped",
+					Toast.LENGTH_SHORT).show();
+
+
+			super.onDestroy();
 		}
-
-		if (timerOffTask != null) {
-			timerOffTask.cancel();
-		}*/
-		
-		timerSetUp.CancelTimeOff();
-		timerSetUp.CancelTimerOn();
-
-		// register service stopped in preferences
-		sharedPrefsEditor.setServiceActivation(false);
-
-		Toast.makeText(getBaseContext(), "DataManager service stopped",
-				Toast.LENGTH_SHORT).show();
-		
-
-		super.onDestroy();
+		else
+		{
+			Intent in = new Intent();
+			in.setAction("YouWillNeverKillMe");
+			sendBroadcast(in);
+			Log.i("CConnectivity", "onDestroy()...");
+		}
 
 	}
 

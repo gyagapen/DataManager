@@ -67,7 +67,9 @@
     <string name="switch_incompatible2G">Désolé, vous devez avoir une ROM basé sur CYANOGENMOD pour profiter de cette fonctionnalité</string>
     <string name="button_create_activation_shortcut">Créer raccourci pour (dés)activer</string>
     <string name="shortcut_activation_name">(Dés)Activer</string>
-    
+    <string name="button_manage_app">Gérer connectivité par application</string>
+    <string name="mgr_app_conn_master_switch">Interrupteur principal</string>
+    <string name="mgr_app_conn_desc">Lorsqu\'une des applications sélectionnées est en cours d\'exécution, la connectivité ne sera pas interrompue</string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>

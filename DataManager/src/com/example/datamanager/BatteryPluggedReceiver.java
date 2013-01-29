@@ -40,13 +40,13 @@ public class BatteryPluggedReceiver extends BroadcastReceiver {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				MainActivity.stopDataManagerService(context);
+				MainActivity.stopDataManagerService(context, sharedPrefsEditor);
 	
 		    }
 		    else if(action.equals(Intent.ACTION_POWER_DISCONNECTED)) {
 		    	Log.i("Plug", "Phone is UNplugged");
 				
-				MainActivity.StartDataManagerService(context);
+				MainActivity.StartDataManagerService(context, sharedPrefsEditor);
 				
 		    }
 		}

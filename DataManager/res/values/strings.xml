@@ -67,10 +67,14 @@
     <string name="switch_incompatible2G">Sorry, you have to be on CYANOGENMOD based rom to unlock this feature</string>
     <string name="button_create_activation_shortcut">Create (De)Activation Shortcut</string>
     <string name="shortcut_activation_name">(De)Activate</string>
-    
+    <string name="button_manage_app">Manage connectivity per app</string>
+    <string name="mgr_app_conn_master_switch">Master Switch</string>
+    <string name="mgr_app_conn_desc">When one of selected application is running, connecitivty won\'t be disabled</string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>
+    
+    
     
     
 

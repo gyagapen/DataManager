@@ -26,16 +26,16 @@ public class ShortcutActivateReceiver extends Activity {
 		
 		if (!sharedPrefsEditor.isServiceActivated())
 		{	
-			sharedPrefsEditor.setServiceActivation(true);
-			MainActivity.StartDataManagerService(this);
+			sharedPrefsEditor.setDeactivateAll(false);
+			MainActivity.StartDataManagerService(this, sharedPrefsEditor);
 			
 			Log.i("CConnectivity", "shortcut : enable");
 		}
 		else
 		{
 			
-			sharedPrefsEditor.setServiceActivation(false);
-			MainActivity.stopDataManagerService(this);
+			sharedPrefsEditor.setDeactivateAll(true);
+			MainActivity.stopDataManagerService(this, sharedPrefsEditor);
 			
 			Log.i("CConnectivity", "shortcut : disable");
 		}

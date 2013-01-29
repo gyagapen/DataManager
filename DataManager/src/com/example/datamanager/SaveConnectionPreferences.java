@@ -13,6 +13,7 @@ public class SaveConnectionPreferences {
 
 	private DataActivation dataActivation;
 
+	
 	public SaveConnectionPreferences(Context context) {
 
 		// shared prefs init
