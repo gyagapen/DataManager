@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gyagapen.cleverconnectivity"
-    android:versionCode="19"
-    android:versionName="1.2.13" >
+    android:versionCode="21"
+    android:versionName="1.2.14" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -65,7 +65,8 @@
 
         <activity
             android:name="com.example.datamanager.MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:configChanges="orientation|screenSize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
