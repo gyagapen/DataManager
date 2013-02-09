@@ -79,6 +79,8 @@ public class MainActivity extends Activity implements OnClickListener,
 	private TextView tv2GSwitch = null;
 	private Button buttonDeactivationStc = null;
 	private Button buttonMgConnPerApp = null;
+	private CheckBox cbCheckNetConnWifi = null;
+	private CheckBox cbKeyguardOff = null;
 	  
 
 	private int RETURN_CODE = 0;
@@ -86,7 +88,6 @@ public class MainActivity extends Activity implements OnClickListener,
 	// SharedPreferences
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
-
 	private DataActivation dataActivation;
 
 	@Override
@@ -207,6 +208,9 @@ public class MainActivity extends Activity implements OnClickListener,
 		cbox2GSwitch = (CheckBox)findViewById(R.id.CheckBox2GSwitch);
 		tv2GSwitch = (TextView)findViewById(R.id.TextView2GSwitch);
 		
+		cbCheckNetConnWifi = (CheckBox)findViewById(R.id.cboxCheckNetConnectionWIfi);
+		cbKeyguardOff = (CheckBox)findViewById(R.id.checkBoxKeyguardOff);
+		
 	}
 
 	/**
@@ -284,6 +288,9 @@ public class MainActivity extends Activity implements OnClickListener,
 		//show or hide 2G switch fields
 		ChangeNetworkMode changeNetworkMode = new ChangeNetworkMode(this);
 		activate2GSwitch(changeNetworkMode.isCyanogenMod());
+		
+		cbCheckNetConnWifi.setChecked(sharedPrefsEditor.getCheckNetConnectionWifi());
+		cbKeyguardOff.setChecked(sharedPrefsEditor.isEnabledWhenKeyguardOff());
 		
 
 	}
@@ -492,6 +499,10 @@ public class MainActivity extends Activity implements OnClickListener,
 		boolean isFirstTimeOnIsActivated = cboxFirstTimeOn.isChecked();
 		
 		boolean is2GSwitchActivated = cbox2GSwitch.isChecked();
+		
+		boolean isCheckNetConnWifi = cbCheckNetConnWifi.isChecked();
+		
+		boolean isKeyguardOff = cbKeyguardOff.isChecked();
 
 		// save all these preferences
 		sharedPrefsEditor.setAllValues(timeOn, timeOff, intervalCheck,
@@ -499,7 +510,7 @@ public class MainActivity extends Activity implements OnClickListener,
 				wifiMgrIsActivated, autoSyncIsActivated, autoWifiIsActivated,
 				sleepHoursIsActivated, isAutoSyncMgrIsActivated, 
 				isServiceDeactived,isServiceDeactivatedPlugged, timeOnCheck,timeScreenOnDelay,
-				isFirstTimeOnIsActivated, firstTimeOn, autoWifiOnIsActivated, is2GSwitchActivated);
+				isFirstTimeOnIsActivated, firstTimeOn, autoWifiOnIsActivated, is2GSwitchActivated, isCheckNetConnWifi, isKeyguardOff);
 
 		try {
 			// if data is disabled; data connection is stopped
@@ -516,10 +527,10 @@ public class MainActivity extends Activity implements OnClickListener,
 
 			// if wifi is disabled, wifi connection is stopped
 			if (!wifiIsActivated) {
-				dataActivation.setWifiConnectionEnabled(false);
+				dataActivation.setWifiConnectionEnabled(false, false, sharedPrefsEditor);
 				// dataActivation.setAutoSync(true);
 			} else {
-				dataActivation.setWifiConnectionEnabled(true);
+				dataActivation.setWifiConnectionEnabled(true, false, sharedPrefsEditor);
 				// dataActivation.setAutoSync(true);
 			}
 

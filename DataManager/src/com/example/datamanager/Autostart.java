@@ -35,11 +35,6 @@ public class Autostart extends BroadcastReceiver {
 		// if service is activated
 		if (sharedPrefsEditor.isServiceActivated()) {
 
-			// sleeping hours
-			AlarmMgr alarmMgr = new AlarmMgr(arg0, sharedPrefsEditor);
-			alarmMgr.manageSleepingHours(sharedPrefsEditor.getSleepTimeOff(),
-					sharedPrefsEditor.getSleepTimeOn());
-			
 			//start data manager service
 			Intent intent = new Intent(arg0, MainService.class);
 			arg0.startService(intent);
@@ -47,6 +42,5 @@ public class Autostart extends BroadcastReceiver {
 
 		}
 	}
-	
 
 }

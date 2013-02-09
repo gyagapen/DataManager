@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
- <!--  <ScrollView
+ <!-- <ScrollView
         xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -13,7 +13,7 @@
     android:orientation="vertical" >
 
 
-	    <com.google.ads.AdView
+	  <com.google.ads.AdView
 					android:id="@+id/adViewMainStart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -21,11 +21,11 @@
                         ads:adUnitId="a150d57cebe0f76"
                         ads:loadAdOnCreate="true"
                          >
-          </com.google.ads.AdView>
+          </com.google.ads.AdView> 
  
 
-     <ScrollView
-             xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+      <ScrollView
+        xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
@@ -235,6 +235,20 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/toggle_auto_wifi_on_desc" />
+
+                        <CheckBox
+                            android:id="@+id/cboxCheckNetConnectionWIfi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/check_net_conn_wifi" />
+
+                        <TextView
+                            android:id="@+id/textView23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/check_net_conn_wifi_desc" />
+
                     </LinearLayout>
                 </TableRow>
 
@@ -509,6 +523,20 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical" >
 
+                        <CheckBox
+                            android:id="@+id/checkBoxKeyguardOff"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/keyguard_off" />
+
+                        <TextView
+                            android:id="@+id/textView24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/keyguard_off_desc" />
+
                         <TextView
                             android:id="@+id/textView21"
                             android:layout_width="wrap_content"
@@ -664,14 +692,14 @@
                             android:textColor="@color/name" />
 
 
-                     <com.google.ads.AdView
+                    <com.google.ads.AdView
                         android:id="@+id/adViewMainEnd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         ads:adSize="BANNER"
                         ads:adUnitId="a150d57cebe0f76"
                         ads:loadAdOnCreate="true" >
-                    </com.google.ads.AdView>
+                    </com.google.ads.AdView> 
 
 
 
@@ -682,4 +710,4 @@
     </ScrollView>
 
 	</LinearLayout>
-<!--   </ScrollView> -->
+ <!--  </ScrollView>  -->

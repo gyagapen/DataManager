@@ -46,6 +46,9 @@ public class SharedPrefsEditor {
 	static final String STR_IS_2G_ACTIVATED = "is2GActivated";
 	static final String STR_APPLICATION_ON_SET = "applicationOnSet"; 
 	static final String STR_IS_APPLICATION_ON_SET_IS_ACTIVATED= "isApplicationOnSetActivated";
+	static final String STR_CHECK_NET_CONNECTION_WIFI = "checkNetConnectionWifi";
+	static final String STR_NET_CONN_HAS_TO_BE_CHECKED = "netConnHasToBeChecked";
+	static final String STR_ENABLE_WHEN_KEYGUARD_OFF = "disableWhenKeyguardOff";
 
 	// Default values
 	static final int TIME_ON = 2; // min
@@ -83,6 +86,9 @@ public class SharedPrefsEditor {
 	static final boolean IS_2G_ACTIVATED = false;
 	static final String APPLICATION_ON_SET = "";
 	static final boolean IS_APPLICATION_ON_SET_IS_ACTIVATED=true;
+	static final boolean CHECK_NET_CONNECTION_WIFI=false;
+	static final boolean NET_CONN_HAS_TO_BE_CHECKED = false;
+	static final boolean ENABLE_WHEN_KEYGUARD_OFF = false;
 	
 	// gives access to connection states
 	DataActivation dataConnectionState;
@@ -141,6 +147,9 @@ public class SharedPrefsEditor {
 			prefEditor.putInt(STR_ORIGINAL_PREFERRED_NETWORK_MODE, ORIGINAL_PREFERRED_NETWORK_MODE);
 			prefEditor.putBoolean(STR_NETWORK_MODE_IS_SWITCHING, NETWORK_MODE_IS_SWITCHING);
 			prefEditor.putBoolean(STR_IS_APPLICATION_ON_SET_IS_ACTIVATED, IS_APPLICATION_ON_SET_IS_ACTIVATED);
+			prefEditor.putBoolean(STR_CHECK_NET_CONNECTION_WIFI, CHECK_NET_CONNECTION_WIFI);
+			prefEditor.putBoolean(STR_NET_CONN_HAS_TO_BE_CHECKED, NET_CONN_HAS_TO_BE_CHECKED);
+			prefEditor.putBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, ENABLE_WHEN_KEYGUARD_OFF);
 			
 
 			prefEditor.commit();
@@ -187,6 +196,9 @@ public class SharedPrefsEditor {
 		prefEditor.putInt(STR_ORIGINAL_PREFERRED_NETWORK_MODE, ORIGINAL_PREFERRED_NETWORK_MODE);
 		prefEditor.putBoolean(STR_NETWORK_MODE_IS_SWITCHING, NETWORK_MODE_IS_SWITCHING);
 		prefEditor.putBoolean(STR_IS_APPLICATION_ON_SET_IS_ACTIVATED, IS_APPLICATION_ON_SET_IS_ACTIVATED);
+		prefEditor.putBoolean(STR_CHECK_NET_CONNECTION_WIFI, CHECK_NET_CONNECTION_WIFI);
+		prefEditor.putBoolean(STR_NET_CONN_HAS_TO_BE_CHECKED, NET_CONN_HAS_TO_BE_CHECKED);
+		prefEditor.putBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, ENABLE_WHEN_KEYGUARD_OFF);
 		prefEditor.commit();
 	}
 
@@ -206,6 +218,11 @@ public class SharedPrefsEditor {
 		return dataManagerSettings.getInt(STR_SCREEN_DELAY_TIMER, SCREEN_DELAY_TIMER);
 	}
 	
+	public boolean isEnabledWhenKeyguardOff()
+	{
+		return dataManagerSettings.getBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, ENABLE_WHEN_KEYGUARD_OFF);
+	}
+	
 	public int getFirstTimeOn(){
 		return dataManagerSettings.getInt(STR_FIRST_TIME_ON_VALUE, FIRST_TIME_ON_VALUE);
 	}
@@ -217,6 +234,11 @@ public class SharedPrefsEditor {
 	public boolean isSleeping()
 	{
 		return dataManagerSettings.getBoolean(STR_IS_SLEEPING, IS_SLEEPING);
+	}
+	
+	public boolean getCheckNetConnectionWifi()
+	{
+		return dataManagerSettings.getBoolean(STR_CHECK_NET_CONNECTION_WIFI, CHECK_NET_CONNECTION_WIFI);
 	}
 	
 	public boolean is2GSwitchActivated()
@@ -302,6 +324,11 @@ public class SharedPrefsEditor {
 				AUTO_WIFI_ON_IS_ACTIVATED);
 	}
 	
+	public boolean getNetHasToBeChecked() {
+		return dataManagerSettings.getBoolean(STR_NET_CONN_HAS_TO_BE_CHECKED,
+				NET_CONN_HAS_TO_BE_CHECKED);
+	}
+	
 	public boolean isAutoSyncMgrIsActivated()
 	{
 		return dataManagerSettings.getBoolean(STR_AUTO_SYNC_MGR_IS_ACTIVATED, AUTO_SYNC_MGR_IS_ACTIVATED);
@@ -370,6 +397,12 @@ public class SharedPrefsEditor {
 	public void setIsCheckingAutoWifi(boolean isChecking)
 	{
 		prefEditor.putBoolean(STR_CHECKING_AUTO_WIFI, isChecking);
+		prefEditor.commit();
+	}
+	
+	public void setCheckNetConnectionWifi(boolean isChecking)
+	{
+		prefEditor.putBoolean(STR_CHECK_NET_CONNECTION_WIFI, isChecking);
 		prefEditor.commit();
 	}
 	
@@ -455,6 +488,12 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_DATA_MANAGER_IS_ACTIVATED, isEnabled);
 		prefEditor.commit();
 	}
+	
+	public void setEnabledWhenKeyguardOff(boolean isEnabled)
+	{
+		prefEditor.putBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, isEnabled);
+		prefEditor.commit();
+	}
 
 	public void setWifiActivation(boolean isEnabled) {
 		prefEditor.putBoolean(STR_WIFI_IS_ACTIVATED, isEnabled);
@@ -529,6 +568,13 @@ public class SharedPrefsEditor {
 		
 	}
 	
+	public void setNetConnHasToBeChecked(boolean hasToBeChecked)
+	{
+		prefEditor.putBoolean(STR_NET_CONN_HAS_TO_BE_CHECKED, hasToBeChecked);
+		prefEditor.commit();
+		
+	}
+	
 	
 	public void setAutoWifiOnActivation(boolean isEnabled)
 	{
@@ -542,7 +588,8 @@ public class SharedPrefsEditor {
 			boolean autoWifiOffIsActivated, boolean sleepHoursIsActivated, boolean isAutoSyncMgrIsActivated, 
 			boolean serviceIsDeactivated, boolean serviceIsDeactivatedWhilePlugged, int timeOnCheck, int screenDelayTimer,
 			boolean isFirsTimeOnIsActivated, int firstTimeOnValue,
-			boolean isAutoWifiOnIsActivated, boolean is2GSwitchActivate) {
+			boolean isAutoWifiOnIsActivated, boolean is2GSwitchActivate, boolean checkNetConnWifi,
+			boolean enableServiceWhenKeyguardOff) {
 		
 		prefEditor.putInt(STR_TIME_ON, timeOn);
 		prefEditor.putInt(STR_TIME_ON_CHECK, timeOnCheck);
@@ -565,6 +612,9 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_AUTO_WIFI_ON_IS_ACTIVATED, isAutoWifiOnIsActivated);
 		prefEditor.putBoolean(STR_IS_2G_SWITCH_ACTIVATED, is2GSwitchActivate);
 		prefEditor.putBoolean(STR_NETWORK_MODE_IS_SWITCHING, false);
+		prefEditor.putBoolean(STR_CHECK_NET_CONNECTION_WIFI, checkNetConnWifi);
+		prefEditor.putBoolean(STR_NET_CONN_HAS_TO_BE_CHECKED, false);
+		prefEditor.putBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, enableServiceWhenKeyguardOff);
 		
 		prefEditor.commit();
 	}

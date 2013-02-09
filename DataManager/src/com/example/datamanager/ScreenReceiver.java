@@ -18,10 +18,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 	private SharedPrefsEditor sharedPrefsEditor = null;
 	private DataActivation dataActivation;
 
-	// Timers for screen delay on
-	private Timer timerScreenDelay= null;
-	private TimerScreenDelayTask timerScreenDelayTask = null;
-	private int timeScreenDelay = 5000;
+
 
 
 
@@ -38,6 +35,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 		// if service is running
 		if (sharedPrefsEditor.isServiceActivated()) {
 
+			//screen off
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
 
 				// initialize connectivity positions
@@ -50,29 +48,6 @@ public class ScreenReceiver extends BroadcastReceiver {
 				//set is firt time on to true
 				sharedPrefsEditor.setIsFirstTimeOn(true);
 
-
-
-			} else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-
-				screenOff = false;
-
-
-
-			}
-
-			Log.i("CConnectivity", "screen is "+!screenOff);
-
-			if(!screenOff && !sharedPrefsEditor.isScreenOnDelayed() && sharedPrefsEditor.getScreenDelayTimer() >0)
-			{
-				Log.i("Screen delay", "screen is delayed for: "+timeScreenDelay+"ms");
-
-
-				TimersSetUp timerSetUp = new TimersSetUp(context);
-				timerSetUp.StartScreenDelayTimer();
-			}
-			else
-			{
-
 				if(!sharedPrefsEditor.isScreenOnDelayed())
 				{
 					Intent i = new Intent(context, MainService.class);
@@ -81,7 +56,47 @@ public class ScreenReceiver extends BroadcastReceiver {
 
 					context.startService(i);
 				}
+
+
+
+			} else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+
+				//if not enabling connectivity when keyguard is off
+				if(!sharedPrefsEditor.isEnabledWhenKeyguardOff())
+				{
+					screenOff = false;
+
+					if(!sharedPrefsEditor.isScreenOnDelayed() && sharedPrefsEditor.getScreenDelayTimer() >0)
+					{
+						Log.i("Screen delay", "screen is delayed for: "+sharedPrefsEditor.getScreenDelayTimer()+"ms");
+
+
+						TimersSetUp timerSetUp = new TimersSetUp(context);
+						timerSetUp.StartScreenDelayTimer();
+					}
+					else
+					{
+
+						if(!sharedPrefsEditor.isScreenOnDelayed())
+						{
+							Intent i = new Intent(context, MainService.class);
+
+							i.putExtra("screen_state", screenOff);
+
+							context.startService(i);
+						}
+					}
+
+				}
+				else //keyguard connectivity
+				{
+					sharedPrefsEditor.setScreenOnIsDelayed(true);
+				}
+
 			}
+
+			Log.i("CConnectivity", "screen is "+!screenOff);
+
 
 
 

@@ -49,30 +49,33 @@ public class MainService extends Service {
 	public void onCreate() {
 
 		super.onCreate();
-
-		// REGISTER RECEIVER THAT HANDLES SCREEN ON AND SCREEN OFF LOGIC
-
-		IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-
-		filter.addAction(Intent.ACTION_SCREEN_OFF);
-
-		mReceiver = new ScreenReceiver();
-
-		registerReceiver(mReceiver, filter);
-
-		changeNetworkMode = new ChangeNetworkMode(getApplicationContext());
-
-		timerSetUp = new TimersSetUp(this);
-
+		
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
 		dataActivation = new DataActivation(getBaseContext());
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
+		// REGISTER RECEIVER THAT HANDLES SCREEN ON AND SCREEN OFF LOGIC
+		IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+		filter.addAction(Intent.ACTION_SCREEN_OFF);
+		mReceiver = new ScreenReceiver();
+		registerReceiver(mReceiver, filter);
+		
+		
+		//register keyguard receiver if needed
+		if(sharedPrefsEditor.isEnabledWhenKeyguardOff())
+		{
+			KeyguardReceiver keyguardReceiver = new KeyguardReceiver();
+			registerReceiver(keyguardReceiver, new IntentFilter(Intent.ACTION_USER_PRESENT));
+		}
+
+		changeNetworkMode = new ChangeNetworkMode(getApplicationContext());
+
+		timerSetUp = new TimersSetUp(this);
+
 		// register service start in preferences
 		sharedPrefsEditor.setServiceActivation(true);
-
 		Toast.makeText(getBaseContext(), "DataManager service started",
 				Toast.LENGTH_SHORT).show();
 
@@ -85,12 +88,6 @@ public class MainService extends Service {
 		if(!dataActivation.isScreenIsOn())
 		{
 
-			if(sharedPrefsEditor.isFirstTimeOn())
-			{
-				//save connections preferences
-				//SaveConnectionPreferences saveConPrefs = new SaveConnectionPreferences(getBaseContext());
-				//saveConPrefs.saveAllConnectionSettingInSharedPrefs();
-			}
 			
 			//set first time on
 			sharedPrefsEditor.setIsFirstTimeOn(true);
@@ -154,6 +151,8 @@ public class MainService extends Service {
 						//else data will be activated by network mode receiver
 						if(!sharedPrefsEditor.isNetworkModeSwitching())
 						{
+							//pause 5s until wifi check is finished
+							//Thread.sleep(5000);
 							dataActivation.setMobileDataEnabled(true);
 						}
 					}

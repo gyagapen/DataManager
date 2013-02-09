@@ -60,9 +60,7 @@ public class ApplicationListActivity extends Activity implements OnCheckedChange
 
 		//populate list view
 		listViewApps = (ListView)findViewById(R.id.listViewApplications);
-		listViewApps.setFastScrollEnabled(true);
-		listViewApps.setTextFilterEnabled(true);
-
+		
 
 		
 
@@ -83,6 +81,13 @@ public class ApplicationListActivity extends Activity implements OnCheckedChange
 		    		ListAppAdapter listAppAdapter = new ListAppAdapter(apps, activity , sharedPrefsEditor);
 
 		    		listViewApps.setAdapter(listAppAdapter);
+		    		
+		    		//scroll bar
+		    		listViewApps.setFastScrollEnabled(true);
+		    		listViewApps.setScrollbarFadingEnabled(false);
+		    		listViewApps.setScrollContainer(true);
+		    		listViewApps.setTextFilterEnabled(true);
+
 		    	}
 		    }
 		};

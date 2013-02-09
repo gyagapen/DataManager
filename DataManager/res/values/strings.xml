@@ -70,6 +70,10 @@
     <string name="button_manage_app">Manage connectivity per app</string>
     <string name="mgr_app_conn_master_switch">Master Switch</string>
     <string name="mgr_app_conn_desc">When one of selected application is running, connecitivty won\'t be disabled</string>
+    <string name="check_net_conn_wifi">Check Internet Connection</string>
+    <string name="check_net_conn_wifi_desc">Checks wether the phone is able to connect to internet via the wifi connection. If it not the case, wifi is disabled.</string>
+    <string name="keyguard_off">Connectivity On after lockscreen</string>
+    <string name="keyguard_off_desc">Connectivity will be re-enabled when the lockscreen is removed by the user (instead of re-activating connectivity when screen is turned on)</string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>
