@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
- <!-- <ScrollView
-        xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" > -->
+ <ScrollView xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_gravity="fill_horizontal" >
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
@@ -13,7 +12,7 @@
     android:orientation="vertical" >
 
 
-	  <com.google.ads.AdView
+	  <!-- <com.google.ads.AdView
 					android:id="@+id/adViewMainStart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -27,7 +26,7 @@
       <ScrollView
         xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent" > -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -649,6 +648,15 @@
                         android:gravity="fill_horizontal"
                         android:orientation="vertical" >
 
+                        <CheckBox
+                            android:id="@+id/checkBoxDeactivateLogs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_horizontal"
+                            android:layout_marginBottom="7dp"
+                            android:layout_marginTop="7dp"
+                            android:text="@string/logs_off" />
+
                         <Button
                             android:id="@+id/buttonLogFile"
                             style="?android:attr/buttonStyleSmall"
@@ -659,7 +667,7 @@
                             android:text="@string/view_log_file" />
 
                         <TextView
-                            android:id="@+id/textView15"
+                            android:id="@+id/textViewLogs"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/view_log_details" />
@@ -692,14 +700,14 @@
                             android:textColor="@color/name" />
 
 
-                    <com.google.ads.AdView
+                    <!-- <com.google.ads.AdView
                         android:id="@+id/adViewMainEnd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         ads:adSize="BANNER"
                         ads:adUnitId="a150d57cebe0f76"
                         ads:loadAdOnCreate="true" >
-                    </com.google.ads.AdView> 
+                    </com.google.ads.AdView> --> 
 
 
 
@@ -707,7 +715,7 @@
                 </TableRow>
             </TableLayout>
         </LinearLayout>
-    </ScrollView>
+ <!--    </ScrollView> -->
 
 	</LinearLayout>
- <!--  </ScrollView>  -->
+   </ScrollView>  

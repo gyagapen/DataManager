@@ -24,6 +24,7 @@ public class TimerOnReceiver extends BroadcastReceiver {
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
 	
+	private LogsProvider logsProvider = null;
 	
 	//interval to delay timer off when data is used
 	private int delayTimeOff = 1;
@@ -35,6 +36,8 @@ public class TimerOnReceiver extends BroadcastReceiver {
 	//this is executed when timer on is expired
 	public void onReceive(Context context, Intent intent) {
 		
+		logsProvider = new LogsProvider(context);
+		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
@@ -42,19 +45,19 @@ public class TimerOnReceiver extends BroadcastReceiver {
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 		timerSetUp = new TimersSetUp(context);
 		
-		Log.i("AlarmReceiverTimeOn", "time on is expired");
+	    logsProvider.info("AlarmReceiverTimeOn : time on is expired");
 		
 		ApplicationsManager appManager = new ApplicationsManager(context);
 		
 		if(sharedPrefsEditor.isApplicationConnMgrActivated())
 		{
-			Log.i("CConnectivity", "verifying if selected app is running in background");
+		    logsProvider.info("verifying if selected app is running in background");
 			
 			//if one of the selected app is running
 			if(appManager.isSelectedAppIsRunning(sharedPrefsEditor))
 			{
 
-				Log.i("CConnectivity", "app is running in background, next check in 5m");
+			    logsProvider.info("app is running in background, next check in 5m");
 				
 				//reset timerOn for 5min
 				timerSetUp.CancelTimerOn();
@@ -96,7 +99,7 @@ public class TimerOnReceiver extends BroadcastReceiver {
 		if(dataIsUsed)
 		{
 			//data is used
-			Log.i("Data usage", "Data USED");
+		    logsProvider.info("Data usage : Data USED");
 			
 			//reset timerOn
 			timerSetUp.CancelTimerOn();
@@ -105,18 +108,23 @@ public class TimerOnReceiver extends BroadcastReceiver {
 		else
 		{
 			//data not used
+			//cancel timer On
+			timerSetUp.CancelTimerOn();
+			
+			//start timer Off
+			timerSetUp.StartTimerOff();
 
-			Log.i("Data usage", "Data NOT used");
+		    logsProvider.info("Data usage : Data NOT used");
 			
 			try {
 				
 				//auto wifi off
 				if(sharedPrefsEditor.isAutoWifiOffActivated() && sharedPrefsEditor.isWifiActivated())
 				{
-					Log.i("Auto Wifi Off", "Launch check");
+				    logsProvider.info("Auto Wifi Off : Launch check");
 					dataActivation.checkWifiScanResults(sharedPrefsEditor);
 					
-					//3g and auto sync off
+					//auto sync off
 					if(sharedPrefsEditor.isDataMgrActivated())
 					{
 						dataActivation.setMobileDataEnabled(false);
@@ -141,11 +149,7 @@ public class TimerOnReceiver extends BroadcastReceiver {
 				e.printStackTrace();
 			}
 			
-			//cancel timer On
-			timerSetUp.CancelTimerOn();
 			
-			//start timer Off
-			timerSetUp.StartTimerOff();
 
 		}
 	}
@@ -178,7 +182,7 @@ public class TimerOnReceiver extends BroadcastReceiver {
 
 			int bytesUsed = (int) (nbBytesReceived2 - nbBytesReceived1);
 			
-			Log.i("Data usage received", String.valueOf(bytesUsed));
+		    logsProvider.info("Data usage received "+String.valueOf(bytesUsed));
 			
 			boolean dataIsReceived = (bytesUsed > bytesLimit);
 
@@ -186,7 +190,7 @@ public class TimerOnReceiver extends BroadcastReceiver {
 			if (!dataIsReceived) {
 				bytesUsed = (int) (nbBytesSent2 - nbBytesSent1);
 				dataIsUsed = (bytesUsed > bytesLimit);
-				Log.i("Data usage sent", String.valueOf(bytesUsed));
+			    logsProvider.info("Data usage sent "+String.valueOf(bytesUsed));
 			} else {
 				// data connection is used
 				dataIsUsed = true;

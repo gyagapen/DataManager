@@ -3,11 +3,9 @@ package com.example.datamanager;
 import java.util.TimerTask;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 public class TimerScreenDelayTask extends TimerTask {
 
@@ -19,9 +17,13 @@ public class TimerScreenDelayTask extends TimerTask {
 	private SharedPrefsEditor sharedPrefsEditor = null;
 
 	private DataActivation dataActivation = null;
+	
+	private LogsProvider logsProvider = null;
 
 	public TimerScreenDelayTask(Context aContext) {
 
+		logsProvider = new LogsProvider(aContext);
+		
 		context = aContext;
 		timerSetUp = new TimersSetUp(context);
 
@@ -30,11 +32,12 @@ public class TimerScreenDelayTask extends TimerTask {
 				Activity.MODE_PRIVATE);
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
+		
 	}
 
 	public void run() {
 
-		Log.i("Screen on task", "screen delay task has been launched");
+	    logsProvider.info("Screen on task : screen delay task has been launched");
 		
 		// stop all timers if there are running
 
@@ -50,13 +53,13 @@ public class TimerScreenDelayTask extends TimerTask {
 		
 		sharedPrefsEditor.setScreenOnIsDelayed(false);*/
 		
-		Log.i("Screen on task", "screen is "+dataActivation.isScreenIsOn());
+	    logsProvider.info("Screen on task : screen is "+dataActivation.isScreenIsOn());
 		
 		//if screen is still on
 		if(dataActivation.isScreenIsOn())
 		{
 		
-			Log.i("Screen on task", "screen is on");
+		    logsProvider.info("Screen on task : screen is on");
 			
 			Intent i = new Intent(context, MainService.class);
 	

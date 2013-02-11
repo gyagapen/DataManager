@@ -5,8 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
-import com.gyagapen.cleverconnectivity.R;
 
 /**
  * Called when android starts
@@ -19,6 +17,7 @@ public class Autostart extends BroadcastReceiver {
 	// SharedPreferences
 	SharedPreferences prefs = null;
 	SharedPrefsEditor sharedPrefsEditor = null;
+	LogsProvider logsProvider = null;
 
 	public void onReceive(Context arg0, Intent arg1) {
 		
@@ -31,6 +30,8 @@ public class Autostart extends BroadcastReceiver {
 		prefs = arg0.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
+		
+		logsProvider = new LogsProvider(arg0);
 
 		// if service is activated
 		if (sharedPrefsEditor.isServiceActivated()) {
@@ -38,7 +39,7 @@ public class Autostart extends BroadcastReceiver {
 			//start data manager service
 			Intent intent = new Intent(arg0, MainService.class);
 			arg0.startService(intent);
-			Log.i("Autostart", "started");
+			logsProvider.info("Autostart started");
 
 		}
 	}

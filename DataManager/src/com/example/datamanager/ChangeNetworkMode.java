@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
-import android.util.Log;
 
 /**
  * Class that enable switching between 2g and 3g
@@ -30,6 +29,8 @@ public class ChangeNetworkMode {
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
 	private DataActivation dataActivation;
+	
+	private LogsProvider logsProvider = null;
 
 	public ChangeNetworkMode(Context aContext) {
 		context = aContext;
@@ -38,6 +39,8 @@ public class ChangeNetworkMode {
 				Activity.MODE_PRIVATE);
 		dataActivation = new DataActivation(aContext);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
+		
+		logsProvider = new LogsProvider(aContext); 
 	}
 
 	private void changeNetworkMode(int networkMode) {
@@ -75,7 +78,7 @@ public class ChangeNetworkMode {
 		{
 			sharedPrefsEditor.setNetworkModeIsSwitching(true);
 			changeNetworkMode(NETWORK_MODE_GSM_ONLY);
-			Log.i("CConnectivity", "switched to 2G");
+			logsProvider.info("switched to 2G");
 		}
 	}
 
@@ -88,7 +91,7 @@ public class ChangeNetworkMode {
 		{
 			sharedPrefsEditor.setNetworkModeIsSwitching(true);
 			changeNetworkMode(NETWORK_MODE_GSM_UMTS);
-			Log.i("CConnectivity", "switched to 3G");
+			logsProvider.info("switched to 3G");
 		}
 	}
 	
@@ -129,13 +132,13 @@ public class ChangeNetworkMode {
 		{
 			if(sharedPrefsEditor.is2GSwitchActivated())
 			{
-				Log.i("CConnectivity", "check if 3g will be enabled, original: "+sharedPrefsEditor.getOriginalPreferredMode() );
+				logsProvider.info("check if 3g will be enabled, original: "+sharedPrefsEditor.getOriginalPreferredMode() );
 				
 				//if original network mode was not 2G
 				if(sharedPrefsEditor.getOriginalPreferredMode() != NETWORK_MODE_GSM_ONLY)
 				{
 					
-					Log.i("CConnectivity", "3g should be swtich on");
+					logsProvider.info("3g should be swtich on");
 					switchTo3G();
 				}
 			}

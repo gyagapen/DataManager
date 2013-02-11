@@ -74,6 +74,7 @@
     <string name="check_net_conn_wifi_desc">Vérifie si le téléphone peut se connecter à internet via la connexion Wifi. Si ce n\'est pas le cas, la connexion wifi sera désactivée.</string>
     <string name="keyguard_off">Connectivité après dévérrouillage</string>
     <string name="keyguard_off_desc">La connectivité sera rétablie après la disparition de l\'écran de dévérrouillage (sans cette option, la connectivité est immédiatement rétablie lorsque l\'écran est rallumé)</string>
+    <string name="logs_off">Désactiver la génération des logs</string>
     
     
     <color name="separator">#B2E0FF</color>

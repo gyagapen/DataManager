@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 public class KeyguardReceiver extends BroadcastReceiver {
 
@@ -15,6 +14,8 @@ public class KeyguardReceiver extends BroadcastReceiver {
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
 	private DataActivation dataActivation;
+	
+	private LogsProvider logsProvider = null;
 
 
 	public void onReceive(Context context, Intent intent) {
@@ -24,6 +25,8 @@ public class KeyguardReceiver extends BroadcastReceiver {
 				Activity.MODE_PRIVATE);
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
+		
+		logsProvider = new LogsProvider(context);	
 
 		// if service is running
 		if (sharedPrefsEditor.isServiceActivated()) {
@@ -32,13 +35,13 @@ public class KeyguardReceiver extends BroadcastReceiver {
 				
 				sharedPrefsEditor.setScreenOnIsDelayed(false);
 
-				Log.i("CConnectivity", "keyguard is off");
+				logsProvider.info("keyguard is off");
 
 				boolean screenOff = false;
 
 				if(!sharedPrefsEditor.isScreenOnDelayed() && sharedPrefsEditor.getScreenDelayTimer() >0)
 				{
-					Log.i("Screen delay", "screen is delayed for: "+sharedPrefsEditor.getScreenDelayTimer()+"ms");
+					logsProvider.info("screen is delayed for: "+sharedPrefsEditor.getScreenDelayTimer()+"ms");
 
 
 					TimersSetUp timerSetUp = new TimersSetUp(context);

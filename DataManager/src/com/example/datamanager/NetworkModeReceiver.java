@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 public class NetworkModeReceiver extends BroadcastReceiver {
 
@@ -13,12 +12,15 @@ public class NetworkModeReceiver extends BroadcastReceiver {
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
 
+	private LogsProvider logsProvider = null;
 	private DataActivation dataActivation;
 	
 	//for 2g switch
 	private ChangeNetworkMode changeNetworkMode = null;
 	
 	public void onReceive(Context context, Intent intent) {
+		
+		logsProvider = new LogsProvider(context);
 		
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
@@ -33,11 +35,11 @@ public class NetworkModeReceiver extends BroadcastReceiver {
 			
 			changeNetworkMode = new ChangeNetworkMode(context);
 			
-			Log.i("CConnectivity", "network receiver received");
+			logsProvider.info("network receiver received");
 			
 			if(sharedPrefsEditor.is2GActivated())
 			{
-				Log.i("CConnectivity", "2G real activation");
+				logsProvider.info("2G real activation");
 				
 				
 				//check if we have to switch to 3G
@@ -60,7 +62,7 @@ public class NetworkModeReceiver extends BroadcastReceiver {
 			}
 			else
 			{
-				Log.i("CConnectivity", "3G real activation");
+				logsProvider.info("3G real activation");
 
 				//check if we have to switch to 2g
 				if(!dataActivation.isScreenIsOn() && sharedPrefsEditor.is2GSwitchActivated())

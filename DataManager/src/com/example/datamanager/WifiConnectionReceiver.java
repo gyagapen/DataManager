@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 
 public class WifiConnectionReceiver extends BroadcastReceiver {
 
@@ -17,9 +16,12 @@ public class WifiConnectionReceiver extends BroadcastReceiver {
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
 	private DataActivation dataActivation = null;
+	private LogsProvider logsProvider = null;
 
 	public void onReceive(Context context, Intent intent) {
 
+		logsProvider = new LogsProvider(context);
+		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
@@ -33,7 +35,7 @@ public class WifiConnectionReceiver extends BroadcastReceiver {
 			if(networkInfo.isConnected()) {
 
 				// Wifi is connected
-				Log.i("CConnectivity", "Wifi is connected: " + String.valueOf(networkInfo) );
+				logsProvider.info("Wifi is connected: " + String.valueOf(networkInfo) );
 
 				//verify internet connection
 				//checking if internet connection is availaible
@@ -52,7 +54,7 @@ public class WifiConnectionReceiver extends BroadcastReceiver {
 			else if(!networkInfo.isConnected())
 			{
 				// Wifi is connected
-				Log.i("CConnectivity", "Wifi is disconnected: " + String.valueOf(networkInfo) );
+				logsProvider.info("Wifi is disconnected: " + String.valueOf(networkInfo) );
 			}
 
 		}

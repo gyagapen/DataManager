@@ -1,9 +1,9 @@
 package com.example.datamanager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
 public class ShortcutActivateReceiver extends Activity {
 	
@@ -12,10 +12,12 @@ public class ShortcutActivateReceiver extends Activity {
 	private SharedPrefsEditor sharedPrefsEditor = null;
 
 	private DataActivation dataActivation;
+	private LogsProvider logsProvider = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		logsProvider = new LogsProvider(getApplicationContext());
 		
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
@@ -29,7 +31,7 @@ public class ShortcutActivateReceiver extends Activity {
 			sharedPrefsEditor.setDeactivateAll(false);
 			MainActivity.StartDataManagerService(this, sharedPrefsEditor);
 			
-			Log.i("CConnectivity", "shortcut : enable");
+		    logsProvider.info("shortcut : enable");
 		}
 		else
 		{
@@ -37,7 +39,7 @@ public class ShortcutActivateReceiver extends Activity {
 			sharedPrefsEditor.setDeactivateAll(true);
 			MainActivity.stopDataManagerService(this, sharedPrefsEditor);
 			
-			Log.i("CConnectivity", "shortcut : disable");
+		    logsProvider.info("shortcut : disable");
 		}
 		
 		finish();

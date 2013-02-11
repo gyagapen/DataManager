@@ -7,18 +7,18 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.util.Log;
 
 public class AlarmMgr {
 
 	
 	private Context context = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
+	private LogsProvider logsProvider = null;
 	
 	public AlarmMgr(Context aContext, SharedPrefsEditor asEditor) {
 		context = aContext;
 		sharedPrefsEditor = asEditor;
+		logsProvider = new LogsProvider(context);
 	}
 	
 	
@@ -35,22 +35,22 @@ public class AlarmMgr {
 				// if time sleep on has passed and not time sleep off then
 				// activate sleeping
 				if (timeIsPassed(sleepTimeOn) && !timeIsPassed(sleepTimeOff)) {
-					Log.i("TimePassed", sleepTimeOn + " passed and "
+					logsProvider.info(sleepTimeOn + " passed and "
 							+ sleepTimeOff + " not passed");
 					sharedPrefsEditor.setIsSleeping(true);
 				} else {
 					sharedPrefsEditor.setIsSleeping(false);
 				}
 			} else {
-				Log.i("Timer", sleepTimeOff + " is before " + sleepTimeOn);
+				logsProvider.info(sleepTimeOff + " is before " + sleepTimeOn);
 				if (timeIsPassed(sleepTimeOn)) {
-					Log.i("Timer", sleepTimeOn + " is passed");
+					logsProvider.info(sleepTimeOn + " is passed");
 					sharedPrefsEditor.setIsSleeping(true);
 				} else if (!timeIsPassed(sleepTimeOff)) {
-					Log.i("Timer", sleepTimeOff + " is NOT passed");
+					logsProvider.info(sleepTimeOff + " is NOT passed");
 					sharedPrefsEditor.setIsSleeping(true);
 				} else {
-					Log.i("Timer", sleepTimeOn + " is NOT passed");
+					logsProvider.info(sleepTimeOn + " is NOT passed");
 					sharedPrefsEditor.setIsSleeping(false);
 				}
 			}
@@ -104,7 +104,7 @@ public class AlarmMgr {
 			recurringAlarm = PendingIntent.getBroadcast(context,
 					MainActivity.ID_ALARM_TIME_OFF, alarmLauncher,
 					PendingIntent.FLAG_CANCEL_CURRENT);
-			Log.i("Alarm set up off", time);
+			logsProvider.info("Alarm set up off "+time);
 
 		} else {
 
@@ -112,7 +112,7 @@ public class AlarmMgr {
 					MainActivity.ID_ALARM_TIME_ON, alarmLauncher,
 					PendingIntent.FLAG_CANCEL_CURRENT);
 
-			Log.i("Alarm set up on", time);
+			logsProvider.info("Alarm set up on "+time);
 		}
 
 		alarms.cancel(recurringAlarm);

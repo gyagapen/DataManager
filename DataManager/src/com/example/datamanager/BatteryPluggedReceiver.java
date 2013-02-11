@@ -1,12 +1,11 @@
 package com.example.datamanager;
 
+import android.animation.ArgbEvaluator;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.BatteryManager;
-import android.util.Log;
 
 public class BatteryPluggedReceiver extends BroadcastReceiver {
 	
@@ -15,6 +14,8 @@ public class BatteryPluggedReceiver extends BroadcastReceiver {
 	private SharedPrefsEditor sharedPrefsEditor = null;
 
 	private DataActivation dataActivation;
+	
+	LogsProvider logsProvider = null;
 
 	public void onReceive(Context context, Intent intent) {
 
@@ -23,6 +24,8 @@ public class BatteryPluggedReceiver extends BroadcastReceiver {
 				Activity.MODE_PRIVATE);
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
+		
+		logsProvider = new LogsProvider(context);
 
 
 		if(!sharedPrefsEditor.isServiceDeactivatedAll() && sharedPrefsEditor.isDeactivatedWhilePlugged())
@@ -32,7 +35,7 @@ public class BatteryPluggedReceiver extends BroadcastReceiver {
 			String action = intent.getAction();
 
 		    if(action.equals(Intent.ACTION_POWER_CONNECTED)) {
-		    	Log.i("Plug", "Phone is plugged");
+		    	logsProvider.info("Phone is plugged");
 				
 				//deactivate service
 		    	try {
@@ -44,7 +47,7 @@ public class BatteryPluggedReceiver extends BroadcastReceiver {
 	
 		    }
 		    else if(action.equals(Intent.ACTION_POWER_DISCONNECTED)) {
-		    	Log.i("Plug", "Phone is UNplugged");
+		    	logsProvider.info("Phone is UNplugged");
 				
 				MainActivity.StartDataManagerService(context, sharedPrefsEditor);
 				

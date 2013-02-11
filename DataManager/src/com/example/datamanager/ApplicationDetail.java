@@ -1,7 +1,6 @@
 package com.example.datamanager;
 
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 public class ApplicationDetail implements Comparable<ApplicationDetail> {
 
@@ -14,7 +13,7 @@ public class ApplicationDetail implements Comparable<ApplicationDetail> {
     
     
     public void prettyPrint() {
-        Log.i("CConnectivity", appname + "\t" + pname + "\t" + versionName + "\t" + versionCode);
+    	//logsProvider.info(appname + "\t" + pname + "\t" + versionName + "\t" + versionCode);
     }
 
 

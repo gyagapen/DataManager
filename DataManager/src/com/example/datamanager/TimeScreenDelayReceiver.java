@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 
 /**
@@ -21,7 +20,11 @@ public class TimeScreenDelayReceiver extends BroadcastReceiver{
 
 	private DataActivation dataActivation = null;
 	
+	private LogsProvider logsProvider = null;
+	
 	public void onReceive(Context context, Intent intent) {
+		
+		logsProvider = new LogsProvider(context);
 		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
@@ -29,13 +32,13 @@ public class TimeScreenDelayReceiver extends BroadcastReceiver{
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 		
-		Log.i("Screen on task", "screen is "+dataActivation.isScreenIsOn());
+	    logsProvider.info("Screen on task : screen is "+dataActivation.isScreenIsOn());
 		
 		//if screen is still on
 		if(dataActivation.isScreenIsOn())
 		{
 		
-			Log.i("Screen on task", "screen is on");
+			logsProvider.info("Screen on task : screen is on");
 			
 			Intent i = new Intent(context, MainService.class);
 	

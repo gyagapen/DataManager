@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 
 public class TimerOffReceiver extends BroadcastReceiver {
@@ -18,9 +17,13 @@ public class TimerOffReceiver extends BroadcastReceiver {
 		private DataActivation dataActivation;
 		
 		private TimersSetUp timerSetUp = null;
+		
+		private LogsProvider logsProvider;
 	
 	//this is executed when timer off is expired
 	public void onReceive(Context context, Intent intent) {
+
+		logsProvider = new LogsProvider(context);
 		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
@@ -28,7 +31,7 @@ public class TimerOffReceiver extends BroadcastReceiver {
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 		
-		Log.i("Alarme time off", "time off is expired");
+	    logsProvider.info("Alarme time off : time off is expired");
 		
 		
 		//enable connectivity
@@ -41,16 +44,15 @@ public class TimerOffReceiver extends BroadcastReceiver {
 				dataActivation.checkWifiScanResults(sharedPrefsEditor);
 				
 				//enable 3g and sync meanwhile
-				//enable 3g and sync meanwhile
 				if(sharedPrefsEditor.isAutoSyncActivated())
 				{
 					dataActivation.setAutoSync(true, sharedPrefsEditor, false);
 				}
 				
-				if(sharedPrefsEditor.isDataActivated())
+				/*if(sharedPrefsEditor.isDataActivated())
 				{
 					dataActivation.setMobileDataEnabled(true);
-				}
+				}*/
 			}
 			else
 			{

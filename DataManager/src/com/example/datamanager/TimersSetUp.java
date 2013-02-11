@@ -8,7 +8,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 public class TimersSetUp {
 
@@ -24,10 +23,13 @@ public class TimersSetUp {
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
 	private DataActivation dataActivation = null;
+	private LogsProvider logsProvider = null;
 
 	public TimersSetUp(Context aContext) {
 		context = aContext;
 
+		logsProvider = new LogsProvider(aContext);
+		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
@@ -57,7 +59,7 @@ public class TimersSetUp {
 		timeOnAlarm = PendingIntent.getBroadcast(context,
 				TIMER_ON_ID, alarmLauncher, PendingIntent.FLAG_UPDATE_CURRENT);
 
-		Log.i("timer on", "Timer On launched " + minutes);
+	    logsProvider.info("timer on : Timer On launched " + minutes);
 		//Log.i("desc time on", onTime.toString());
 
 		alarms.cancel(timeOnAlarm);
@@ -79,7 +81,7 @@ public class TimersSetUp {
 		{
 			if(sharedPrefsEditor.isFirstTimeOn())
 			{
-				Log.i("CConnectivity", "first time on detected");
+			    logsProvider.info("first time on detected");
 				
 				timerOn = sharedPrefsEditor.getFirstTimeOn();
 				
@@ -118,7 +120,7 @@ public class TimersSetUp {
 				TIMER_OFF_ID, alarmLauncher,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		
-		Log.i("timer off", "Timer Off launched "+timerOff);
+	    logsProvider.info("timer off : Timer Off launched "+timerOff);
 		
 		alarms.cancel(timeOffAlarm);
 
@@ -154,7 +156,7 @@ public class TimersSetUp {
 				TIMER_SCREEN_DELAY_ID, alarmLauncher,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		
-		Log.i("screen timer delayf", "Timer screen delay launched "+screenDelay);
+	    logsProvider.info("screen timer delayf : Timer screen delay launched "+screenDelay);
 		
 		alarms.cancel(timeScreenDelayAlarm);
 

@@ -26,7 +26,7 @@ public class SaveConnectionPreferences {
 	public void saveAllConnectionSettingInSharedPrefs() {
 
 		// if screen on connections not delayed
-		if (!sharedPrefsEditor.isScreenOnDelayed()) {
+		if (!sharedPrefsEditor.isScreenOnDelayed() && !sharedPrefsEditor.isCheckingAutoWifiOn()) {
 
 			boolean autoSyncIsActivated = dataActivation
 					.isAutoSyncIsActivated();

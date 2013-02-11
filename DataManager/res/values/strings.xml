@@ -74,6 +74,7 @@
     <string name="check_net_conn_wifi_desc">Checks wether the phone is able to connect to internet via the wifi connection. If it not the case, wifi is disabled.</string>
     <string name="keyguard_off">Connectivity On after lockscreen</string>
     <string name="keyguard_off_desc">Connectivity will be re-enabled when the lockscreen is removed by the user (instead of re-activating connectivity when screen is turned on)</string>
+    <string name="logs_off">Deactivate Logs file generation</string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>

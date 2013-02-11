@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.util.Log;
-import com.gyagapen.cleverconnectivity.R;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -19,15 +17,20 @@ public class AlarmReceiver extends BroadcastReceiver {
 	private SharedPrefsEditor sharedPrefsEditor = null;
 
 	private DataActivation dataActivation;
+	private LogsProvider logsProvider = null;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
+		
+		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
+		
+		logsProvider = new LogsProvider(context);
 
 		// if service is active
 		if (sharedPrefsEditor.isServiceActivated()) {
@@ -36,7 +39,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 			boolean activateConnectivity = bundle
 					.getBoolean(MainActivity.STR_ACTIVATE_CONNECTIVITY);
 
-			Log.d(DEBUG_TAG, "Recurring alarm; activate  all connectivity : "
+			logsProvider.info("Recurring alarm; activate  all connectivity : "
 					+ String.valueOf(activateConnectivity));
 
 			// if we have to desactivate connectivity, we save it in shared

@@ -14,7 +14,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 
-import com.google.ads.ah;
 import com.gyagapen.cleverconnectivity.R;
 
 public class ApplicationListActivity extends Activity implements OnCheckedChangeListener, Runnable {

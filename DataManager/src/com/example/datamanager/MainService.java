@@ -1,20 +1,13 @@
 package com.example.datamanager;
 
-import java.util.Calendar;
-import java.util.Timer;
-
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 
 public class MainService extends Service {
@@ -26,6 +19,8 @@ public class MainService extends Service {
 
 	// time values
 	private int timeCheckData = 5000;
+	
+	private LogsProvider logsProvider = null;
 
 
 	// SharedPreferences
@@ -49,6 +44,8 @@ public class MainService extends Service {
 	public void onCreate() {
 
 		super.onCreate();
+		
+		logsProvider = new LogsProvider(getApplicationContext());
 		
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
@@ -104,7 +101,7 @@ public class MainService extends Service {
 	// when service starts
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
-		Log.i("MainService", "On command received");
+		logsProvider.info("MainService : On command received");
 
 		boolean screenOff = false;
 
@@ -135,7 +132,7 @@ public class MainService extends Service {
 				//if auto wifi on or auto wifi off is enabled
 				if( (sharedPrefsEditor.isAutoWifiOnActivated() && !sharedPrefsEditor.isWifiActivated()) || (sharedPrefsEditor.isAutoWifiOffActivated() && sharedPrefsEditor.isWifiActivated()))
 				{
-					Log.i("CConnectivity", "auto wifi on check");
+					logsProvider.info("auto wifi on check");
 
 					//cheking wether to enable wifi if known networks are avalaible
 					dataActivation.checkWifiScanResults(sharedPrefsEditor);
@@ -146,16 +143,7 @@ public class MainService extends Service {
 						dataActivation.setAutoSync(true, sharedPrefsEditor, false);
 					}
 
-					if(sharedPrefsEditor.isDataActivated())
-					{
-						//else data will be activated by network mode receiver
-						if(!sharedPrefsEditor.isNetworkModeSwitching())
-						{
-							//pause 5s until wifi check is finished
-							//Thread.sleep(5000);
-							dataActivation.setMobileDataEnabled(true);
-						}
-					}
+
 				}
 				else
 				{
@@ -177,7 +165,7 @@ public class MainService extends Service {
 			//get sleep state
 			boolean isSleeping = sharedPrefsEditor.isSleeping();
 
-			Log.i("CConnectivity", "sleep: "+isSleeping);
+			logsProvider.info("sleep: "+isSleeping);
 
 			//switch to 2G if necesary
 			changeNetworkMode.switchTo2GIfNecesary();
@@ -236,7 +224,7 @@ public class MainService extends Service {
 			Intent in = new Intent();
 			in.setAction("YouWillNeverKillMe");
 			sendBroadcast(in);
-			Log.i("CConnectivity", "onDestroy()...");
+			logsProvider.info("onDestroy()...");
 		}
 
 	}

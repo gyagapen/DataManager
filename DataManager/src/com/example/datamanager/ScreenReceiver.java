@@ -1,13 +1,11 @@
 package com.example.datamanager;
 
-import java.util.Timer;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
+
 
 public class ScreenReceiver extends BroadcastReceiver {
 
@@ -20,11 +18,13 @@ public class ScreenReceiver extends BroadcastReceiver {
 
 
 
-
+	private LogsProvider logsProvider = null;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
+		logsProvider = new LogsProvider(context);
+		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
@@ -68,7 +68,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 
 					if(!sharedPrefsEditor.isScreenOnDelayed() && sharedPrefsEditor.getScreenDelayTimer() >0)
 					{
-						Log.i("Screen delay", "screen is delayed for: "+sharedPrefsEditor.getScreenDelayTimer()+"ms");
+						logsProvider.info("Screen delay : screen is delayed for: "+sharedPrefsEditor.getScreenDelayTimer()+"ms");
 
 
 						TimersSetUp timerSetUp = new TimersSetUp(context);
@@ -95,7 +95,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 
 			}
 
-			Log.i("CConnectivity", "screen is "+!screenOff);
+			logsProvider.info("screen is "+!screenOff);
 
 
 

@@ -11,18 +11,18 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 public class ApplicationsManager {
 	
 	private PackageManager pm = null;
 	private Context context = null;
+	private LogsProvider logsProvider = null;
 	
 	public ApplicationsManager(Context aContext) {
 		
 		context = aContext;
 		pm = aContext.getPackageManager();
+		logsProvider = new LogsProvider(aContext);
 	}
 	
 
@@ -82,18 +82,18 @@ public class ApplicationsManager {
 		//get list
 		StringToArrayHelper sArrayHelper = new StringToArrayHelper(sharedPrefsEditor.getApplicationsOnSet(), MainActivity.SEPARATOR);
 		
-		Log.i("CConnectivity", "array content :"+sharedPrefsEditor.getApplicationsOnSet());
+		logsProvider.info("array content :"+sharedPrefsEditor.getApplicationsOnSet());
 		
 		for(int i=0; i<sArrayHelper.count(); i++)
 		{
 			String appPackageName = sArrayHelper.getElement(i);
 			
-			Log.i("CConnectivity", "Checking if "+appPackageName+" is running "+i);
+			logsProvider.info("Checking if "+appPackageName+" is running "+i);
 			
 			//check if app is running
 			if(!appPackageName.trim().equals("") && isNamedProcessRunning(appPackageName))
 			{
-				Log.i("CConnectivity", appPackageName+" is running "+i);
+				logsProvider.info(appPackageName+" is running "+i);
 				result = true;
 			}
 			
@@ -119,7 +119,7 @@ public class ApplicationsManager {
 		} catch (NameNotFoundException e) {
 			
 			//if not found
-			Log.i("CConnectivity", "app "+packageName+" not found");
+			logsProvider.info("app "+packageName+" not found");
 			
 			appDetail = null;
 		}

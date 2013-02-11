@@ -21,7 +21,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.StrictMode;
-import android.util.Log;
+
 
 public class DataActivation {
 
@@ -32,11 +32,13 @@ public class DataActivation {
 
 	//when wifi and data are on, data activation will be delayed
 	private int timeBeforeActivateData = 5000;
+	private LogsProvider logsProvider = null;
 
-
-
+	
 	public DataActivation(Context aContext) {
 		context = aContext;
+		
+		logsProvider = new LogsProvider(aContext);
 
 
 	}
@@ -54,7 +56,7 @@ public class DataActivation {
 		if((!isDataChipActivated() && enabled) || (isDataChipActivated() && !enabled))
 		{
 
-			Log.i("Data activation", "Data is activate : " + enabled);
+			logsProvider.info("Data is activate : " + enabled);
 
 			final ConnectivityManager conman = (ConnectivityManager) context
 					.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -89,11 +91,11 @@ public class DataActivation {
 
 			if (sharedPrefsEditor.isAutoSyncActivated() && isEnabled) {
 
-				Log.i("Sync", "Auto Sync ON");
+				logsProvider.info("Sync : Auto Sync ON");
 				ContentResolver.setMasterSyncAutomatically(true);
 
 			} else {
-				Log.i("Sync", "Auto Sync OFF");
+				logsProvider.info("Sync : Auto Sync OFF");
 				ContentResolver.setMasterSyncAutomatically(false);
 			}
 
@@ -199,7 +201,7 @@ public class DataActivation {
 					//wait 5s to activate data
 					sharedPrefsEditor.setDataActivationDelayed(true);
 					try {
-						Log.i("WIFI", "waiting for wifi activation");
+						logsProvider.info("WIFI : waiting for wifi activation");
 						Thread.sleep(timeBeforeActivateData);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
@@ -268,7 +270,7 @@ public class DataActivation {
 	 * @return
 	 */
 	public void checkWifiScanResults(SharedPrefsEditor sharedPrefsEditor) {
-		Log.i("CHECK WIFI", "check wifi scan results");
+		logsProvider.info("CHECK WIFI : check wifi scan results");
 
 		//turn wifi on if off
 		if(!isWifiChipActivated())
@@ -304,7 +306,7 @@ public class DataActivation {
 
 		SyncAdapterType[] types = ContentResolver.getSyncAdapterTypes();
 
-		Log.i("SYNC", "sync is launched");
+		logsProvider.info("SYNC : sync is launched");
 
 		Bundle bundle = new Bundle();
 		bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
@@ -321,8 +323,7 @@ public class DataActivation {
 								ContentResolver.requestSync(yourAccount,
 										type.authority, bundle);
 
-								Log.i("SYNC", "syncing " + yourAccount.name
-										+ type.authority);
+
 							}
 				}
 			}
@@ -373,7 +374,7 @@ public class DataActivation {
 		int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
 		boolean isPlugged = (plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB);
 
-		Log.i("phone plugged", "phone is plugged : "+isPlugged);
+		logsProvider.info("phone plugge  : phone is plugged : "+isPlugged);
 
 		return isPlugged;
 	}
@@ -400,10 +401,10 @@ public class DataActivation {
 			isInternetAvailaible = (responseCode == 200);
 			
 		} catch (MalformedURLException e) {
-			Log.i("CConnectivity", "net check err : "+e.getMessage());
+			logsProvider.info("net check err : "+e.getMessage());
 			isInternetAvailaible = false;
 		} catch (IOException e) {
-			Log.i("CConnectivity", "net check err : "+e.getMessage());
+			logsProvider.info("net check err : "+e.getMessage());
 			isInternetAvailaible = false;
 		}
 		
@@ -411,7 +412,7 @@ public class DataActivation {
 	
 		
 
-		Log.i("CConnectivity", "Internet connection check: "+isInternetAvailaible);
+		logsProvider.info("Internet connection check: "+isInternetAvailaible);
 
 		return isInternetAvailaible;
 	}

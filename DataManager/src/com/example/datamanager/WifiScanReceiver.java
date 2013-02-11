@@ -1,7 +1,6 @@
 package com.example.datamanager;
 
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -11,8 +10,6 @@ import android.content.SharedPreferences;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
-import android.util.Log;
-import com.gyagapen.cleverconnectivity.R;
 
 public class WifiScanReceiver extends BroadcastReceiver {
 
@@ -21,17 +18,24 @@ public class WifiScanReceiver extends BroadcastReceiver {
 	private SharedPrefsEditor sharedPrefsEditor = null;
 
 	private DataActivation dataActivation;
+	
+	private LogsProvider logsProvider = null;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-		Log.i("WIFI SCAN", "scan results received");
+		logsProvider = new LogsProvider(context);
+		
+		logsProvider.info("WIFI SCAN : scan results received");
 
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
+		
+		// if a known wifi has been found in scan results
+		boolean knownWifiFound = false;
 
 		// if service is running
 		if (sharedPrefsEditor.isServiceActivated()) {
@@ -53,8 +57,7 @@ public class WifiScanReceiver extends BroadcastReceiver {
 					int scanCounter = 0;
 					int knownWifiCounter = 0;
 
-					// if a known wifi has been found in scan results
-					boolean knownWifiFound = false;
+					
 
 					// browse the list
 					while (!knownWifiFound && scanCounter < scanResults.size()) {
@@ -78,7 +81,7 @@ public class WifiScanReceiver extends BroadcastReceiver {
 								// known network found
 								knownWifiFound = true;
 
-								Log.i("WIFI SCAN", "know network found : "
+								logsProvider.info("WIFI SCAN : know network found : "
 										+ aResult.SSID);
 							}
 
@@ -90,7 +93,7 @@ public class WifiScanReceiver extends BroadcastReceiver {
 					}
 
 					if (!knownWifiFound) {
-						Log.i("WIFI SCAN", "Auto wifi off");
+						logsProvider.info("WIFI SCAN : Auto wifi off");
 
 						// disable wifi
 						sharedPrefsEditor.setWifiActivation(false);
@@ -125,10 +128,53 @@ public class WifiScanReceiver extends BroadcastReceiver {
 
 				}
 
+
+
+
+				if(!sharedPrefsEditor.isTimeOffIsActivated()) //time on
+				{
+					//activate data
+					if(sharedPrefsEditor.isDataActivated())
+					{
+						//else data will be activated by network mode receiver
+						if(!sharedPrefsEditor.isNetworkModeSwitching())
+						{
+							try {
+								//wait 3seconds if wifi is connecting
+								if(knownWifiFound)
+								{
+									Thread.sleep(3000);
+								}
+								dataActivation.setMobileDataEnabled(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+
 				// set checking to false
 				sharedPrefsEditor.setIsCheckingAutoWifi(false);
 
+				//checking if screen has not be turned off meanwhile
+				if(!dataActivation.isScreenIsOn())
+				{
+					//can cause pb if it's in sleep mode
+					if(sharedPrefsEditor.isSleeping())
+					{
+						//desactivate all connectivity
+						try {
+							dataActivation.setConnectivityDisabled(sharedPrefsEditor);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+
 			}
+
+
 
 		}
 

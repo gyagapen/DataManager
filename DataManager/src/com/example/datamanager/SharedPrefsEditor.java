@@ -1,8 +1,6 @@
 package com.example.datamanager;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Set;
 
 import android.content.SharedPreferences;
 
@@ -49,6 +47,7 @@ public class SharedPrefsEditor {
 	static final String STR_CHECK_NET_CONNECTION_WIFI = "checkNetConnectionWifi";
 	static final String STR_NET_CONN_HAS_TO_BE_CHECKED = "netConnHasToBeChecked";
 	static final String STR_ENABLE_WHEN_KEYGUARD_OFF = "disableWhenKeyguardOff";
+	static final String STR_LOGS_ENABLED = "logsEnabled";
 
 	// Default values
 	static final int TIME_ON = 2; // min
@@ -89,6 +88,7 @@ public class SharedPrefsEditor {
 	static final boolean CHECK_NET_CONNECTION_WIFI=false;
 	static final boolean NET_CONN_HAS_TO_BE_CHECKED = false;
 	static final boolean ENABLE_WHEN_KEYGUARD_OFF = false;
+	static final boolean LOGS_ENABLED = true;
 	
 	// gives access to connection states
 	DataActivation dataConnectionState;
@@ -150,6 +150,7 @@ public class SharedPrefsEditor {
 			prefEditor.putBoolean(STR_CHECK_NET_CONNECTION_WIFI, CHECK_NET_CONNECTION_WIFI);
 			prefEditor.putBoolean(STR_NET_CONN_HAS_TO_BE_CHECKED, NET_CONN_HAS_TO_BE_CHECKED);
 			prefEditor.putBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, ENABLE_WHEN_KEYGUARD_OFF);
+			prefEditor.putBoolean(STR_LOGS_ENABLED, LOGS_ENABLED);
 			
 
 			prefEditor.commit();
@@ -199,6 +200,7 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_CHECK_NET_CONNECTION_WIFI, CHECK_NET_CONNECTION_WIFI);
 		prefEditor.putBoolean(STR_NET_CONN_HAS_TO_BE_CHECKED, NET_CONN_HAS_TO_BE_CHECKED);
 		prefEditor.putBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, ENABLE_WHEN_KEYGUARD_OFF);
+		prefEditor.putBoolean(STR_LOGS_ENABLED, LOGS_ENABLED);
 		prefEditor.commit();
 	}
 
@@ -208,6 +210,10 @@ public class SharedPrefsEditor {
 	
 	public int getTimeOnCheck() {
 		return dataManagerSettings.getInt(STR_TIME_ON_CHECK, TIME_ON_CHECK);
+	}
+	
+	public boolean isLogsEnabled() {
+		return dataManagerSettings.getBoolean(STR_LOGS_ENABLED, LOGS_ENABLED);
 	}
 
 	public int getTimeOff() {
@@ -463,6 +469,11 @@ public class SharedPrefsEditor {
 		prefEditor.putInt(STR_INTERVAL_CHECK, intervalCheckTime);
 		prefEditor.commit();
 	}
+	
+	public void setLogsEnabled(boolean enabled) {
+		prefEditor.putBoolean(STR_LOGS_ENABLED, enabled);
+		prefEditor.commit();
+	}
 
 	public void setDataActivation(boolean isEnabled) {
 		prefEditor.putBoolean(STR_DATA_IS_ACTIVATED, isEnabled);
@@ -589,7 +600,7 @@ public class SharedPrefsEditor {
 			boolean serviceIsDeactivated, boolean serviceIsDeactivatedWhilePlugged, int timeOnCheck, int screenDelayTimer,
 			boolean isFirsTimeOnIsActivated, int firstTimeOnValue,
 			boolean isAutoWifiOnIsActivated, boolean is2GSwitchActivate, boolean checkNetConnWifi,
-			boolean enableServiceWhenKeyguardOff) {
+			boolean enableServiceWhenKeyguardOff, boolean logsAreEnabled) {
 		
 		prefEditor.putInt(STR_TIME_ON, timeOn);
 		prefEditor.putInt(STR_TIME_ON_CHECK, timeOnCheck);
@@ -615,6 +626,7 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_CHECK_NET_CONNECTION_WIFI, checkNetConnWifi);
 		prefEditor.putBoolean(STR_NET_CONN_HAS_TO_BE_CHECKED, false);
 		prefEditor.putBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, enableServiceWhenKeyguardOff);
+		prefEditor.putBoolean(STR_LOGS_ENABLED, logsAreEnabled);
 		
 		prefEditor.commit();
 	}
