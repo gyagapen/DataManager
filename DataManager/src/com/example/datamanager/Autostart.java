@@ -17,7 +17,6 @@ public class Autostart extends BroadcastReceiver {
 	// SharedPreferences
 	SharedPreferences prefs = null;
 	SharedPrefsEditor sharedPrefsEditor = null;
-	LogsProvider logsProvider = null;
 
 	public void onReceive(Context arg0, Intent arg1) {
 		
@@ -31,15 +30,20 @@ public class Autostart extends BroadcastReceiver {
 				Activity.MODE_PRIVATE);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 		
-		logsProvider = new LogsProvider(arg0);
 
 		// if service is activated
 		if (sharedPrefsEditor.isServiceActivated()) {
 
+			//wait 8sec
+			/*try {
+				Thread.sleep(8000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}*/
+			
 			//start data manager service
 			Intent intent = new Intent(arg0, MainService.class);
 			arg0.startService(intent);
-			logsProvider.info("Autostart started");
 
 		}
 	}

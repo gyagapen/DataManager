@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gyagapen.cleverconnectivity"
-    android:versionCode="22"
-    android:versionName="1.2.15" >
+    android:versionCode="23"
+    android:versionName="1.2.16" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -21,6 +21,7 @@
     <uses-permission android:name="android.permission.BATTERY_STATS" />
     <uses-permission android:name="com.android.phone.CHANGE_NETWORK_MODE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -29,7 +30,9 @@
         android:theme="@android:style/Theme.Black" >
         <receiver android:name="com.example.datamanager.Autostart" >
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <!-- <action android:name="android.intent.action.BOOT_COMPLETED" />  -->
+                 <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+                 <data android:scheme="file" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.example.datamanager.NetworkModeReceiver" >

@@ -24,7 +24,7 @@ public class LogsProvider {
 	public static final String LOG_MODE_EXCEPTION = "exception";
 	public static final String LOG_MODE_INFO = "info";
 
-	public static final int fileMaxSize = 1000;
+	public static final int fileMaxSize = 80000; //bytes
 
 	private File sdCard;
 	private File dir;
@@ -36,6 +36,9 @@ public class LogsProvider {
 
 	private DataActivation dataActivation = null;
 
+	private String logFileAbsPath = "";
+	File logFile = null;
+
 
 
 	public LogsProvider(Context context) {
@@ -44,33 +47,32 @@ public class LogsProvider {
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
-		if(sharedPrefsEditor.isLogsEnabled())
-		{
-			sdCard = Environment.getExternalStorageDirectory();
 
-			dir = new File(sdCard.getAbsolutePath(), LOG_DIR);
-			if (!dir.exists()) {
-				dir.mkdirs();
-			}
+		sdCard = Environment.getExternalStorageDirectory();
 
-			String logFileAbsPath = dir + File.separator + "CleverConnectivity.log";
-
-			File logFile = new File(logFileAbsPath);
-
-			fWriter = null;
-			try {
-				if (fileMaxSize < logFile.length()) {
-					// overwrites
-					fWriter = new FileWriter(logFile, false);
-				} else {
-					fWriter = new FileWriter(logFile, true);
-				}
-			} catch (Exception e) {
-
-			}
+		dir = new File(sdCard.getAbsolutePath(), LOG_DIR);
+		if (!dir.exists()) {
+			dir.mkdirs();
 		}
 
+		logFileAbsPath = dir + File.separator + "CleverConnectivity.log";
+
+		logFile = new File(logFileAbsPath);
+
+		fWriter = null;
+		try {
+			if (fileMaxSize < logFile.length()) {
+				// overwrites
+				fWriter = new FileWriter(logFile, false);
+			} else {
+				fWriter = new FileWriter(logFile, true);
+			}
+		} catch (Exception e) {
+
+		}
 	}
+
+
 
 	public void info(String text) {
 
@@ -83,26 +85,36 @@ public class LogsProvider {
 
 	public void MyLog(String logMode, String msgKey, Object msgValue) {
 
+
+
+
 		BufferedWriter bufferedWritter = null;
 		try {
-
-			bufferedWritter = new BufferedWriter(fWriter);
-			String logValue = null;
-			if (logMode.equalsIgnoreCase(LOG_MODE_EXCEPTION)) {
-				logValue = logStackTrace((Throwable) msgValue);
-			} else {
-				logValue = msgValue.toString();
+			if(fWriter == null)
+			{
+				fWriter = new FileWriter(logFile, true);
 			}
-			logValue = currentDateTimeValue() + ": " + logMode + " :" + msgKey
-					+ ":  " + logValue + "\n";
-			bufferedWritter.write(logValue);
-			bufferedWritter.newLine();
-			bufferedWritter.flush();
+			else
+			{
+				bufferedWritter = new BufferedWriter(fWriter);
+				String logValue = null;
+				if (logMode.equalsIgnoreCase(LOG_MODE_EXCEPTION)) {
+					logValue = logStackTrace((Throwable) msgValue);
+				} else {
+					logValue = msgValue.toString();
+				}
+				logValue = currentDateTimeValue() + ": " + logMode + " :" + msgKey
+						+ ":  " + logValue + "\n";
+				bufferedWritter.write(logValue);
+				bufferedWritter.newLine();
+				bufferedWritter.flush();
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 
 	}
 
