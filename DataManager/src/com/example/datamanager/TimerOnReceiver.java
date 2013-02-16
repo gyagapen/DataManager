@@ -36,7 +36,7 @@ public class TimerOnReceiver extends BroadcastReceiver {
 	//this is executed when timer on is expired
 	public void onReceive(Context context, Intent intent) {
 		
-		logsProvider = new LogsProvider(context);
+		logsProvider = new LogsProvider(context, this.getClass());
 		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
@@ -145,8 +145,7 @@ public class TimerOnReceiver extends BroadcastReceiver {
 				
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logsProvider.error(e);
 			}
 			
 			
@@ -173,8 +172,7 @@ public class TimerOnReceiver extends BroadcastReceiver {
 			try {
 				Thread.sleep(dataInterval);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logsProvider.error(e);
 			}
 
 			long nbBytesReceived2 = TrafficStats.getTotalRxBytes();

@@ -40,7 +40,7 @@ public class ChangeNetworkMode {
 		dataActivation = new DataActivation(aContext);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 		
-		logsProvider = new LogsProvider(aContext); 
+		logsProvider = new LogsProvider(aContext, this.getClass()); 
 	}
 
 	private void changeNetworkMode(int networkMode) {

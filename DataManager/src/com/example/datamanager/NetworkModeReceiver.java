@@ -20,7 +20,7 @@ public class NetworkModeReceiver extends BroadcastReceiver {
 	
 	public void onReceive(Context context, Intent intent) {
 		
-		logsProvider = new LogsProvider(context);
+		logsProvider = new LogsProvider(context, this.getClass());
 		
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
@@ -55,7 +55,7 @@ public class NetworkModeReceiver extends BroadcastReceiver {
 						try {
 							dataActivation.setMobileDataEnabled(true);
 						} catch (Exception e) {
-							e.printStackTrace();
+							logsProvider.error(e);
 						}
 					}
 				}
@@ -77,7 +77,7 @@ public class NetworkModeReceiver extends BroadcastReceiver {
 						try {
 							dataActivation.setMobileDataEnabled(true);
 						} catch (Exception e) {
-							e.printStackTrace();
+							logsProvider.error(e);
 						}
 					}
 				}

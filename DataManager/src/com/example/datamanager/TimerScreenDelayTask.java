@@ -22,7 +22,7 @@ public class TimerScreenDelayTask extends TimerTask {
 
 	public TimerScreenDelayTask(Context aContext) {
 
-		logsProvider = new LogsProvider(aContext);
+		logsProvider = new LogsProvider(aContext, this.getClass());
 		
 		context = aContext;
 		timerSetUp = new TimersSetUp(context);

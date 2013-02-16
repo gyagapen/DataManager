@@ -30,9 +30,11 @@
         android:theme="@android:style/Theme.Black" >
         <receiver android:name="com.example.datamanager.Autostart" >
             <intent-filter>
-                <!-- <action android:name="android.intent.action.BOOT_COMPLETED" />  -->
-                 <action android:name="android.intent.action.MEDIA_MOUNTED"/>
-                 <data android:scheme="file" />
+
+                <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+
+                <data android:scheme="file" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.example.datamanager.NetworkModeReceiver" >
@@ -47,6 +49,12 @@
         <receiver android:name="com.example.datamanager.TimerOffReceiver" >
         </receiver>
         <receiver android:name="com.example.datamanager.TimeScreenDelayReceiver" >
+        </receiver>
+        <receiver android:name="com.example.datamanager.WifiConnectionReceiver" >
+        <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+        </intent-filter>
         </receiver>
         <receiver android:name="com.example.datamanager.WifiScanReceiver" >
             <intent-filter>
@@ -68,8 +76,8 @@
 
         <activity
             android:name="com.example.datamanager.MainActivity"
-            android:label="@string/title_activity_main"
-            android:configChanges="orientation|screenSize" >
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -95,7 +103,7 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity android:name="com.example.datamanager.ApplicationListActivity" >
         </activity>
-”
+”
     </application>
 
 </manifest>

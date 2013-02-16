@@ -10,7 +10,6 @@ import android.os.PowerManager;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-	private static final String DEBUG_TAG = "AlarmReceiver";
 
 	// SharedPreferences
 	private SharedPreferences prefs = null;
@@ -30,7 +29,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 		
-		logsProvider = new LogsProvider(context);
+		logsProvider = new LogsProvider(context, this.getClass());
 
 		// if service is active
 		if (sharedPrefsEditor.isServiceActivated()) {
@@ -63,7 +62,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 						timersSetUp.CancelTimeOff();
 						
 					} catch (Exception e) {
-						e.printStackTrace();
+						logsProvider.error(e);
 					}
 				}
 			} else {
@@ -85,7 +84,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 						
 						dataActivation.setConnectivityEnabled(sharedPrefsEditor);
 					} catch (Exception e) {
-						e.printStackTrace();
+						logsProvider.error(e);
 					}
 					i.putExtra("screen_state", true);
 				}

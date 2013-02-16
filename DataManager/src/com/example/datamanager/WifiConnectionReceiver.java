@@ -20,7 +20,7 @@ public class WifiConnectionReceiver extends BroadcastReceiver {
 
 	public void onReceive(Context context, Intent intent) {
 
-		logsProvider = new LogsProvider(context);
+		logsProvider = new LogsProvider(context, this.getClass());
 		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
@@ -35,7 +35,7 @@ public class WifiConnectionReceiver extends BroadcastReceiver {
 			if(networkInfo.isConnected()) {
 
 				// Wifi is connected
-				logsProvider.info("Wifi is connected: " + String.valueOf(networkInfo) );
+				logsProvider.info("Wifi is connected, getcheckconnwifi: "+sharedPrefsEditor.getCheckNetConnectionWifi()+" netHasToBeChecked: "+sharedPrefsEditor.getNetHasToBeChecked());
 
 				//verify internet connection
 				//checking if internet connection is availaible
@@ -54,7 +54,7 @@ public class WifiConnectionReceiver extends BroadcastReceiver {
 			else if(!networkInfo.isConnected())
 			{
 				// Wifi is connected
-				logsProvider.info("Wifi is disconnected: " + String.valueOf(networkInfo) );
+				logsProvider.info("Wifi is disconnected: ");
 			}
 
 		}

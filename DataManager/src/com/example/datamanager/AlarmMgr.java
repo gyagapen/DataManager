@@ -18,7 +18,7 @@ public class AlarmMgr {
 	public AlarmMgr(Context aContext, SharedPrefsEditor asEditor) {
 		context = aContext;
 		sharedPrefsEditor = asEditor;
-		logsProvider = new LogsProvider(context);
+		logsProvider = new LogsProvider(context, this.getClass());
 	}
 	
 	

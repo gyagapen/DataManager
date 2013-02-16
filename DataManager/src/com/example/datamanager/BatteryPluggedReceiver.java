@@ -25,7 +25,7 @@ public class BatteryPluggedReceiver extends BroadcastReceiver {
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 		
-		logsProvider = new LogsProvider(context);
+		logsProvider = new LogsProvider(context, this.getClass());
 
 
 		if(!sharedPrefsEditor.isServiceDeactivatedAll() && sharedPrefsEditor.isDeactivatedWhilePlugged())
@@ -41,7 +41,7 @@ public class BatteryPluggedReceiver extends BroadcastReceiver {
 		    	try {
 					dataActivation.setConnectivityEnabled(sharedPrefsEditor);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logsProvider.error(e);
 				}
 				MainActivity.stopDataManagerService(context, sharedPrefsEditor);
 	

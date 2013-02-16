@@ -24,7 +24,7 @@ public class WifiScanReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-		logsProvider = new LogsProvider(context);
+		logsProvider = new LogsProvider(context, this.getClass());
 		
 		logsProvider.info("WIFI SCAN : scan results received");
 
@@ -147,7 +147,7 @@ public class WifiScanReceiver extends BroadcastReceiver {
 								}
 								dataActivation.setMobileDataEnabled(true);
 							} catch (Exception e) {
-								e.printStackTrace();
+								logsProvider.error(e);
 							}
 						}
 					}
@@ -166,8 +166,7 @@ public class WifiScanReceiver extends BroadcastReceiver {
 						try {
 							dataActivation.setConnectivityDisabled(sharedPrefsEditor);
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							logsProvider.error(e);
 						}
 					}
 				}

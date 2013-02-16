@@ -28,7 +28,7 @@ public class TimersSetUp {
 	public TimersSetUp(Context aContext) {
 		context = aContext;
 
-		logsProvider = new LogsProvider(aContext);
+		logsProvider = new LogsProvider(aContext, this.getClass());
 		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,

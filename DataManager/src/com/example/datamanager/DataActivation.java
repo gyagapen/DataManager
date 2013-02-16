@@ -9,6 +9,8 @@ import java.net.URL;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +40,7 @@ public class DataActivation {
 	public DataActivation(Context aContext) {
 		context = aContext;
 		
-		logsProvider = new LogsProvider(aContext);
+		logsProvider = new LogsProvider(aContext, this.getClass());
 
 
 	}
@@ -162,11 +164,8 @@ public class DataActivation {
 			// get the setting for "mobile data"
 			mobileDataEnabled = (Boolean) method.invoke(cm);
 		} catch (Exception e) {
-			// Some problem accessible private API
-			// TODO do whatever error handling you want here
+			logsProvider.error(e);
 		}
-
-		// Log.i("Data TOGGLE", String.valueOf(mobileDataEnabled));
 
 		return mobileDataEnabled;
 	}
@@ -204,9 +203,7 @@ public class DataActivation {
 						logsProvider.info("WIFI : waiting for wifi activation");
 						Thread.sleep(timeBeforeActivateData);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						sharedPrefsEditor.setDataActivationDelayed(false);
-						e.printStackTrace();
 					}
 				}
 
@@ -415,6 +412,16 @@ public class DataActivation {
 		logsProvider.info("Internet connection check: "+isInternetAvailaible);
 
 		return isInternetAvailaible;
+	}
+	
+	public boolean isKeyguardIsActive()
+	{
+		KeyguardManager keyguardManager = (KeyguardManager)context.getSystemService(Activity.KEYGUARD_SERVICE);
+		
+		boolean keyGActive =  keyguardManager.inKeyguardRestrictedInputMode();
+		logsProvider.info("keyguard state: "+keyGActive);
+		
+		return keyGActive;
 	}
 
 

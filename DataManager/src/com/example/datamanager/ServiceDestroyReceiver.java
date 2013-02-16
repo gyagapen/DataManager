@@ -10,7 +10,7 @@ public class ServiceDestroyReceiver extends BroadcastReceiver {
 	
 	public void onReceive(Context context, Intent intent) {
 		
-		logsProvider = new LogsProvider(context);
+		logsProvider = new LogsProvider(context, this.getClass());
 		
 		logsProvider.info("ServeiceDestroy onReceive...");
 	    logsProvider.info("action:" + intent.getAction());

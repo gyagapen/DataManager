@@ -45,7 +45,7 @@ public class MainService extends Service {
 
 		super.onCreate();
 		
-		logsProvider = new LogsProvider(getApplicationContext());
+		logsProvider = new LogsProvider(getApplicationContext(), this.getClass());
 		
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
@@ -154,7 +154,7 @@ public class MainService extends Service {
 
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				logsProvider.error(e);
 			}
 
 		} else { // screen is off
@@ -176,8 +176,7 @@ public class MainService extends Service {
 				try {
 					dataActivation.setConnectivityDisabled(sharedPrefsEditor);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logsProvider.error(e);
 				}
 			}
 			else

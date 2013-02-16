@@ -26,7 +26,7 @@ public class KeyguardReceiver extends BroadcastReceiver {
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 		
-		logsProvider = new LogsProvider(context);	
+		logsProvider = new LogsProvider(context, this.getClass());	
 
 		// if service is running
 		if (sharedPrefsEditor.isServiceActivated()) {

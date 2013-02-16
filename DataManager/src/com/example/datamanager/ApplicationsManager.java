@@ -22,7 +22,7 @@ public class ApplicationsManager {
 		
 		context = aContext;
 		pm = aContext.getPackageManager();
-		logsProvider = new LogsProvider(aContext);
+		logsProvider = new LogsProvider(aContext, this.getClass());
 	}
 	
 

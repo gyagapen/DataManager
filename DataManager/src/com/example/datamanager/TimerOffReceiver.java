@@ -23,7 +23,7 @@ public class TimerOffReceiver extends BroadcastReceiver {
 	//this is executed when timer off is expired
 	public void onReceive(Context context, Intent intent) {
 
-		logsProvider = new LogsProvider(context);
+		logsProvider = new LogsProvider(context, this.getClass());
 		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
@@ -61,8 +61,7 @@ public class TimerOffReceiver extends BroadcastReceiver {
 
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logsProvider.error(e);
 		}
 		
 		timerSetUp = new TimersSetUp(context);

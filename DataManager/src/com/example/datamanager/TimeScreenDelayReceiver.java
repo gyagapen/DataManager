@@ -24,7 +24,7 @@ public class TimeScreenDelayReceiver extends BroadcastReceiver{
 	
 	public void onReceive(Context context, Intent intent) {
 		
-		logsProvider = new LogsProvider(context);
+		logsProvider = new LogsProvider(context, this.getClass());
 		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,

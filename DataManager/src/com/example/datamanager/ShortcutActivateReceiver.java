@@ -17,7 +17,7 @@ public class ShortcutActivateReceiver extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		logsProvider = new LogsProvider(getApplicationContext());
+		logsProvider = new LogsProvider(getApplicationContext(), this.getClass());
 		
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,

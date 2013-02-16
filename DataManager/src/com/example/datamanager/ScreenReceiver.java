@@ -23,7 +23,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-		logsProvider = new LogsProvider(context);
+		logsProvider = new LogsProvider(context, this.getClass());
 		
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
@@ -61,8 +61,8 @@ public class ScreenReceiver extends BroadcastReceiver {
 
 			} else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 
-				//if not enabling connectivity when keyguard is off
-				if(!sharedPrefsEditor.isEnabledWhenKeyguardOff())
+				//if not enabling connectivity when keyguard is off or keyguard is not active
+				if(!sharedPrefsEditor.isEnabledWhenKeyguardOff()  || !dataActivation.isKeyguardIsActive()) 
 				{
 					screenOff = false;
 

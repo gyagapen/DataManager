@@ -34,12 +34,6 @@ public class Autostart extends BroadcastReceiver {
 		// if service is activated
 		if (sharedPrefsEditor.isServiceActivated()) {
 
-			//wait 8sec
-			/*try {
-				Thread.sleep(8000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}*/
 			
 			//start data manager service
 			Intent intent = new Intent(arg0, MainService.class);

@@ -93,7 +93,7 @@ OnCheckedChangeListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		logsProvider = new LogsProvider(getApplicationContext());
+		logsProvider = new LogsProvider(getApplicationContext(), this.getClass());
 
 
 		// initialize connectivity positions
@@ -162,7 +162,7 @@ OnCheckedChangeListener {
 
 		} catch (IOException e) {
 
-			e.printStackTrace();
+			logsProvider.error(e);
 		}
 
 	}
@@ -325,6 +325,14 @@ OnCheckedChangeListener {
 			email.putExtra(Intent.EXTRA_EMAIL, new String[] { MAIL_RECIPIENT });
 
 			String versionName = getVersionName();
+			
+			//attachment
+			File file = new File("/CleverConnectivity.log");
+			if (file.exists() && !file.canRead()) {
+				Uri uri = Uri.parse("file://" + file.getAbsolutePath());
+				email.putExtra(Intent.EXTRA_STREAM, uri);
+			}
+			
 
 			email.putExtra(Intent.EXTRA_SUBJECT, MAIL_SUBJECT + " - "
 					+ versionName);
@@ -592,7 +600,7 @@ OnCheckedChangeListener {
 					sharedPrefsEditor.getSleepTimeOn());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logsProvider.error(e);
 		}
 
 	}
@@ -682,7 +690,7 @@ OnCheckedChangeListener {
 			versionName = this.getPackageManager().getPackageInfo(
 					this.getPackageName(), 0).versionName;
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
+			logsProvider.error(e);
 		}
 
 		return versionName;
