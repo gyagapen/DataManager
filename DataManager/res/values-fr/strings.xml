@@ -75,6 +75,9 @@
     <string name="keyguard_off">Connectivité après dévérrouillage</string>
     <string name="keyguard_off_desc">La connectivité sera rétablie après la disparition de l\'écran de dévérrouillage (sans cette option, la connectivité est immédiatement rétablie lorsque l\'écran est rallumé)</string>
     <string name="logs_off">Désactiver la génération des logs</string>
+    <string name="bluetooth_tab">Bluetooth</string>
+    <string name="bluetooth_off_sleep_mode">Bluetooth éteint pdt mode nuit </string>
+    <string name="bluetooth_off_sleep_mode_desc">Si le bluetooth est activé, il sera automatiquement éteint pendant le mode nuit. Il se réactivera lorsque celui ci prendra fin).</string>
     
     
     <color name="separator">#B2E0FF</color>

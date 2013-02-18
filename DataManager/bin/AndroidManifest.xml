@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gyagapen.cleverconnectivity"
-    android:versionCode="23"
-    android:versionName="1.2.16" >
+    android:versionCode="24"
+    android:versionName="1.2.17" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -22,6 +22,8 @@
     <uses-permission android:name="com.android.phone.CHANGE_NETWORK_MODE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -30,11 +32,9 @@
         android:theme="@android:style/Theme.Black" >
         <receiver android:name="com.example.datamanager.Autostart" >
             <intent-filter>
-
-                <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
-                <action android:name="android.intent.action.MEDIA_MOUNTED" />
-
-                <data android:scheme="file" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <!-- <action android:name="android.intent.action.MEDIA_MOUNTED" />  -->
+                <!-- <data android:scheme="file" />  -->
             </intent-filter>
         </receiver>
         <receiver android:name="com.example.datamanager.NetworkModeReceiver" >

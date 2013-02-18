@@ -11,6 +11,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.KeyguardManager;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,10 +37,10 @@ public class DataActivation {
 	private int timeBeforeActivateData = 5000;
 	private LogsProvider logsProvider = null;
 
-	
+
 	public DataActivation(Context aContext) {
 		context = aContext;
-		
+
 		logsProvider = new LogsProvider(aContext, this.getClass());
 
 
@@ -113,7 +114,7 @@ public class DataActivation {
 
 		//if internet conn has to be checked
 		sharedPrefsEditor.setNetConnHasToBeChecked(netHasToBeChecked);
-		
+
 		WifiManager wifiManager = (WifiManager) this.context
 				.getSystemService(Context.WIFI_SERVICE);
 
@@ -123,8 +124,8 @@ public class DataActivation {
 
 			wifiManager.setWifiEnabled(enabled);
 		}
-		
-		
+
+
 
 	}
 
@@ -219,6 +220,11 @@ public class DataActivation {
 				setMobileDataEnabled(true);
 			}
 		}
+		
+		if(sharedPrefsEditor.getBluetoothActivation())
+		{
+			setBluetoothChipActivation(true);
+		}
 
 	}
 
@@ -241,6 +247,12 @@ public class DataActivation {
 		if (sharedPrefsEditor.isAutoSyncMgrIsActivated()) {
 			// activate sync
 			setAutoSync(false, sharedPrefsEditor, false);
+		}
+		
+		//disable bluetooth only when sleep
+		if(sharedPrefsEditor.isSleeping())
+		{
+			setBluetoothChipActivation(false);
 		}
 	}
 
@@ -381,22 +393,22 @@ public class DataActivation {
 	{
 		boolean isInternetAvailaible = false;
 
-		
+
 		//avoid androidblockguard policy error
 		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = 
 					new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 		}
-		
+
 		URL url;
 		try {
 			url = new URL(PING_HOST_1);
 			HttpURLConnection conn= (HttpURLConnection) url.openConnection();
 			int responseCode = conn.getResponseCode();
-			
+
 			isInternetAvailaible = (responseCode == 200);
-			
+
 		} catch (MalformedURLException e) {
 			logsProvider.info("net check err : "+e.getMessage());
 			isInternetAvailaible = false;
@@ -404,24 +416,49 @@ public class DataActivation {
 			logsProvider.info("net check err : "+e.getMessage());
 			isInternetAvailaible = false;
 		}
-		
-		
-	
-		
+
+
+
+
 
 		logsProvider.info("Internet connection check: "+isInternetAvailaible);
 
 		return isInternetAvailaible;
 	}
-	
+
 	public boolean isKeyguardIsActive()
 	{
 		KeyguardManager keyguardManager = (KeyguardManager)context.getSystemService(Activity.KEYGUARD_SERVICE);
-		
+
 		boolean keyGActive =  keyguardManager.inKeyguardRestrictedInputMode();
 		logsProvider.info("keyguard state: "+keyGActive);
-		
+
 		return keyGActive;
+	}
+
+	public void setBluetoothChipActivation(boolean activate)
+	{
+		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+		
+		if (!mBluetoothAdapter.isEnabled() && activate) //enable 
+		{
+			
+			mBluetoothAdapter.enable();
+		}
+		else if (mBluetoothAdapter.isEnabled() && !activate) { //disable
+
+			mBluetoothAdapter.disable(); 
+		} 
+		logsProvider.info("bluetooth activation: "+activate);
+	}
+	
+	
+	public boolean isBluetoothChipEnabled()
+	{
+		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+		return mBluetoothAdapter.isEnabled();
 	}
 
 

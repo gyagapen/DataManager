@@ -35,6 +35,7 @@ public class SaveConnectionPreferences {
 			boolean wifiConnectionIsActivated = dataActivation
 					.isWifiChipActivated();
 			sharedPrefsEditor.setWifiActivation(wifiConnectionIsActivated);
+			
 
 			// if data activation is not delayed or data is not switching
 			if (!sharedPrefsEditor.isDataActivationDelayed() && !sharedPrefsEditor.isNetworkModeSwitching()) {
@@ -42,6 +43,9 @@ public class SaveConnectionPreferences {
 						.isDataChipActivated();
 				sharedPrefsEditor.setDataActivation(dataConnectionIsActivated);
 			}
+			
+			boolean bluetoothIsActivated = dataActivation.isBluetoothChipEnabled();
+			sharedPrefsEditor.setBluetoothActivation(bluetoothIsActivated);
 
 		}
 

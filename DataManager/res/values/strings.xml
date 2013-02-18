@@ -75,6 +75,9 @@
     <string name="keyguard_off">Connectivity On after lockscreen</string>
     <string name="keyguard_off_desc">Connectivity will be re-enabled when the lockscreen is removed by the user (instead of re-activating connectivity when screen is turned on)</string>
     <string name="logs_off">Deactivate Logs file generation</string>
+    <string name="bluetooth_tab">Bluetooth</string>
+    <string name="bluetooth_off_sleep_mode">Bluetooth off during sleep</string>
+    <string name="bluetooth_off_sleep_mode_desc">If bluetooth is on, it will be  deactivated during sleep hours. It will re-activated when sleep mode is finished  </string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>

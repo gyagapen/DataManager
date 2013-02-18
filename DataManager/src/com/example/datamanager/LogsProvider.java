@@ -68,7 +68,14 @@ public class LogsProvider {
         logConfigurator.setMaxBackupSize(fileMaxSize);
         // Set log level of a specific logger
         logConfigurator.setLevel("org.apache", org.apache.log4j.Level.DEBUG);
-        logConfigurator.configure();
+        try
+        {
+        	logConfigurator.configure();
+        }
+        catch (Exception e)
+        {
+        	//can't log
+        }
     }
 
 }

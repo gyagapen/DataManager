@@ -80,7 +80,7 @@ OnCheckedChangeListener {
 	private CheckBox cbKeyguardOff = null;
 	private CheckBox cbLogsOff = null;
 	private TextView tvViewLogs = null;
-
+	private CheckBox cboxBluetoothOffSleepM = null;
 
 	private int RETURN_CODE = 0;
 
@@ -217,6 +217,8 @@ OnCheckedChangeListener {
 		cbLogsOff = (CheckBox)findViewById(R.id.checkBoxDeactivateLogs);
 		cbLogsOff.setOnCheckedChangeListener(this);
 		tvViewLogs = (TextView)findViewById(R.id.textViewLogs);
+		
+		cboxBluetoothOffSleepM = (CheckBox)findViewById(R.id.checkBoxBluetoothOffSleepM);
 	}
 
 	/**
@@ -302,6 +304,7 @@ OnCheckedChangeListener {
 		cbLogsOff.setChecked(logsIsDisabled);
 		setLogsButtonStatus(!logsIsDisabled);
 
+		cboxBluetoothOffSleepM.setChecked(sharedPrefsEditor.getBluetoothDeactivateDuringSleep());
 
 	}
 
@@ -327,10 +330,19 @@ OnCheckedChangeListener {
 			String versionName = getVersionName();
 			
 			//attachment
-			File file = new File("/CleverConnectivity.log");
-			if (file.exists() && !file.canRead()) {
+			File file = new File(Environment.getExternalStorageDirectory()+File.separator+"CleverConnectivity.log");
+			if (file.exists() && file.canRead()) {
+				logsProvider.info("logs file is available: "+file.getName());
 				Uri uri = Uri.parse("file://" + file.getAbsolutePath());
 				email.putExtra(Intent.EXTRA_STREAM, uri);
+			}
+			else if(!file.exists())
+			{
+				logsProvider.info("logs file does not exist: "+file.getName());
+			}
+			else if(!file.canRead())
+			{
+				logsProvider.info("logs file cannot be read: "+file.getName());
 			}
 			
 
@@ -527,6 +539,8 @@ OnCheckedChangeListener {
 		boolean isKeyguardOff = cbKeyguardOff.isChecked();
 
 		boolean isLogsOff = !cbLogsOff.isChecked();
+		
+		boolean isBluetoothOffSleepM = cboxBluetoothOffSleepM.isChecked();
 
 		// save all these preferences
 		sharedPrefsEditor.setAllValues(timeOn, timeOff, intervalCheck,
@@ -534,7 +548,7 @@ OnCheckedChangeListener {
 				wifiMgrIsActivated, autoSyncIsActivated, autoWifiIsActivated,
 				sleepHoursIsActivated, isAutoSyncMgrIsActivated, 
 				isServiceDeactived,isServiceDeactivatedPlugged, timeOnCheck,timeScreenOnDelay,
-				isFirstTimeOnIsActivated, firstTimeOn, autoWifiOnIsActivated, is2GSwitchActivated, isCheckNetConnWifi, isKeyguardOff, isLogsOff);
+				isFirstTimeOnIsActivated, firstTimeOn, autoWifiOnIsActivated, is2GSwitchActivated, isCheckNetConnWifi, isKeyguardOff, isLogsOff, isBluetoothOffSleepM);
 
 		try {
 			// if data is disabled; data connection is stopped

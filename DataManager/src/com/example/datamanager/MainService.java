@@ -142,6 +142,12 @@ public class MainService extends Service {
 					{
 						dataActivation.setAutoSync(true, sharedPrefsEditor, false);
 					}
+					
+					//bluetooth if necesary
+					if(sharedPrefsEditor.isSleeping() && sharedPrefsEditor.getBluetoothActivation())
+					{
+						dataActivation.setBluetoothChipActivation(true);
+					}
 
 
 				}

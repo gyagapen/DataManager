@@ -48,6 +48,8 @@ public class SharedPrefsEditor {
 	static final String STR_NET_CONN_HAS_TO_BE_CHECKED = "netConnHasToBeChecked";
 	static final String STR_ENABLE_WHEN_KEYGUARD_OFF = "disableWhenKeyguardOff";
 	static final String STR_LOGS_ENABLED = "logsEnabled";
+	static final String STR_BLUETOOTH_ACTIVATION = "bluetoothActivation";
+	static final String STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE = "bluetoothDeactivateSleepMode";
 
 	// Default values
 	static final int TIME_ON = 2; // min
@@ -89,6 +91,8 @@ public class SharedPrefsEditor {
 	static final boolean NET_CONN_HAS_TO_BE_CHECKED = false;
 	static final boolean ENABLE_WHEN_KEYGUARD_OFF = false;
 	static final boolean LOGS_ENABLED = true;
+	static final boolean BLUETOOTH_ACTIVATION = false;
+	static final boolean BLUETOOTH_DEACTIVATE_SLEEP_MODE = false;
 	
 	// gives access to connection states
 	DataActivation dataConnectionState;
@@ -151,6 +155,8 @@ public class SharedPrefsEditor {
 			prefEditor.putBoolean(STR_NET_CONN_HAS_TO_BE_CHECKED, NET_CONN_HAS_TO_BE_CHECKED);
 			prefEditor.putBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, ENABLE_WHEN_KEYGUARD_OFF);
 			prefEditor.putBoolean(STR_LOGS_ENABLED, LOGS_ENABLED);
+			prefEditor.putBoolean(STR_BLUETOOTH_ACTIVATION, dataConnectionState.isBluetoothChipEnabled());
+			prefEditor.putBoolean(STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE, BLUETOOTH_DEACTIVATE_SLEEP_MODE);
 			
 
 			prefEditor.commit();
@@ -201,6 +207,8 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_NET_CONN_HAS_TO_BE_CHECKED, NET_CONN_HAS_TO_BE_CHECKED);
 		prefEditor.putBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, ENABLE_WHEN_KEYGUARD_OFF);
 		prefEditor.putBoolean(STR_LOGS_ENABLED, LOGS_ENABLED);
+		prefEditor.putBoolean(STR_BLUETOOTH_ACTIVATION, dataConnectionState.isBluetoothChipEnabled());
+		prefEditor.putBoolean(STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE, BLUETOOTH_DEACTIVATE_SLEEP_MODE);
 		prefEditor.commit();
 	}
 
@@ -227,6 +235,16 @@ public class SharedPrefsEditor {
 	public boolean isEnabledWhenKeyguardOff()
 	{
 		return dataManagerSettings.getBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, ENABLE_WHEN_KEYGUARD_OFF);
+	}
+	
+	public boolean getBluetoothActivation()
+	{
+		return dataManagerSettings.getBoolean(STR_BLUETOOTH_ACTIVATION, dataConnectionState.isBluetoothChipEnabled());
+	}
+	
+	public boolean getBluetoothDeactivateDuringSleep()
+	{
+		return dataManagerSettings.getBoolean(STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE, BLUETOOTH_DEACTIVATE_SLEEP_MODE);
 	}
 	
 	public int getFirstTimeOn(){
@@ -296,6 +314,7 @@ public class SharedPrefsEditor {
 		return dataManagerSettings.getBoolean(STR_DATA_MANAGER_IS_ACTIVATED,
 				DATA_MGR_IS_ACTIVATED);
 	}
+	
 	
 	public boolean isTimeOffIsActivated() {
 		return dataManagerSettings.getBoolean(STR_TIME_OFF_IS_ACTIVATED,
@@ -409,6 +428,18 @@ public class SharedPrefsEditor {
 	public void setCheckNetConnectionWifi(boolean isChecking)
 	{
 		prefEditor.putBoolean(STR_CHECK_NET_CONNECTION_WIFI, isChecking);
+		prefEditor.commit();
+	}
+	
+	public void setBluetoothActivation(boolean isEnabled)
+	{
+		prefEditor.putBoolean(STR_BLUETOOTH_ACTIVATION, isEnabled);
+		prefEditor.commit();
+	}
+	
+	public void setBluetoothDeactivationDuringSleep(boolean isDisabled)
+	{
+		prefEditor.putBoolean(STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE, isDisabled);
 		prefEditor.commit();
 	}
 	
@@ -600,7 +631,7 @@ public class SharedPrefsEditor {
 			boolean serviceIsDeactivated, boolean serviceIsDeactivatedWhilePlugged, int timeOnCheck, int screenDelayTimer,
 			boolean isFirsTimeOnIsActivated, int firstTimeOnValue,
 			boolean isAutoWifiOnIsActivated, boolean is2GSwitchActivate, boolean checkNetConnWifi,
-			boolean enableServiceWhenKeyguardOff, boolean logsAreEnabled) {
+			boolean enableServiceWhenKeyguardOff, boolean logsAreEnabled, boolean bluetoothOffSleep) {
 		
 		prefEditor.putInt(STR_TIME_ON, timeOn);
 		prefEditor.putInt(STR_TIME_ON_CHECK, timeOnCheck);
@@ -627,6 +658,7 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_NET_CONN_HAS_TO_BE_CHECKED, false);
 		prefEditor.putBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, enableServiceWhenKeyguardOff);
 		prefEditor.putBoolean(STR_LOGS_ENABLED, logsAreEnabled);
+		prefEditor.putBoolean(STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE, bluetoothOffSleep);
 		
 		prefEditor.commit();
 	}
