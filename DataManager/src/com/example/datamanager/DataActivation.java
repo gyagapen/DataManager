@@ -9,6 +9,7 @@ import java.net.URL;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.KeyguardManager;
 import android.bluetooth.BluetoothAdapter;
@@ -20,6 +21,7 @@ import android.content.SyncAdapterType;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -389,6 +391,7 @@ public class DataActivation {
 	}
 
 
+	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	public boolean isInternetConnectionAvailable()
 	{
 		boolean isInternetAvailaible = false;
@@ -405,7 +408,11 @@ public class DataActivation {
 		try {
 			url = new URL(PING_HOST_1);
 			HttpURLConnection conn= (HttpURLConnection) url.openConnection();
+			//3 seconds time out
+			conn.setConnectTimeout(3000);
+			
 			int responseCode = conn.getResponseCode();
+			
 
 			isInternetAvailaible = (responseCode == 200);
 

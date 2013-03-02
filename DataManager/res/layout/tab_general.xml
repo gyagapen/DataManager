@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+
+            <TextView
+                android:id="@+id/TextView01"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_horizontal"
+                android:text="@string/general_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/separator"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/checkBoxDeactivateAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deactivate_service" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deactivate_service_desc" />
+
+            <CheckBox
+                android:id="@+id/checkBoxDeactivatePlugged"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deactivate_service_plugged" />
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deactivate_service__plugged_desc" />
+            
+                 <CheckBox
+            android:id="@+id/checkBoxKeyguardOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/keyguard_off" />
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/keyguard_off_desc" />
+
+            </LinearLayout>
+    </ScrollView>
+

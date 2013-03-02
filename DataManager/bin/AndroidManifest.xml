@@ -1,10 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gyagapen.cleverconnectivity"
-    android:versionCode="24"
-    android:versionName="1.2.17" >
+    android:versionCode="26"
+    android:versionName="1.2.18" >
 
     <uses-sdk
-        android:minSdkVersion="10"
+        android:minSdkVersion="8"
         android:targetSdkVersion="15" />
 
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -78,11 +78,11 @@
             android:name="com.example.datamanager.MainActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_main" >
-            <intent-filter>
+            <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter> -->
         </activity>
         <activity
             android:name="com.example.datamanager.ShortcutActivateReceiver"
@@ -103,7 +103,23 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity android:name="com.example.datamanager.ApplicationListActivity" >
         </activity>
-”
+        <activity android:name="tabActivities.AdvancedTabActivity"></activity>
+        <activity android:name="tabActivities.BluetoothTabActivity"></activity>
+        <activity android:name="tabActivities.DataTabActivity"></activity>
+        <activity android:name="tabActivities.GeneralTabActivity"></activity>
+        <activity android:name="tabActivities.MainTabActivity"
+            android:configChanges="orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="tabActivities.MiscTabActivity"></activity>
+        <activity android:name="tabActivities.SyncTabActivity"></activity>
+        <activity android:name="tabActivities.TimersTabActivity"></activity>
+        <activity android:name="tabActivities.WifiTabActivity"></activity>
+
     </application>
 
 </manifest>

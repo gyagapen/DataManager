@@ -71,7 +71,7 @@ public class SharedPrefsEditor {
 	static final boolean AUTO_WIFI_ON_IS_ACTIVATED= false;
 	static final String SLEEP_ON="00:00"; //hh:mm
 	static final String SLEEP_OFF="06:00"; //hh:mm
-	static final String PREFERENCE_NAME = "DataManagerPreferences";
+	public static final String PREFERENCE_NAME = "DataManagerPreferences";
 	static final boolean IS_SLEEPING=false;
 	static final boolean TIME_OFF_IS_ACTIVATED=false;
 	static final boolean DEACTIVATE_PLUGGED=false;

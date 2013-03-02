@@ -97,9 +97,9 @@ OnCheckedChangeListener {
 
 
 		// initialize connectivity positions
-		/*SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(
+		SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(
 				getApplicationContext());
-		connPrefs.saveAllConnectionSettingInSharedPrefs();*/
+		connPrefs.saveAllConnectionSettingInSharedPrefs();
 
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,

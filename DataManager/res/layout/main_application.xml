@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <!-- <ScrollView xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+     <ScrollView xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
      xmlns:android="http://schemas.android.com/apk/res/android"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
-     android:layout_gravity="fill_horizontal" > --> 
+     android:layout_gravity="fill_horizontal" > 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
@@ -12,7 +12,7 @@
     android:orientation="vertical" >
 
 
-	   <com.google.ads.AdView
+	   <!-- <com.google.ads.AdView
 					android:id="@+id/adViewMainStart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -20,13 +20,13 @@
                         ads:adUnitId="a150d57cebe0f76"
                         ads:loadAdOnCreate="true"
                          >
-          </com.google.ads.AdView>   
+          </com.google.ads.AdView>  -->   
  
 
-      <ScrollView
+     <!--  <ScrollView
         xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent" >  -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -746,14 +746,14 @@
                             android:textColor="@color/name" />
 
 
-                    <com.google.ads.AdView
+                    <!--  <com.google.ads.AdView
                         android:id="@+id/adViewMainEnd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         ads:adSize="BANNER"
                         ads:adUnitId="a150d57cebe0f76"
                         ads:loadAdOnCreate="true" >
-                    </com.google.ads.AdView> 
+                    </com.google.ads.AdView> --> 
 
 
 
@@ -761,7 +761,8 @@
                 </TableRow>
             </TableLayout>
         </LinearLayout>
-  </ScrollView>  
+  <!-- </ScrollView> -->  
 
 	</LinearLayout>
-   <!-- </ScrollView>  --> 
+   </ScrollView> 
+    

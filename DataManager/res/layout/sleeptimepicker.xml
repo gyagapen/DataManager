@@ -3,29 +3,41 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <!--  xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads" -->
+    <!-- xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads" -->
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <!-- <com.google.ads.AdView
-            android:id="@+id/adViewSleepTimePickerStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="a150d57cebe0f76">
-        </com.google.ads.AdView> -->
+
+
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/TextView05"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_weight="0.42"
-            android:text="@string/SleepHoursActivityName"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+            android:text="@string/sleep_title"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/name" />
+            android:textColor="@color/separator"
+            android:textStyle="italic" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSleepHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/toggle_sleep_hours" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/toggle_sleep_hours_desc" />
+>
 
         <View
             android:layout_width="329dp"
@@ -95,39 +107,7 @@
             android:layout_marginTop="3dp"
             android:layout_weight="0.42" />
 
-        <View
-            android:layout_width="329dp"
-            android:layout_height="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="0.42"
-            android:background="@color/separator" />
 
-        <Button
-            android:id="@+id/buttonSaveSleepHours"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_weight="0.42"
-            android:text="@string/button_save_sleep_hours" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.42"
-            android:text="@string/developerName"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/name" />
-
-       <!--  <com.google.ads.AdView
-            android:id="@+id/adViewSleepTimePickerEnd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="a150d57cebe0f76">
-        </com.google.ads.AdView> -->
-        
     </LinearLayout>
 
 </ScrollView>

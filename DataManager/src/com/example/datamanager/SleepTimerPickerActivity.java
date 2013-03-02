@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.HorizontalScrollView;
 import android.widget.TimePicker;
 
@@ -14,19 +15,13 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.gyagapen.cleverconnectivity.R;
 
-public class SleepTimerPickerActivity extends Activity implements
-		OnClickListener {
+public class SleepTimerPickerActivity extends Activity {
 
 	// time pickers
 	private TimePicker timePickerSleepOn = null;
 	private TimePicker timePickerSleepOff = null;
-	
-	//Ads
-	//private AdView sleepActStartAdView = null;
-	//private AdView sleepActEndAdView = null;
+	private CheckBox cbSleepHours = null;
 
-	// save button
-	private Button buttonSave = null;
 
 	// SharedPreferences
 	private SharedPreferences prefs = null;
@@ -47,39 +42,19 @@ public class SleepTimerPickerActivity extends Activity implements
 
 		// initialize ui components
 		initUiComponents();
-		
+
 		//load data componenets 
 		loadTimePickerData();
-		
-		//save button implementation
-		buttonSave.setOnClickListener(this);
+
 
 	}
 
 	private void initUiComponents() {
-		
-		
-		/**sleepActStartAdView = (AdView)findViewById(R.id.adViewSleepTimePickerStart);
-		sleepActEndAdView = (AdView)findViewById(R.id.adViewSleepTimePickerEnd);
-		
-		
-		if(!MainActivity.APPLICATION_IS_FREE)
-		{
-			//no ads for paid version
-			sleepActEndAdView.destroy();
-			sleepActStartAdView.destroy();
-		}
-		else
-		{
-			//load ads
-			sleepActEndAdView.loadAd(new AdRequest());
-			sleepActStartAdView.loadAd(new AdRequest());
-		}**/
-		
-		
+
 		timePickerSleepOff = (TimePicker) findViewById(R.id.timePickerSleepOff);
 		timePickerSleepOn = (TimePicker) findViewById(R.id.timerPickerSleepOn);
-		buttonSave = (Button)findViewById(R.id.buttonSaveSleepHours);
+		cbSleepHours = (CheckBox) findViewById(R.id.checkBoxSleepHours);
+		
 	}
 
 	private void loadTimePickerData() {
@@ -98,45 +73,89 @@ public class SleepTimerPickerActivity extends Activity implements
 
 		timePickerSleepOn.setCurrentHour(hourSleepOn);
 		timePickerSleepOn.setCurrentMinute(minuteSleepOn);
+		
+		boolean sleepHoursIsActivated = sharedPrefsEditor
+				.isSleepHoursActivated();
+		cbSleepHours.setChecked(sleepHoursIsActivated);
+		
+		
 	}
 
-	public void onClick(View v) {
-		
+	/*public void onClick(View v) {
+
 		//if save button is clicked
 		if(v == buttonSave)
 		{
 			// force the timepickers to loose focus and the typed value is available !
 			timePickerSleepOn.clearFocus();
 			timePickerSleepOff.clearFocus();
-			
+
 			//getting value from sleep time on
 			int hourSleepOn = timePickerSleepOn.getCurrentHour();
 			int minuteSleepOn = timePickerSleepOn.getCurrentMinute();
 			String timeOn = String.format("%02d:%02d", hourSleepOn, minuteSleepOn);
-			
+
 			//getting value from sleep time off
 			int hourSleepOff = timePickerSleepOff.getCurrentHour();
 			int minuteSleepOff = timePickerSleepOff.getCurrentMinute();
 			String timeOff = String.format("%02d:%02d", hourSleepOff, minuteSleepOff);
-			
-			
+
+
 			//saving in preferences
 			sharedPrefsEditor.setSleepTimeOn(timeOn);
 			sharedPrefsEditor.setSleepTimeOff(timeOff);
-			
+
 			//create the intent
 			Intent intent = new Intent();
-			
+
 			//return result with intent
 			setResult(RESULT_OK, intent);
-			
+
 			//terminate activity
 			finish();
-			
+
 		}
 
+	}*/
+
+
+
+	private void applySettings()
+	{
+		boolean sleepHoursIsActivated = cbSleepHours.isChecked();
+		sharedPrefsEditor.setSleepHoursActivation(sleepHoursIsActivated);
+		
+		// force the timepickers to loose focus and the typed value is available !
+		timePickerSleepOn.clearFocus();
+		timePickerSleepOff.clearFocus();
+
+		//getting value from sleep time on
+		int hourSleepOn = timePickerSleepOn.getCurrentHour();
+		int minuteSleepOn = timePickerSleepOn.getCurrentMinute();
+		String timeOn = String.format("%02d:%02d", hourSleepOn, minuteSleepOn);
+
+		//getting value from sleep time off
+		int hourSleepOff = timePickerSleepOff.getCurrentHour();
+		int minuteSleepOff = timePickerSleepOff.getCurrentMinute();
+		String timeOff = String.format("%02d:%02d", hourSleepOff, minuteSleepOff);
+
+
+		//saving in preferences
+		sharedPrefsEditor.setSleepTimeOn(timeOn);
+		sharedPrefsEditor.setSleepTimeOff(timeOff);
+
+		//setting sleeping hours
+		AlarmMgr alarmMgr = new AlarmMgr(this, sharedPrefsEditor);
+		alarmMgr.manageSleepingHours(timeOff,
+				timeOn);
+
 	}
-	
+
+	protected void onDestroy() {
+
+		applySettings();
+		super.onDestroy();
+	}
 
 
 }

@@ -13,7 +13,7 @@ import de.mindpipe.android.logging.log4j.LogConfigurator;
 
 public class LogsProvider {
 
-	static final String LOG_APP_NAME = "CConnectivity";
+	static final String LOG_APP_NAME = "CleverConnectivity.log";
 
 	public static final int fileMaxSize = 80000; //bytes
 
@@ -65,7 +65,8 @@ public class LogsProvider {
                 
         logConfigurator.setFileName(Environment.getExternalStorageDirectory() + File.separator + LOG_APP_NAME);
         logConfigurator.setRootLevel(org.apache.log4j.Level.DEBUG);
-        logConfigurator.setMaxBackupSize(fileMaxSize);
+        logConfigurator.setMaxFileSize(fileMaxSize);
+        logConfigurator.setMaxBackupSize(0);
         // Set log level of a specific logger
         logConfigurator.setLevel("org.apache", org.apache.log4j.Level.DEBUG);
         try

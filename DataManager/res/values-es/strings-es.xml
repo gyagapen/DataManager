@@ -1,0 +1,89 @@
+<resources>
+
+    <string name="app_name">CleverConnectivity Ads</string>
+    <string name="hello_world">Hola mundo!</string>
+    <string name="menu_settings">Ajustes</string>
+    <string name="title_activity_main">CleverConnectivity Ads</string>
+    <string name="toggle_data">Datos móviles</string>
+    <string name="toggle_data_desc">Activar o desactivar los datos móviles (3G). También puedes activar o desactivar la datos móviles desde fuera de esta aplicación, no habrá ningún conflicto.</string>
+    <string name="toggle_data_manager">Gestor de datos móviles</string>
+    <string name="toggle_data_manager_desc">El gestor de datos móviles activará o desactivará automáticamente los datos móviles (3G) después de un periodo de tiempo, cuando la pantalla se apague. La conexión SÓLO será desactivada si NO está siendo utilizada. Por lo tanto, las descargas y streamings no serán detenidos, y los eventos de sincronización serán recibidos. El gestor de datos móviles sólo funcionará si los datos móviles están activados.</string>
+    <string name="toggle_wifi">Wi-Fi</string>
+    <string name="toggle_wifi_desc">Activar o desactivar la conexión Wi-Fi. También puedes activar o desactivar la conexión Wi-Fi desde fuera de esta aplicación, no habrá ningún conflicto.</string>
+    <string name="toggle_wifi_manager">Gestor de Wi-Fi</string>
+    <string name="toggle_wifi_manager_desc">El gestor de Wi-Fi activará o desactivará automáticamente la conexión Wi-Fi después de un periodo de tiempo cuando la pantalla se apague. La conexión SÓLO será desactivada si NO está siendo utilizada. Por lo tanto, las descargas y streamings no serán detenidos, y los eventos de sincronización serán recibidos. El gestor de Wi-Fi sólo funcionará si la conexión Wi-Fi está activada.</string>
+    <string name="toggle_auto_sync">Sincronización automática</string>
+    <string name="toggle_auto_sync_manager">Gestor de sincronización automática</string>
+    <string name="toggle_auto_sync_manager_desc">El gestor de sincronización automática desactivará automáticamente todas las sincronizaciones cuando no haya conexiones y la pantalla esté apagada. Las sincronizaciones continuarán cuando se restablezcan las conexiones o se encienda la pantalla. El gestor de sincronización automática sólo funcionará si la sincronización automática está activada.</string>
+    <string name="toggle_auto_sync_desc">Activar o desactivar la sincronización. También puedes activar o desactivar la sincronización desde fuera de esta aplicación, no habrá ningún conflicto.</string>
+    <string name="toggle_auto_wifi_off">Auto desactivar Wi-Fi</string>
+    <string name="toggle_auto_wifi_off_desc">Auto desactivar Wi-Fi desactivará automáticamente el Wi-Fi después de un periodo de tiempo si la pantalla está apagada y no hay redes conocidas disponibles.</string>
+    <string name="toggle_auto_wifi_on">Auto activar Wi-Fi</string>
+    <string name="toggle_auto_wifi_on_desc">Auto activar Wi-Fi activará automáticamente el Wi-Fi después de un periodo de tiempo si hay redes conocidas disponibles.</string>
+    <string name="time_on">Tiempo a mantener activación (min)</string>
+    <string name="time_on_desc">Número de minutos a mantener la conectividad de datos cuando la pantalla es apagada.</string>
+    <string name="time_on_check">Tiempo próximo chequeo activación (min)</string>
+    <string name="time_on_check_desc">Número de minutos a mantener la conectividad de datos después de una prueba de conectividad positiva. Después de este intervalo, otra prueba de datos será ejecutada. Si los datos móviles están siendo usados, el temporizador sera reiniciado, sino el Time Off entra en juego.</string>
+    <string name="time_off">Tiempo a mantener desactivación (min)</string>
+    <string name="time_off_desc">Número de minutos a mantener la conectividad de datos desactivada cuando la pantalla es apagada.</string>
+    <string name="interval_check">Intervalo chequeo de uso (seg)</string>
+    <string name="interval_check_desc">Número de segundos para chequear si las conexiones (Wi-Fi/3G) están siendo utilizadas. Un valor mayor decrementará la posibilidad de interrumpir descargas, streamings y sincronizaciones, pero mantendrá las conexiones vivas por más tiempo y en consecuencia consumirá más batería.</string>
+    <string name="button_save">Guardar preferencias</string>
+    <string name="toggle_sleep_hours">Horas para dormir</string>
+    <string name="toggle_sleep_hours_desc">Durante las horas para dormir todas las conexiones de datos serán desactivadas cuando la pantalla esté apagada.</string>
+    <string name="label_sleep_hours">Horas para dormir:</string>
+    <string name="button_change_sleep_hours">Editar</string>
+    <string name="label_time_on">Tiempo a mantener activación (min)</string>
+    <string name="label_time_off">Tiempo a mantener desactivación (min)</string>
+    <string name="label_time_Interval">Intervalo de chequeo (seg)</string>
+    <string name="label_sleep_off">Conectividad desactivada</string>
+    <string name="label_sleep_off_desc">Toda la conectividad (3G/Wi-Fi/Sincronizaciones) será desactivada durante este periodo. El ciclo de activación-desactivación estará detenido. Las conexiones serán automáticamente desactivadas cuando la pantalla esté apagada.</string>
+    <string name="label_sleep_on">Conectividad activada</string>
+    <string name="label_sleep_on_desc">El ciclo activación-desactivación continuará a una hora específica.</string>
+    <string name="button_save_sleep_hours">Guardar horas para dormir</string>
+    <string name="SleepHoursActivityName">Cambiar horas para dormir</string>
+    <string name="developerName">© gyagapen</string>
+    <string name="report_bug">Notificar error</string>
+    <string name="view_log_file">Ver fichero de log</string>
+    <string name="view_log_details">Genera un fichero de log llamado "CleverConnectivity.log" en el directorio raíz de la unidad externa del terminal y mostrarlo después. Debes tener un visor de texto para poder leerlo.</string>
+    <string name="deactivate_service">Desactivar CleverConnectivity</string>
+    <string name="deactivate_service_desc">Esto detendrá el servicio principal de la aplicación, esto es todas las características de la aplicación. Es como si la aplicación estuviese desinstalada.</string>
+    <string name="deactivate_service_plugged">Desactivar durante la carga</string>
+    <string name="deactivate_service__plugged_desc">Esto detendrá el servicio principal de la aplicación sólo cuando se esté cargando la batería.</string>
+    <string name="screen_on_delay">Intervalo sin conectividad al encender la pantalla (seg)</string>
+    <string name="screen_on_delay_desc">Intervalo (en segundos) para restablecer la conectividad cuando la pantalla es encendida. Si la pantalla es apagada en este intervalo, el ciclo de activación-desactivación continuará normalmente. Por ejemplo, esto le permite responder a llamadas sin molestar al ciclo de activación-desactivación.</string>
+    <string name="advanced">Avanzadas</string>
+    <string name="cbox_diff_first_time_on">Diferenciar primer tiempo de activación</string>
+    <string name="first_time_on">Primer tiempo de activación</string>
+    <string name="first_time_on_desc">Cuando se apaga la pantalla, este temporizador se activará en lugar de la activación normal. Pero cuando expire el temporizador de desactivación, el temporizador normal de activación entra en juego.</string>
+    <string name="general_title">General</string>
+    <string name="data_title">Datos móviles</string>
+    <string name="wifi_title">Wi-Fi</string>
+    <string name="sync_title">Sincronización</string>
+    <string name="sleep_title">Modo dormir</string>
+    <string name="timers_title">Temporizadores</string>
+    <string name="switch2G">2G al apagar la pantalla</string>
+    <string name="switch_desc2G">El modo de red preferido será establecido cuando la pantalla se apague. Cuando la pantalla se encienda, el modo 3G será rehabilitado. Si se selecciona 2G como red preferida en ajustes, no se modificará.</string>
+    <string name="switch_incompatible2G">Perdón, debes tener una ROM basada en CYANOGENMOD para disponer de esta funcionalidad.</string>
+    <string name="button_create_activation_shortcut">Crear acceso directo de Desactivación</string>
+    <string name="shortcut_activation_name">Desactivación</string>
+    <string name="button_manage_app">Gestionar conectividad por aplicación</string>
+    <string name="mgr_app_conn_master_switch">Interruptor maestro</string>
+    <string name="mgr_app_conn_desc">Cuando una de las aplicaciones seleccionadas está ejecutando, la conectividad no se desabilitará.</string>
+    <string name="check_net_conn_wifi">Chequeo conexión internet</string>
+    <string name="check_net_conn_wifi_desc">Chequea si el teléfono es capáz de conectar a internet a través de la conexión Wi-Fi. Si no el Wi-Fi es desabilitado.</string>
+    <string name="keyguard_off">Activar conectividad despues de bloquear la pantalla</string>
+    <string name="keyguard_off_desc">La conectividad será reestablecida cuando el bloqueo de pantalla es borrado por el usuario (en lugar de reactivar la conectividad cuando la pantalla es encendida)</string>
+    <string name="logs_off">Desactivar la generación de ficheros de log</string>
+    <string name="bluetooth_tab">Bluetooth</string>
+    <string name="bluetooth_off_sleep_mode">Bluetooth desactivado durante el sueño</string>
+    <string name="bluetooth_off_sleep_mode_desc">Si el bluetooth está activado, este será desactivado durante las horas de sueño. Será reactivado cuando el modo sueño finalize.</string>
+    
+    <color name="separator">#B2E0FF</color>
+    <color name="name">#666699</color>
+    
+    
+    
+    
+
+</resources>
