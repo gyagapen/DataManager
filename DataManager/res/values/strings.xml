@@ -82,6 +82,16 @@
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>
     
+    <!-- <drawable name="advanced.png"></drawable>
+    <drawable name="bluetooth.png"></drawable>
+    <drawable name="data.png"></drawable>
+    <drawable name="general.png"></drawable>
+    <drawable name="misc.png"></drawable>
+    <drawable name="sleep.png"></drawable>
+    <drawable name="sync.png"></drawable>
+    <drawable name="timers.png"></drawable>
+    <drawable name="wifi.png"></drawable> -->
+    
     
     
     

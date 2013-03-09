@@ -55,55 +55,55 @@ public class MainTabActivity extends TabActivity{
 		// Tab for General
 		TabSpec genspec = tabHost.newTabSpec("General");
 		// setting Title and Icon for the Tab
-		genspec.setIndicator("General");
+		genspec.setIndicator("", getResources().getDrawable(R.drawable.general));
 		Intent genIntent = new Intent(this, GeneralTabActivity.class);
 		genspec.setContent(genIntent);
 
 		// Tab for Data
 		TabSpec dataspec = tabHost.newTabSpec("Data");
-		dataspec.setIndicator("Data");
+		dataspec.setIndicator("", getResources().getDrawable(R.drawable.data));
 		Intent dataIntent = new Intent(this, DataTabActivity.class);
 		dataspec.setContent(dataIntent);
 
 		// Tab for Wifi
 		TabSpec wifispec = tabHost.newTabSpec("Wifi");
-		wifispec.setIndicator("Wifi");
+		wifispec.setIndicator("", getResources().getDrawable(R.drawable.wifi));
 		Intent wifiIntent = new Intent(this, WifiTabActivity.class);
 		wifispec.setContent(wifiIntent);
 
 		// Tab for Sync
 		TabSpec syncspec = tabHost.newTabSpec("Sync");
-		syncspec.setIndicator("Sync");
+		syncspec.setIndicator("", getResources().getDrawable(R.drawable.sync));
 		Intent syncIntent = new Intent(this, SyncTabActivity.class);
 		syncspec.setContent(syncIntent);
 
 		TabSpec bluetootspec = tabHost.newTabSpec("Bluetooth");
-		bluetootspec.setIndicator("Bluetooth");
+		bluetootspec.setIndicator("", getResources().getDrawable(R.drawable.bluetooth));
 		Intent bluetoothIntent = new Intent(this, BluetoothTabActivity.class);
 		bluetootspec.setContent(bluetoothIntent);
 
 		// Tab for sleep hours
 		TabSpec sleepspec = tabHost.newTabSpec("Sleep");
-		sleepspec.setIndicator("Sleep");
+		sleepspec.setIndicator("", getResources().getDrawable(R.drawable.sleep));
 		Intent sleepIntent = new Intent(this, SleepTimerPickerActivity.class);
 		sleepspec.setContent(sleepIntent);
 
 		// Tab for timers 
 		TabSpec timerspec = tabHost.newTabSpec("Timers");
-		timerspec.setIndicator("Timers");
+		timerspec.setIndicator("", getResources().getDrawable(R.drawable.timers));
 		Intent timerIntent = new Intent(this, TimersTabActivity.class);
 		timerspec.setContent(timerIntent);
 
 
 		// Tab for advanced 
 		TabSpec advancedspec = tabHost.newTabSpec("Advanced");
-		advancedspec.setIndicator("Advanced");
+		advancedspec.setIndicator("", getResources().getDrawable(R.drawable.advanced));
 		Intent advancedIntent = new Intent(this, AdvancedTabActivity.class);
 		advancedspec.setContent(advancedIntent);
 
 		// Tab for Misc 
 		TabSpec miscspec = tabHost.newTabSpec("Misc");
-		miscspec.setIndicator("Misc");
+		miscspec.setIndicator("", getResources().getDrawable(R.drawable.misc));
 		Intent miscIntent = new Intent(this, MiscTabActivity.class);
 		miscspec.setContent(miscIntent);
 
