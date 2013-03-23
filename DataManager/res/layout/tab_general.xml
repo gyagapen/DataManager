@@ -61,6 +61,20 @@
             android:layout_marginBottom="5dp"
             android:text="@string/keyguard_off_desc" />
 
+        <CheckBox
+            android:id="@+id/checkBoxNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/notification" />
+
+        <TextView
+            android:id="@+id/textViewNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/notification_desc" />
+
             </LinearLayout>
     </ScrollView>
 

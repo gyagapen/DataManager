@@ -78,6 +78,8 @@
     <string name="bluetooth_tab">Bluetooth</string>
     <string name="bluetooth_off_sleep_mode">Bluetooth off during sleep</string>
     <string name="bluetooth_off_sleep_mode_desc">If bluetooth is on, it will be  deactivated during sleep hours. It will re-activated when sleep mode is finished  </string>
+    <string name="notification">Activate Notification</string>
+    <string name="notification_desc">Display a fancy notification in the notification when the application is started</string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>

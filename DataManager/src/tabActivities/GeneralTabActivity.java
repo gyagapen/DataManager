@@ -15,6 +15,7 @@ public class GeneralTabActivity extends Activity {
 	private CheckBox cbServiceIsDeactivated = null;
 	private CheckBox cbServiceIsDeactivatedPlugged = null;
 	private CheckBox cbKeyguardOff = null;
+	private CheckBox cbNotification = null;
 
 	private LogsProvider logsProvider = null;
 
@@ -51,6 +52,7 @@ public class GeneralTabActivity extends Activity {
 		cbServiceIsDeactivated = (CheckBox) findViewById(R.id.checkBoxDeactivateAll);
 		cbServiceIsDeactivatedPlugged = (CheckBox) findViewById(R.id.checkBoxDeactivatePlugged);
 		cbKeyguardOff = (CheckBox)findViewById(R.id.checkBoxKeyguardOff);
+		cbNotification = (CheckBox)findViewById(R.id.checkBoxNotification);
 		
 	}
 	
@@ -68,6 +70,8 @@ public class GeneralTabActivity extends Activity {
 		cbServiceIsDeactivatedPlugged.setChecked(serviceIsDeactivatedPlugged); 
 		
 		cbKeyguardOff.setChecked(sharedPrefsEditor.isEnabledWhenKeyguardOff());
+		
+		cbNotification.setChecked(sharedPrefsEditor.isNotificationEnabled());
 
 	}
 	
@@ -78,10 +82,12 @@ public class GeneralTabActivity extends Activity {
 		boolean isServiceDeactived = cbServiceIsDeactivated.isChecked();
 		boolean isServiceDeactivatedPlugged = cbServiceIsDeactivatedPlugged.isChecked();
 		boolean isKeyguardOff = cbKeyguardOff.isChecked();
+		boolean isNotificationEnabled = cbNotification.isChecked();
 		
 		sharedPrefsEditor.setDeactivateAll(isServiceDeactived);
 		sharedPrefsEditor.setDeactivateWhilePlugged(isServiceDeactivatedPlugged);
 		sharedPrefsEditor.setEnabledWhenKeyguardOff(isKeyguardOff);
+		sharedPrefsEditor.setNotificationActivation(isNotificationEnabled);
 		
 		//stop service if deactivate is checked or deactivate while plugged check and phone is plugged
 		if(isServiceDeactived || (isServiceDeactivatedPlugged && dataActivation.isPhonePlugged()))

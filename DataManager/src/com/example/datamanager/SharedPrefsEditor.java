@@ -50,6 +50,7 @@ public class SharedPrefsEditor {
 	static final String STR_LOGS_ENABLED = "logsEnabled";
 	static final String STR_BLUETOOTH_ACTIVATION = "bluetoothActivation";
 	static final String STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE = "bluetoothDeactivateSleepMode";
+	static final String STR_SHOW_NOTIFICATION = "showNotification";
 
 	// Default values
 	static final int TIME_ON = 2; // min
@@ -93,6 +94,7 @@ public class SharedPrefsEditor {
 	static final boolean LOGS_ENABLED = true;
 	static final boolean BLUETOOTH_ACTIVATION = false;
 	static final boolean BLUETOOTH_DEACTIVATE_SLEEP_MODE = false;
+	static final boolean SHOW_NOTIFICATION = true;
 	
 	// gives access to connection states
 	DataActivation dataConnectionState;
@@ -157,6 +159,7 @@ public class SharedPrefsEditor {
 			prefEditor.putBoolean(STR_LOGS_ENABLED, LOGS_ENABLED);
 			prefEditor.putBoolean(STR_BLUETOOTH_ACTIVATION, dataConnectionState.isBluetoothChipEnabled());
 			prefEditor.putBoolean(STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE, BLUETOOTH_DEACTIVATE_SLEEP_MODE);
+			prefEditor.putBoolean(STR_SHOW_NOTIFICATION, SHOW_NOTIFICATION);
 			
 
 			prefEditor.commit();
@@ -209,6 +212,7 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_LOGS_ENABLED, LOGS_ENABLED);
 		prefEditor.putBoolean(STR_BLUETOOTH_ACTIVATION, dataConnectionState.isBluetoothChipEnabled());
 		prefEditor.putBoolean(STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE, BLUETOOTH_DEACTIVATE_SLEEP_MODE);
+		prefEditor.putBoolean(STR_SHOW_NOTIFICATION, SHOW_NOTIFICATION);
 		prefEditor.commit();
 	}
 
@@ -384,6 +388,12 @@ public class SharedPrefsEditor {
 		return dataManagerSettings.getBoolean(STR_SCREEN_ON_ACTIVATION_DELAYED,
 				SCREEN_ON_ACTIVATION_DELAYED);
 	}
+	
+	public boolean isNotificationEnabled()
+	{
+		return dataManagerSettings.getBoolean(STR_SHOW_NOTIFICATION,
+				SHOW_NOTIFICATION);
+	}
 
 
 	public boolean isAutoSyncActivated() {
@@ -458,6 +468,12 @@ public class SharedPrefsEditor {
 	public void set2GActivation(boolean isActivated)
 	{
 		prefEditor.putBoolean(STR_IS_2G_ACTIVATED, isActivated);
+		prefEditor.commit();
+	}
+	
+	public void setNotificationActivation(boolean isActivated)
+	{
+		prefEditor.putBoolean(STR_SHOW_NOTIFICATION, isActivated);
 		prefEditor.commit();
 	}
 

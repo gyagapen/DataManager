@@ -1,14 +1,25 @@
 package com.example.datamanager;
 
+import org.apache.log4j.chainsaw.Main;
+
+import tabActivities.MainTabActivity;
+
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.widget.Toast;
+
+import com.gyagapen.cleverconnectivity.R;
 
 public class MainService extends Service {
 
@@ -76,10 +87,19 @@ public class MainService extends Service {
 		Toast.makeText(getBaseContext(), "DataManager service started",
 				Toast.LENGTH_SHORT).show();
 
-		//start in foreground
-		Notification note = new Notification( 0, null, System.currentTimeMillis() );
-		note.flags |= Notification.FLAG_NO_CLEAR;
-		startForeground( 42, note );
+		
+		if(sharedPrefsEditor.isNotificationEnabled())
+		{
+			showNotification();
+		}
+		else
+		{
+			//start in foreground
+			Notification note = new Notification( 0, null, System.currentTimeMillis() );
+			note.flags |= Notification.FLAG_NO_CLEAR;
+			startForeground( 42, note );
+		}
+		
 
 		//start time on if screen is off
 		if(!dataActivation.isScreenIsOn())
@@ -240,6 +260,31 @@ public class MainService extends Service {
 
 	public SharedPrefsEditor getSharedPrefsEditor() {
 		return sharedPrefsEditor;
+	}
+	
+	public void showNotification()
+	{
+		Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher), 
+                getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_width),
+                getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_height), 
+                true);
+        Intent intent = new Intent(this, MainTabActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 01, intent, Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Notification.Builder builder = new Notification.Builder(getApplicationContext());
+        builder.setContentTitle("CleverConnectivity");
+        builder.setContentText("Running...");
+        //builder.setSubText("Some sub text");
+        builder.setNumber(101);
+        builder.setContentIntent(pendingIntent);
+        builder.setTicker("CleverConnectivity");
+        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setLargeIcon(bm);
+        builder.setAutoCancel(true);
+        builder.setPriority(0);
+        Notification notification = builder.build();
+        NotificationManager notificationManger = 
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManger.notify(01, notification);
 	}
 
 }
