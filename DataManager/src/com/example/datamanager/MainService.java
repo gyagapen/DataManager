@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.gyagapen.cleverconnectivity.R;
@@ -270,7 +271,7 @@ public class MainService extends Service {
                 true);
         Intent intent = new Intent(this, MainTabActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 01, intent, Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        Notification.Builder builder = new Notification.Builder(getApplicationContext());
+        NotificationCompat.Builder  builder = new NotificationCompat.Builder(getApplicationContext());
         builder.setContentTitle("CleverConnectivity");
         builder.setContentText("Running...");
         //builder.setSubText("Some sub text");
