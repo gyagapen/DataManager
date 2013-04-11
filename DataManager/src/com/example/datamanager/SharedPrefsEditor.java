@@ -51,6 +51,10 @@ public class SharedPrefsEditor {
 	static final String STR_BLUETOOTH_ACTIVATION = "bluetoothActivation";
 	static final String STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE = "bluetoothDeactivateSleepMode";
 	static final String STR_SHOW_NOTIFICATION = "showNotification";
+	static final String STR_LOW_PROFILE_BATTERY = "lowProfileBattery";
+	static final String STR_BATTERY_LEVEL_TO_MONITOR = "batteryLevelToMonitor";
+	static final String STR_CURRENTLY__BATTERY_LOW = "currentlyBatteryLow";
+	static final String STR_CURRENTLY_SLEEP_TIME_ON = "currentlySleepTimeOn";
 
 	// Default values
 	static final int TIME_ON = 2; // min
@@ -95,6 +99,10 @@ public class SharedPrefsEditor {
 	static final boolean BLUETOOTH_ACTIVATION = false;
 	static final boolean BLUETOOTH_DEACTIVATE_SLEEP_MODE = false;
 	static final boolean SHOW_NOTIFICATION = true;
+	static final boolean LOW_PROFILE_BATTERY = true;
+	static final int BATTERY_LEVEL_TO_MONITOR = 15;
+	static final boolean CURRENTLY_BATTERY_LOW = false;
+	static final boolean CURRENTLY_SLEEP_TIME_ON = false;
 	
 	// gives access to connection states
 	DataActivation dataConnectionState;
@@ -160,7 +168,10 @@ public class SharedPrefsEditor {
 			prefEditor.putBoolean(STR_BLUETOOTH_ACTIVATION, dataConnectionState.isBluetoothChipEnabled());
 			prefEditor.putBoolean(STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE, BLUETOOTH_DEACTIVATE_SLEEP_MODE);
 			prefEditor.putBoolean(STR_SHOW_NOTIFICATION, SHOW_NOTIFICATION);
-			
+			prefEditor.putBoolean(STR_LOW_PROFILE_BATTERY, LOW_PROFILE_BATTERY);
+			prefEditor.putInt(STR_BATTERY_LEVEL_TO_MONITOR, BATTERY_LEVEL_TO_MONITOR);
+			prefEditor.putBoolean(STR_CURRENTLY__BATTERY_LOW, CURRENTLY_BATTERY_LOW);
+			prefEditor.putBoolean(STR_CURRENTLY_SLEEP_TIME_ON, CURRENTLY_SLEEP_TIME_ON);
 
 			prefEditor.commit();
 		}
@@ -213,6 +224,8 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_BLUETOOTH_ACTIVATION, dataConnectionState.isBluetoothChipEnabled());
 		prefEditor.putBoolean(STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE, BLUETOOTH_DEACTIVATE_SLEEP_MODE);
 		prefEditor.putBoolean(STR_SHOW_NOTIFICATION, SHOW_NOTIFICATION);
+		prefEditor.putBoolean(STR_CURRENTLY__BATTERY_LOW, CURRENTLY_BATTERY_LOW);
+		prefEditor.putBoolean(STR_CURRENTLY_SLEEP_TIME_ON, CURRENTLY_SLEEP_TIME_ON);
 		prefEditor.commit();
 	}
 
@@ -287,6 +300,26 @@ public class SharedPrefsEditor {
 	public boolean isFirstTimeOn()
 	{
 		return dataManagerSettings.getBoolean(STR_IS_FIRST_TIME_ON, IS_FIRST_TIME_ON);
+	}
+	
+	public boolean getLowProfileBatteryActivation()
+	{
+		return dataManagerSettings.getBoolean(STR_LOW_PROFILE_BATTERY, LOW_PROFILE_BATTERY);
+	}
+	
+	public Integer getBatteryLevelToMonitor()
+	{
+		return dataManagerSettings.getInt(STR_BATTERY_LEVEL_TO_MONITOR, BATTERY_LEVEL_TO_MONITOR);
+	}
+	
+	public Boolean isBatteryCurrentlyLow()
+	{
+		return dataManagerSettings.getBoolean(STR_CURRENTLY__BATTERY_LOW, CURRENTLY_BATTERY_LOW);
+	}
+	
+	public Boolean isSleepTimeOnCurrentlyActivated()
+	{
+		return dataManagerSettings.getBoolean(STR_CURRENTLY_SLEEP_TIME_ON, CURRENTLY_SLEEP_TIME_ON);
 	}
 	
 	public boolean isCheckingAutoWifiOn()
@@ -422,6 +455,11 @@ public class SharedPrefsEditor {
 	}
 	
 
+	public void setSleepTimeOnIsCurrentlyActivated(Boolean sleepTimeOnIsActivated)
+	{
+		prefEditor.putBoolean(STR_CURRENTLY_SLEEP_TIME_ON, sleepTimeOnIsActivated);
+		prefEditor.commit();
+	}
 	
 	public void setSleepTimeOff(String sleepTimeOff)
 	{
@@ -489,6 +527,22 @@ public class SharedPrefsEditor {
 	
 	public void setTimeOnCheck(int timeOn) {
 		prefEditor.putInt(STR_TIME_ON_CHECK, timeOn);
+		prefEditor.commit();
+	}
+	
+	public void setLowBatteryProfileActiviation(Boolean isEnabled) {
+		prefEditor.putBoolean(STR_LOW_PROFILE_BATTERY, isEnabled);
+		prefEditor.commit();
+	} 
+	
+	public void setBatteryLevelToMonitor(int batteryLevel) {
+		prefEditor.putInt(STR_BATTERY_LEVEL_TO_MONITOR, batteryLevel);
+		prefEditor.commit();
+	}
+	
+	public void setBatteryIsCurrentlyLow(boolean isCurrentlyLow)
+	{
+		prefEditor.putBoolean(STR_CURRENTLY__BATTERY_LOW, isCurrentlyLow);
 		prefEditor.commit();
 	}
 	

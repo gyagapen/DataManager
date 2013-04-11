@@ -37,21 +37,26 @@ public class AlarmMgr {
 				if (timeIsPassed(sleepTimeOn) && !timeIsPassed(sleepTimeOff)) {
 					logsProvider.info(sleepTimeOn + " passed and "
 							+ sleepTimeOff + " not passed");
+					MainService.showNotification("Running...","Sleep Mode: ON", context,logsProvider);
 					sharedPrefsEditor.setIsSleeping(true);
 				} else {
 					sharedPrefsEditor.setIsSleeping(false);
+					MainService.showNotification("Running...","Sleep Mode: OFF", context,logsProvider);
 				}
 			} else {
 				logsProvider.info(sleepTimeOff + " is before " + sleepTimeOn);
 				if (timeIsPassed(sleepTimeOn)) {
 					logsProvider.info(sleepTimeOn + " is passed");
 					sharedPrefsEditor.setIsSleeping(true);
+					MainService.showNotification("Running...","Sleep Mode: ON", context,logsProvider);
 				} else if (!timeIsPassed(sleepTimeOff)) {
 					logsProvider.info(sleepTimeOff + " is NOT passed");
 					sharedPrefsEditor.setIsSleeping(true);
+					MainService.showNotification("Running...","Sleep Mode: ON", context,logsProvider);
 				} else {
 					logsProvider.info(sleepTimeOn + " is NOT passed");
 					sharedPrefsEditor.setIsSleeping(false);
+					MainService.showNotification("Running...","Sleep Mode: OFF", context,logsProvider);
 				}
 			}
 		} else {
@@ -68,6 +73,7 @@ public class AlarmMgr {
 
 			// set sleeping to false
 			sharedPrefsEditor.setIsSleeping(false);
+			MainService.showNotification("Running...","Sleep Mode: OFF", context,logsProvider);
 		}
 		
 

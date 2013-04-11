@@ -192,6 +192,8 @@ public class MiscTabActivity extends Activity implements OnClickListener, OnChec
 		intent.setDataAndType(logFileUri, "text/plain");
 		startActivity(intent);
 	}
+	
+	
 
 	
 }

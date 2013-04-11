@@ -44,56 +44,80 @@ public class AlarmReceiver extends BroadcastReceiver {
 			// if we have to desactivate connectivity, we save it in shared
 			// preferences
 			if (!activateConnectivity) {
-				// is sleeping
-				sharedPrefsEditor.setIsSleeping(true);
-
-				// disable all connectivity if screen is off
-				PowerManager pm = (PowerManager) context
-						.getSystemService(Context.POWER_SERVICE);
-
-				if (!pm.isScreenOn()) {
-					try {
-						dataActivation
-								.setConnectivityDisabled(sharedPrefsEditor);
-						
-						//cancel timers
-						TimersSetUp timersSetUp = new TimersSetUp(context);
-						timersSetUp.CancelTimerOn();
-						timersSetUp.CancelTimeOff();
-						
-					} catch (Exception e) {
-						logsProvider.error(e);
-					}
-				}
+				
+				sharedPrefsEditor.setSleepTimeOnIsCurrentlyActivated(true);
+				MainService.showNotification("Running...","Sleep Mode: ON", context, logsProvider);
+				setSleepHoursOn(sharedPrefsEditor, context, dataActivation, logsProvider);
+				
 			} else {
-				// sleep off
-				sharedPrefsEditor.setIsSleeping(false);
-
-				// start service
-				Intent i = new Intent(context, MainService.class);
 				
-				//if screen is off
-				if(!dataActivation.isScreenIsOn())
+				
+				//if battery level is ok
+				if(!sharedPrefsEditor.isBatteryCurrentlyLow())
 				{
-					
-					//set first time on to false
-					sharedPrefsEditor.setIsFirstTimeOn(false);
-					
-					//restart the cycle
-					try {
-						
-						dataActivation.setConnectivityEnabled(sharedPrefsEditor);
-					} catch (Exception e) {
-						logsProvider.error(e);
-					}
-					i.putExtra("screen_state", true);
+					MainService.showNotification("Running...","Sleep Mode: OFF", context,logsProvider);
+					sharedPrefsEditor.setSleepTimeOnIsCurrentlyActivated(false);
+					setSleepHoursOff(sharedPrefsEditor, context, dataActivation, logsProvider);
 				}
-				
-				context.startService(i);
-
 			}
 
 		}
+
+	}
+	
+	public static void setSleepHoursOn(SharedPrefsEditor shPref, Context aContext, DataActivation dActivation, LogsProvider logsProvider)
+	{
+		// is sleeping
+		shPref.setIsSleeping(true);
+
+		// disable all connectivity if screen is off
+		PowerManager pm = (PowerManager) aContext
+				.getSystemService(Context.POWER_SERVICE);
+
+		if (!pm.isScreenOn()) {
+			try {
+				dActivation
+						.setConnectivityDisabled(shPref);
+				
+				//cancel timers
+				TimersSetUp timersSetUp = new TimersSetUp(aContext);
+				timersSetUp.CancelTimerOn();
+				timersSetUp.CancelTimeOff();
+				
+			} catch (Exception e) {
+				logsProvider.error(e);
+			}
+		}
+
+	}
+	
+	
+	public static void setSleepHoursOff(SharedPrefsEditor shPref, Context aContext, DataActivation dActivation, LogsProvider logsProvider)
+	{
+		// sleep off
+		shPref.setIsSleeping(false);
+
+		// start service
+		Intent i = new Intent(aContext, MainService.class);
+		
+		//if screen is off and battery level is ok
+		if(!dActivation.isScreenIsOn() )
+		{
+			
+			//set first time on to false
+			shPref.setIsFirstTimeOn(false);
+			
+			//restart the cycle
+			try {
+				
+				dActivation.setConnectivityEnabled(shPref);
+			} catch (Exception e) {
+				logsProvider.error(e);
+			}
+			i.putExtra("screen_state", true);
+		}
+		
+		aContext.startService(i);
 
 	}
 

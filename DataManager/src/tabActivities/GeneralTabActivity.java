@@ -3,6 +3,7 @@ package tabActivities;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.widget.CheckBox;
 
 import com.example.datamanager.DataActivation;
@@ -109,5 +110,10 @@ public class GeneralTabActivity extends Activity {
 		super.onDestroy();
 	}
 
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		return super.onTouchEvent(event);
+	}
 
 }

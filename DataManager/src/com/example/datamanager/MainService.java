@@ -78,6 +78,12 @@ public class MainService extends Service {
 			KeyguardReceiver keyguardReceiver = new KeyguardReceiver();
 			registerReceiver(keyguardReceiver, new IntentFilter(Intent.ACTION_USER_PRESENT));
 		}
+		
+		//register battery monitoring if necesary
+		if(sharedPrefsEditor.getLowProfileBatteryActivation())
+		{
+			registerBatteryMonitoring();
+		}
 
 		changeNetworkMode = new ChangeNetworkMode(getApplicationContext());
 
@@ -91,7 +97,7 @@ public class MainService extends Service {
 		
 		if(sharedPrefsEditor.isNotificationEnabled())
 		{
-			showNotification();
+			manageNotifications();
 		}
 		else
 		{
@@ -263,19 +269,26 @@ public class MainService extends Service {
 		return sharedPrefsEditor;
 	}
 	
-	public void showNotification()
+
+	
+	public static void showNotification(String message, String subText, Context context, LogsProvider logsProvider)
 	{
-		Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher), 
-                getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_width),
-                getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_height), 
+		logsProvider.info("new notification: "+message+ " - "+subText);
+		Intent intent = new Intent(context, MainTabActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 01, intent, Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        NotificationCompat.Builder  builder = new NotificationCompat.Builder(context);
+        Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher), 
+                context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_width),
+                context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_height), 
                 true);
-        Intent intent = new Intent(this, MainTabActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 01, intent, Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        NotificationCompat.Builder  builder = new NotificationCompat.Builder(getApplicationContext());
         builder.setContentTitle("CleverConnectivity");
-        builder.setContentText("Running...");
-        //builder.setSubText("Some sub text");
+        builder.setContentText(message);
+        if (!subText.equals("") || subText != null)
+        {
+        	builder.setSubText(subText);
+        }
         builder.setNumber(101);
+        builder.setOngoing(true);
         builder.setContentIntent(pendingIntent);
         builder.setTicker("CleverConnectivity");
         builder.setSmallIcon(R.drawable.ic_launcher);
@@ -284,8 +297,46 @@ public class MainService extends Service {
         builder.setPriority(0);
         Notification notification = builder.build();
         NotificationManager notificationManger = 
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManger.notify(01, notification);
+	}
+	
+	public void registerBatteryMonitoring()
+	{
+		logsProvider.info("Battery monitoring started");
+		
+		//reset
+		sharedPrefsEditor.setBatteryIsCurrentlyLow(false);
+		
+		this.registerReceiver(new BatteryLevelReceiver(),
+			       new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
+	}
+	
+	public void manageNotifications()
+	{
+		if(sharedPrefsEditor.isSleeping())
+		{
+			if(sharedPrefsEditor.isBatteryCurrentlyLow())
+			{
+				this.showNotification("Running...","Low Battery", getApplicationContext(), logsProvider);
+			}
+			else
+			{
+				MainService.showNotification("Running...","Sleep Mode: ON", getApplicationContext(),logsProvider);
+			}
+		}
+		else
+		{
+			if(sharedPrefsEditor.isSleepHoursActivated())
+			{
+				MainService.showNotification("Running...","Sleep Mode: OFF", getApplicationContext(),logsProvider);
+			}
+			else
+			{
+				MainService.showNotification("Running...","", getApplicationContext(),logsProvider);
+			}
+		}
 	}
 
 }
