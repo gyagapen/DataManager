@@ -31,7 +31,7 @@ public class MainService extends Service {
 
 	// time values
 	private int timeCheckData = 5000;
-	
+
 	private LogsProvider logsProvider = null;
 
 
@@ -56,9 +56,9 @@ public class MainService extends Service {
 	public void onCreate() {
 
 		super.onCreate();
-		
+
 		logsProvider = new LogsProvider(getApplicationContext(), this.getClass());
-		
+
 		// shared prefs init
 		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
@@ -70,15 +70,15 @@ public class MainService extends Service {
 		filter.addAction(Intent.ACTION_SCREEN_OFF);
 		mReceiver = new ScreenReceiver();
 		registerReceiver(mReceiver, filter);
-		
-		
+
+
 		//register keyguard receiver if needed
 		if(sharedPrefsEditor.isEnabledWhenKeyguardOff())
 		{
 			KeyguardReceiver keyguardReceiver = new KeyguardReceiver();
 			registerReceiver(keyguardReceiver, new IntentFilter(Intent.ACTION_USER_PRESENT));
 		}
-		
+
 		//register battery monitoring if necesary
 		if(sharedPrefsEditor.getLowProfileBatteryActivation())
 		{
@@ -94,10 +94,10 @@ public class MainService extends Service {
 		Toast.makeText(getBaseContext(), "DataManager service started",
 				Toast.LENGTH_SHORT).show();
 
-		
+
 		if(sharedPrefsEditor.isNotificationEnabled())
 		{
-			manageNotifications();
+			this.manageNotifications(sharedPrefsEditor, getApplicationContext(), logsProvider);
 		}
 		else
 		{
@@ -106,13 +106,13 @@ public class MainService extends Service {
 			note.flags |= Notification.FLAG_NO_CLEAR;
 			startForeground( 42, note );
 		}
-		
+
 
 		//start time on if screen is off
 		if(!dataActivation.isScreenIsOn())
 		{
 
-			
+
 			//set first time on
 			sharedPrefsEditor.setIsFirstTimeOn(true);
 
@@ -122,6 +122,11 @@ public class MainService extends Service {
 
 			getBaseContext().startService(i);
 		}
+
+		//managing sleep hours
+		AlarmMgr alarmMgr = new AlarmMgr(this, sharedPrefsEditor);
+		alarmMgr.manageSleepingHours(sharedPrefsEditor.getSleepTimeOff(),
+				sharedPrefsEditor.getSleepTimeOn());
 
 	}
 
@@ -169,7 +174,7 @@ public class MainService extends Service {
 					{
 						dataActivation.setAutoSync(true, sharedPrefsEditor, false);
 					}
-					
+
 					//bluetooth if necesary
 					if(sharedPrefsEditor.isSleeping() && sharedPrefsEditor.getBluetoothActivation())
 					{
@@ -268,73 +273,73 @@ public class MainService extends Service {
 	public SharedPrefsEditor getSharedPrefsEditor() {
 		return sharedPrefsEditor;
 	}
-	
 
-	
+
+
 	public static void showNotification(String message, String subText, Context context, LogsProvider logsProvider)
 	{
 		logsProvider.info("new notification: "+message+ " - "+subText);
 		Intent intent = new Intent(context, MainTabActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 01, intent, Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        NotificationCompat.Builder  builder = new NotificationCompat.Builder(context);
-        Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher), 
-                context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_width),
-                context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_height), 
-                true);
-        builder.setContentTitle("CleverConnectivity");
-        builder.setContentText(message);
-        if (!subText.equals("") || subText != null)
-        {
-        	builder.setSubText(subText);
-        }
-        builder.setNumber(101);
-        builder.setOngoing(true);
-        builder.setContentIntent(pendingIntent);
-        builder.setTicker("CleverConnectivity");
-        builder.setSmallIcon(R.drawable.ic_launcher);
-        builder.setLargeIcon(bm);
-        builder.setAutoCancel(true);
-        builder.setPriority(0);
-        Notification notification = builder.build();
-        NotificationManager notificationManger = 
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManger.notify(01, notification);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 01, intent, Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		NotificationCompat.Builder  builder = new NotificationCompat.Builder(context);
+		Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher), 
+				context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_width),
+				context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_height), 
+				true);
+		builder.setContentTitle("CleverConnectivity");
+		builder.setContentText(message);
+		if (!subText.equals("") || subText != null)
+		{
+			builder.setSubText(subText);
+		}
+		builder.setNumber(101);
+		builder.setOngoing(true);
+		builder.setContentIntent(pendingIntent);
+		builder.setTicker("CleverConnectivity");
+		builder.setSmallIcon(R.drawable.ic_launcher);
+		builder.setLargeIcon(bm);
+		builder.setAutoCancel(true);
+		builder.setPriority(0);
+		Notification notification = builder.build();
+		NotificationManager notificationManger = 
+				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManger.notify(01, notification);
 	}
-	
+
 	public void registerBatteryMonitoring()
 	{
 		logsProvider.info("Battery monitoring started");
-		
+
 		//reset
 		sharedPrefsEditor.setBatteryIsCurrentlyLow(false);
-		
+
 		this.registerReceiver(new BatteryLevelReceiver(),
-			       new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+				new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
 	}
-	
-	public void manageNotifications()
+
+	public static void manageNotifications(SharedPrefsEditor sharedPrefsEditor, Context context, LogsProvider logsProvider)
 	{
 		if(sharedPrefsEditor.isSleeping())
 		{
 			if(sharedPrefsEditor.isBatteryCurrentlyLow())
 			{
-				this.showNotification("Running...","Low Battery", getApplicationContext(), logsProvider);
+				showNotification("Running...","Low Battery", context, logsProvider);
 			}
 			else
 			{
-				MainService.showNotification("Running...","Sleep Mode: ON", getApplicationContext(),logsProvider);
+				MainService.showNotification("Running...","Sleep Mode: ON", context,logsProvider);
 			}
 		}
 		else
 		{
 			if(sharedPrefsEditor.isSleepHoursActivated())
 			{
-				MainService.showNotification("Running...","Sleep Mode: OFF", getApplicationContext(),logsProvider);
+				MainService.showNotification("Running...","Sleep Mode: OFF", context,logsProvider);
 			}
 			else
 			{
-				MainService.showNotification("Running...","", getApplicationContext(),logsProvider);
+				MainService.showNotification("Running...","", context,logsProvider);
 			}
 		}
 	}

@@ -38,13 +38,15 @@ public class BatteryLevelReceiver extends BroadcastReceiver {
 	
 	public static void batteryLevelIsLow(SharedPrefsEditor sharedPrefsEditor, Context context, DataActivation dataActivation, LogsProvider logsProvider, int bLevel)
 	{
-		logsProvider.info("Low battery level: "+bLevel+"%");
+		
 		
 		
 		//check if low is not already activated
 		if(!sharedPrefsEditor.isBatteryCurrentlyLow())
 		{
-			MainService.showNotification("Running...","Low Battery", context, logsProvider);
+			logsProvider.info("Low battery level: "+bLevel+"%");
+			//MainService.showNotification("Running...","Low Battery", context, logsProvider);
+			MainService.manageNotifications(sharedPrefsEditor, context, logsProvider);
 			
 			//activate low profile
 			sharedPrefsEditor.setBatteryIsCurrentlyLow(true);
@@ -57,13 +59,16 @@ public class BatteryLevelReceiver extends BroadcastReceiver {
 	
 	public static void batteryLevelIsNotLow(SharedPrefsEditor sharedPrefsEditor, Context context, DataActivation dataActivation, LogsProvider logsProvider, int bLevel)
 	{
-		logsProvider.info("High battery level: "+bLevel+"%");
+		
 		
 		
 		//check if low is  already activated
 		if(sharedPrefsEditor.isBatteryCurrentlyLow())
 		{
-			MainService.showNotification("Running...","", context,logsProvider);
+			logsProvider.info("High battery level: "+bLevel+"%");
+			//MainService.showNotification("Running...","", context,logsProvider);
+			MainService.manageNotifications(sharedPrefsEditor, context, logsProvider);
+			
 			//activate low profile
 			sharedPrefsEditor.setBatteryIsCurrentlyLow(false);
 			

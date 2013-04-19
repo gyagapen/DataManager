@@ -42,7 +42,7 @@ public final class R {
         public static final int TextView07=0x7f080031;
         public static final int TextView08=0x7f08003a;
         public static final int TextView2GSwitch=0x7f08002a;
-        public static final int adViewMainStart=0x7f08005c;
+        public static final int adViewMainStart=0x7f08005e;
         public static final int applcicationName=0x7f08001d;
         public static final int applicationCbox=0x7f08001b;
         public static final int applicationPhoto=0x7f08001c;
@@ -53,6 +53,7 @@ public final class R {
         public static final int button_edit_sleep_hours=0x7f080009;
         public static final int button_manage_app=0x7f080019;
         public static final int cBoxAppConnMgrMasterSwitch=0x7f08001e;
+        public static final int cbBatteryLevel=0x7f08005c;
         public static final int cboxCheckNetConnectionWIfi=0x7f080032;
         public static final int checkBoxAutoSync=0x7f080004;
         public static final int checkBoxAutoSyncMgr=0x7f080037;
@@ -69,14 +70,15 @@ public final class R {
         public static final int checkBoxSleepHours=0x7f080006;
         public static final int checkBoxWifi=0x7f080002;
         public static final int checkBoxWifiMgr=0x7f080003;
+        public static final int edBatteryLevel=0x7f08005d;
         public static final int editTextInterval=0x7f08000d;
         public static final int editTextTimeOff=0x7f08000b;
         public static final int editTextTimeOn=0x7f080007;
         public static final int listViewApplications=0x7f080020;
-        public static final int menu_settings=0x7f080060;
-        public static final int tab1=0x7f08005d;
-        public static final int tab2=0x7f08005e;
-        public static final int tab3=0x7f08005f;
+        public static final int menu_settings=0x7f080062;
+        public static final int tab1=0x7f08005f;
+        public static final int tab2=0x7f080060;
+        public static final int tab3=0x7f080061;
         public static final int tableRow1=0x7f08001a;
         public static final int tableRow10=0x7f080034;
         public static final int tableRow13=0x7f08003d;
@@ -149,6 +151,8 @@ public final class R {
         public static final int SleepHoursActivityName=0x7f040029;
         public static final int advanced=0x7f040034;
         public static final int app_name=0x7f040000;
+        public static final int battery_level=0x7f040050;
+        public static final int battery_level_desc=0x7f040051;
         public static final int bluetooth_off_sleep_mode=0x7f04004c;
         public static final int bluetooth_off_sleep_mode_desc=0x7f04004d;
         public static final int bluetooth_tab=0x7f04004b;
@@ -188,6 +192,7 @@ public final class R {
         public static final int mgr_app_conn_master_switch=0x7f040044;
         public static final int notification=0x7f04004e;
         public static final int notification_desc=0x7f04004f;
+        public static final int percentage=0x7f040052;
         public static final int report_bug=0x7f04002b;
         public static final int screen_on_delay=0x7f040032;
         public static final int screen_on_delay_desc=0x7f040033;

@@ -3,8 +3,10 @@ package tabActivities;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.sax.TextElementListener;
 import android.view.MotionEvent;
 import android.widget.CheckBox;
+import android.widget.EditText;
 
 import com.example.datamanager.DataActivation;
 import com.example.datamanager.LogsProvider;
@@ -17,6 +19,8 @@ public class GeneralTabActivity extends Activity {
 	private CheckBox cbServiceIsDeactivatedPlugged = null;
 	private CheckBox cbKeyguardOff = null;
 	private CheckBox cbNotification = null;
+	private CheckBox cbBatteryLevel = null;
+	private EditText edBatteryLevel = null;
 
 	private LogsProvider logsProvider = null;
 
@@ -54,7 +58,8 @@ public class GeneralTabActivity extends Activity {
 		cbServiceIsDeactivatedPlugged = (CheckBox) findViewById(R.id.checkBoxDeactivatePlugged);
 		cbKeyguardOff = (CheckBox)findViewById(R.id.checkBoxKeyguardOff);
 		cbNotification = (CheckBox)findViewById(R.id.checkBoxNotification);
-		
+		cbBatteryLevel = (CheckBox)findViewById(R.id.cbBatteryLevel);
+		edBatteryLevel = (EditText)findViewById(R.id.edBatteryLevel);
 	}
 	
 	
@@ -73,6 +78,9 @@ public class GeneralTabActivity extends Activity {
 		cbKeyguardOff.setChecked(sharedPrefsEditor.isEnabledWhenKeyguardOff());
 		
 		cbNotification.setChecked(sharedPrefsEditor.isNotificationEnabled());
+		
+		cbBatteryLevel.setChecked(sharedPrefsEditor.getLowProfileBatteryActivation());
+		edBatteryLevel.setText(sharedPrefsEditor.getBatteryLevelToMonitor().toString());
 
 	}
 	
@@ -80,15 +88,35 @@ public class GeneralTabActivity extends Activity {
 	
 	private void applySettings()
 	{
+		edBatteryLevel.clearFocus();
+		
 		boolean isServiceDeactived = cbServiceIsDeactivated.isChecked();
 		boolean isServiceDeactivatedPlugged = cbServiceIsDeactivatedPlugged.isChecked();
 		boolean isKeyguardOff = cbKeyguardOff.isChecked();
 		boolean isNotificationEnabled = cbNotification.isChecked();
+		boolean isBatteryLevelEnabled = cbBatteryLevel.isChecked();
+		
+		int batteryLevelToMonitor = 0;
+		
+		try
+		{
+			batteryLevelToMonitor = Integer.parseInt(edBatteryLevel.getText().toString());
+		}
+		catch(Exception e)
+		{
+			
+			//if error keep old value
+			batteryLevelToMonitor = sharedPrefsEditor.getBatteryLevelToMonitor();
+			
+			logsProvider.error(e);
+		}
 		
 		sharedPrefsEditor.setDeactivateAll(isServiceDeactived);
 		sharedPrefsEditor.setDeactivateWhilePlugged(isServiceDeactivatedPlugged);
 		sharedPrefsEditor.setEnabledWhenKeyguardOff(isKeyguardOff);
 		sharedPrefsEditor.setNotificationActivation(isNotificationEnabled);
+		sharedPrefsEditor.setLowBatteryProfileActiviation(isBatteryLevelEnabled);
+		sharedPrefsEditor.setBatteryLevelToMonitor(batteryLevelToMonitor);
 		
 		//stop service if deactivate is checked or deactivate while plugged check and phone is plugged
 		if(isServiceDeactived || (isServiceDeactivatedPlugged && dataActivation.isPhonePlugged()))

@@ -80,6 +80,9 @@
     <string name="bluetooth_off_sleep_mode_desc">Si le bluetooth est activé, il sera automatiquement éteint pendant le mode nuit. Il se réactivera lorsque celui ci prendra fin).</string>
     <string name="notification">Activer Notification</string>
     <string name="notification_desc">Affiche une notification permanente dans la barre des notifications lorsque l\'application est démarré</string>
+    <string name="battery_level">Mode nuit lorsque batterie &lt;= </string>
+    <string name="battery_level_desc">Le mode nuit sera automatiquement enclenché lorsque la batterie est en dessous du seuil défini ci-dessus</string>
+    
     
     
     <color name="separator">#B2E0FF</color>
