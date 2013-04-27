@@ -44,16 +44,15 @@ public class BatteryLevelReceiver extends BroadcastReceiver {
 		//check if low is not already activated
 		if(!sharedPrefsEditor.isBatteryCurrentlyLow())
 		{
-			logsProvider.info("Low battery level: "+bLevel+"%");
-			//MainService.showNotification("Running...","Low Battery", context, logsProvider);
-			MainService.manageNotifications(sharedPrefsEditor, context, logsProvider);
-			
 			//activate low profile
 			sharedPrefsEditor.setBatteryIsCurrentlyLow(true);
 			
+			logsProvider.info("Low battery level: "+bLevel+"%");
 			
 			//activate sleep hours 
 			AlarmReceiver.setSleepHoursOn(sharedPrefsEditor, context, dataActivation, logsProvider);
+			
+			MainService.manageNotifications(sharedPrefsEditor, context, logsProvider);
 		}
 	}
 	
@@ -65,18 +64,18 @@ public class BatteryLevelReceiver extends BroadcastReceiver {
 		//check if low is  already activated
 		if(sharedPrefsEditor.isBatteryCurrentlyLow())
 		{
-			logsProvider.info("High battery level: "+bLevel+"%");
-			//MainService.showNotification("Running...","", context,logsProvider);
-			MainService.manageNotifications(sharedPrefsEditor, context, logsProvider);
-			
 			//activate low profile
 			sharedPrefsEditor.setBatteryIsCurrentlyLow(false);
+			
+			logsProvider.info("High battery level: "+bLevel+"%");
 			
 			//deactivate sleep hours if sleep hours time on is not activated
 			if(!sharedPrefsEditor.isSleepTimeOnCurrentlyActivated())
 			{
 				AlarmReceiver.setSleepHoursOff(sharedPrefsEditor, context, dataActivation, logsProvider);
 			}
+			
+			MainService.manageNotifications(sharedPrefsEditor, context, logsProvider);
 		}
 	}
 

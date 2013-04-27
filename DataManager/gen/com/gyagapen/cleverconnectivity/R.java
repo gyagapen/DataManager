@@ -190,6 +190,10 @@ public final class R {
         public static final int menu_settings=0x7f040002;
         public static final int mgr_app_conn_desc=0x7f040045;
         public static final int mgr_app_conn_master_switch=0x7f040044;
+        public static final int notif_bat_low=0x7f040054;
+        public static final int notif_running=0x7f040053;
+        public static final int notif_sleep_off=0x7f040056;
+        public static final int notif_sleep_on=0x7f040055;
         public static final int notification=0x7f04004e;
         public static final int notification_desc=0x7f04004f;
         public static final int percentage=0x7f040052;

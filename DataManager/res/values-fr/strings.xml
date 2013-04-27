@@ -82,6 +82,11 @@
     <string name="notification_desc">Affiche une notification permanente dans la barre des notifications lorsque l\'application est démarré</string>
     <string name="battery_level">Mode nuit lorsque batterie &lt;= </string>
     <string name="battery_level_desc">Le mode nuit sera automatiquement enclenché lorsque la batterie est en dessous du seuil défini ci-dessus</string>
+    <string name="notif_running">En cours d\'éxécution</string>
+    <string name="percentage">%</string>
+    <string name="notif_bat_low">Batterie Faible</string>
+    <string name="notif_sleep_on">Mode Nuit ON</string>
+    <string name="notif_sleep_off">Mode Nuit OFF</string>
     
     
     

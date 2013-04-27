@@ -80,6 +80,13 @@
     <string name="bluetooth_off_sleep_mode_desc">Si el bluetooth está activado, este será desactivado durante las horas de sueño. Será reactivado cuando el modo sueño finalize.</string>
     <string name="notification">Activar Notificación</string>
     <string name="notification_desc">Mostrar una notificación permanente en la notificación cuando se inicia la aplicación</string>
+    <string name="battery_level">Modo nocturno cuando bateria &lt;= </string>
+    <string name="battery_level_desc">Modo nocturno se activará automáticamente cuando el nivel de batería es menor o igual que el valor especificado</string>
+    <string name="percentage">%</string>
+    <string name="notif_running">Funcionamiento</string>
+    <string name="notif_bat_low">Batería baja</string>
+    <string name="notif_sleep_on">Modo nocturno ON</string>
+    <string name="notif_sleep_off">Modo nocturno OFF</string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>

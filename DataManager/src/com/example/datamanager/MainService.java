@@ -324,22 +324,22 @@ public class MainService extends Service {
 		{
 			if(sharedPrefsEditor.isBatteryCurrentlyLow())
 			{
-				showNotification("Running...","Low Battery", context, logsProvider);
+				showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_bat_low), context, logsProvider);
 			}
 			else
 			{
-				MainService.showNotification("Running...","Sleep Mode: ON", context,logsProvider);
+				MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider);
 			}
 		}
 		else
 		{
 			if(sharedPrefsEditor.isSleepHoursActivated())
 			{
-				MainService.showNotification("Running...","Sleep Mode: OFF", context,logsProvider);
+				MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider);
 			}
 			else
 			{
-				MainService.showNotification("Running...","", context,logsProvider);
+				MainService.showNotification(context.getString(R.string.notif_running),"", context,logsProvider);
 			}
 		}
 	}

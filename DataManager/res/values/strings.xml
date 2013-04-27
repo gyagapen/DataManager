@@ -83,6 +83,10 @@
     <string name="battery_level">Sleep mode when battery &lt;= </string>
     <string name="battery_level_desc">Sleep mode will be automatically triggered when battery level is less or equal than the specied value</string>
     <string name="percentage">%</string>
+    <string name="notif_running">Running</string>
+    <string name="notif_bat_low">Battery Low</string>
+    <string name="notif_sleep_on">Sleep Mode ON</string>
+    <string name="notif_sleep_off">Sleep Mode OFF</string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>
