@@ -276,34 +276,37 @@ public class MainService extends Service {
 
 
 
-	public static void showNotification(String message, String subText, Context context, LogsProvider logsProvider)
+	public static void showNotification(String message, String subText, Context context, LogsProvider logsProvider, SharedPrefsEditor sharedPrefsEditor)
 	{
-		logsProvider.info("new notification: "+message+ " - "+subText);
-		Intent intent = new Intent(context, MainTabActivity.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 01, intent, Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		NotificationCompat.Builder  builder = new NotificationCompat.Builder(context);
-		Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher), 
-				context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_width),
-				context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_height), 
-				true);
-		builder.setContentTitle("CleverConnectivity");
-		builder.setContentText(message);
-		if (!subText.equals("") || subText != null)
+		if(sharedPrefsEditor.isNotificationEnabled())
 		{
-			builder.setSubText(subText);
+			logsProvider.info("new notification: "+message+ " - "+subText);
+			Intent intent = new Intent(context, MainTabActivity.class);
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, 01, intent, Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			NotificationCompat.Builder  builder = new NotificationCompat.Builder(context);
+			Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher), 
+					context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_width),
+					context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_height), 
+					true);
+			builder.setContentTitle("CleverConnectivity");
+			builder.setContentText(message);
+			if (!subText.equals("") || subText != null)
+			{
+				builder.setSubText(subText);
+			}
+			builder.setNumber(101);
+			builder.setOngoing(true);
+			builder.setContentIntent(pendingIntent);
+			builder.setTicker("CleverConnectivity");
+			builder.setSmallIcon(R.drawable.ic_launcher);
+			builder.setLargeIcon(bm);
+			builder.setAutoCancel(true);
+			builder.setPriority(0);
+			Notification notification = builder.build();
+			NotificationManager notificationManger = 
+					(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			notificationManger.notify(01, notification);
 		}
-		builder.setNumber(101);
-		builder.setOngoing(true);
-		builder.setContentIntent(pendingIntent);
-		builder.setTicker("CleverConnectivity");
-		builder.setSmallIcon(R.drawable.ic_launcher);
-		builder.setLargeIcon(bm);
-		builder.setAutoCancel(true);
-		builder.setPriority(0);
-		Notification notification = builder.build();
-		NotificationManager notificationManger = 
-				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManger.notify(01, notification);
 	}
 
 	public void registerBatteryMonitoring()
@@ -324,22 +327,22 @@ public class MainService extends Service {
 		{
 			if(sharedPrefsEditor.isBatteryCurrentlyLow())
 			{
-				showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_bat_low), context, logsProvider);
+				showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_bat_low), context, logsProvider,sharedPrefsEditor);
 			}
 			else
 			{
-				MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider);
+				MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider,sharedPrefsEditor);
 			}
 		}
 		else
 		{
 			if(sharedPrefsEditor.isSleepHoursActivated())
 			{
-				MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider);
+				MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider,sharedPrefsEditor);
 			}
 			else
 			{
-				MainService.showNotification(context.getString(R.string.notif_running),"", context,logsProvider);
+				MainService.showNotification(context.getString(R.string.notif_running),"", context,logsProvider,sharedPrefsEditor);
 			}
 		}
 	}

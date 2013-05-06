@@ -252,7 +252,7 @@ public class DataActivation {
 		}
 		
 		//disable bluetooth only when sleep
-		if(sharedPrefsEditor.isSleeping())
+		if(sharedPrefsEditor.isSleeping()  && sharedPrefsEditor.getBluetoothDeactivateDuringSleep())
 		{
 			setBluetoothChipActivation(false);
 		}

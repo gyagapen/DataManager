@@ -39,26 +39,26 @@ public class AlarmMgr {
 				if (timeIsPassed(sleepTimeOn) && !timeIsPassed(sleepTimeOff)) {
 					logsProvider.info(sleepTimeOn + " passed and "
 							+ sleepTimeOff + " not passed");
-					MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider);
+					MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider,sharedPrefsEditor);
 					sharedPrefsEditor.setIsSleeping(true);
 				} else {
 					sharedPrefsEditor.setIsSleeping(false);
-					MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_off), context,logsProvider);
+					MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_off), context,logsProvider,sharedPrefsEditor);
 				}
 			} else {
 				logsProvider.info(sleepTimeOff + " is before " + sleepTimeOn);
 				if (timeIsPassed(sleepTimeOn)) {
 					logsProvider.info(sleepTimeOn + " is passed");
 					sharedPrefsEditor.setIsSleeping(true);
-					MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider);
+					MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider,sharedPrefsEditor);
 				} else if (!timeIsPassed(sleepTimeOff)) {
 					logsProvider.info(sleepTimeOff + " is NOT passed");
 					sharedPrefsEditor.setIsSleeping(true);
-					MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider);
+					MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider,sharedPrefsEditor);
 				} else {
 					logsProvider.info(sleepTimeOn + " is NOT passed");
 					sharedPrefsEditor.setIsSleeping(false);
-					MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_off), context,logsProvider);
+					MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_off), context,logsProvider,sharedPrefsEditor);
 				}
 			}
 		} else {
@@ -75,7 +75,7 @@ public class AlarmMgr {
 
 			// set sleeping to false
 			sharedPrefsEditor.setIsSleeping(false);
-			MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_off), context,logsProvider);
+			MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_off), context,logsProvider,sharedPrefsEditor);
 		}
 		
 

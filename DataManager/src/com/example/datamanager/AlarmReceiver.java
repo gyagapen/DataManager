@@ -1,5 +1,7 @@
 package com.example.datamanager;
 
+import com.gyagapen.cleverconnectivity.R;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -21,14 +23,14 @@ public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-		
-		
+
+
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
-		
+
 		logsProvider = new LogsProvider(context, this.getClass());
 
 		// if service is active
@@ -44,27 +46,27 @@ public class AlarmReceiver extends BroadcastReceiver {
 			// if we have to desactivate connectivity, we save it in shared
 			// preferences
 			if (!activateConnectivity) {
-				
+
 				sharedPrefsEditor.setSleepTimeOnIsCurrentlyActivated(true);
-				MainService.showNotification("Running...","Sleep Mode: ON", context, logsProvider);
+				MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider,sharedPrefsEditor);
 				setSleepHoursOn(sharedPrefsEditor, context, dataActivation, logsProvider);
-				
+
 			} else {
-				
-				
+
+
 				//if battery level is ok
 				if(!sharedPrefsEditor.isBatteryCurrentlyLow())
-				{
-					MainService.showNotification("Running...","Sleep Mode: OFF", context,logsProvider);
-					sharedPrefsEditor.setSleepTimeOnIsCurrentlyActivated(false);
-					setSleepHoursOff(sharedPrefsEditor, context, dataActivation, logsProvider);
+				{					sharedPrefsEditor.setSleepTimeOnIsCurrentlyActivated(false);
+
+				MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_off), context,logsProvider,sharedPrefsEditor);
+				setSleepHoursOff(sharedPrefsEditor, context, dataActivation, logsProvider);
 				}
 			}
 
 		}
 
 	}
-	
+
 	public static void setSleepHoursOn(SharedPrefsEditor shPref, Context aContext, DataActivation dActivation, LogsProvider logsProvider)
 	{
 		// is sleeping
@@ -77,21 +79,21 @@ public class AlarmReceiver extends BroadcastReceiver {
 		if (!pm.isScreenOn()) {
 			try {
 				dActivation
-						.setConnectivityDisabled(shPref);
-				
+				.setConnectivityDisabled(shPref);
+
 				//cancel timers
 				TimersSetUp timersSetUp = new TimersSetUp(aContext);
 				timersSetUp.CancelTimerOn();
 				timersSetUp.CancelTimeOff();
-				
+
 			} catch (Exception e) {
 				logsProvider.error(e);
 			}
 		}
 
 	}
-	
-	
+
+
 	public static void setSleepHoursOff(SharedPrefsEditor shPref, Context aContext, DataActivation dActivation, LogsProvider logsProvider)
 	{
 		// sleep off
@@ -99,24 +101,24 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 		// start service
 		Intent i = new Intent(aContext, MainService.class);
-		
+
 		//if screen is off and battery level is ok
 		if(!dActivation.isScreenIsOn() )
 		{
-			
+
 			//set first time on to false
 			shPref.setIsFirstTimeOn(false);
-			
+
 			//restart the cycle
 			try {
-				
+
 				dActivation.setConnectivityEnabled(shPref);
 			} catch (Exception e) {
 				logsProvider.error(e);
 			}
 			i.putExtra("screen_state", true);
 		}
-		
+
 		aContext.startService(i);
 
 	}

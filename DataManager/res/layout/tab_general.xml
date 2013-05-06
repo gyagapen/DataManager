@@ -88,11 +88,12 @@
 
             <EditText
                 android:id="@+id/edBatteryLevel"
-                android:layout_width="40dp"
-                android:layout_height="33dp"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxEms="2" />
 
             <TextView
                 android:id="@+id/textView2"

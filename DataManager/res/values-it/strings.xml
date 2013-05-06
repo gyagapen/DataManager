@@ -1,0 +1,108 @@
+<resources>
+
+    <string name="app_name">CleverConnectivity Ads</string>
+    <string name="hello_world">Ciao mondo!</string>
+    <string name="menu_settings">Impostazioni</string>
+    <string name="title_activity_main">CleverConnectivity Ads</string>
+    <string name="toggle_data">Connessione Dati</string>
+    <string name="toggle_data_desc">Abilita o disabilita la connessione dati (3G). Puoi abilitare/disabilitare i dati anche al di fuori di questa applicazione; non ci saranno conflitti!</string>
+    <string name="toggle_data_manager">Gestione Connessione Dati</string>
+    <string name="toggle_data_manager_desc">Questa opzione abilita/disabilita automaticamente la connessione dati dopo che lo schermo è stato SPENTO da un certo periodo di tempo. La connessione verrà; disabilitata SOLO se NON in uso. Perciò, eventuali downloads in corso e streaming di contenuti, non verranno sospesi e la sincronizzazione funzionerà;. Questa opzione funziona SOLO SE i dati sono attivi.</string>
+    <string name="toggle_wifi">Connessione Wifi</string>
+    <string name="toggle_wifi_desc">Abilita o disabilita la connessione wifi. Puoi abilitare/disabilitare i dati anche al di fuori di questa applicazione; non ci saranno conflitti!</string>
+    <string name="toggle_wifi_manager">Gestione Wifi</string>
+    <string name="toggle_wifi_manager_desc">Questa opzione abilita/disabilita automaticamente la connessione wifi dopo che lo schermo è stato SPENTO da un certo periodo di tempo. La connessione verrà; disabilitata SOLO se NON in uso. Perciò, i downloads in corso e lo streaming non verranno sospesi e la sincronizzazione funzionerà;. Questa opzione funziona SOLO SE il wifi è attivo.</string>
+    <string name="toggle_auto_sync">Sincronizzazione Automatica</string>
+    <string name="toggle_auto_sync_manager">Gestione Sincronizzazione Automatica</string>
+    <string name="toggle_auto_sync_manager_desc">La Gestione della Sincronizzazione Automatica disabiliterà; in automatico tutte le sincronizzazioni quando non ci sono connessioni mentre lo schermo è SPENTO. La sincronizzazione riprenderà; dopo che le connessioni sono state riabilitate o dopo che lo schermo è stato ACCESO. La Gestione Sincronizzazione Automatica funzionerà; SOLO SE l\'opzione \'Sincronizzazione Automatica\' è attiva.</string>
+    <string name="toggle_auto_sync_desc">Abilita o disabilita la sincronizzazione. Puoi abilitare/disabilitare il wifi al di fuori di CleverConnectivity senza problemi, non ci saranno conflitti!</string>
+    <string name="toggle_auto_wifi_off">Disattivazione Automatica del Wifi</string>
+    <string name="toggle_auto_wifi_off_desc">Se lo schermo è SPENTO e non sono disponibili reti wireless conosciute, dopo un po\' di tempo questa opzione disabilita il wifi.</string>
+    <string name="toggle_auto_wifi_on">Attivazione Automatica del Wifi</string>
+    <string name="toggle_auto_wifi_on_desc">Se lo schermo è SPENTO e non sono disponibili reti wireless conosciute, dopo un po\' di tempo questa opzione abilita il wifi.</string>
+    <string name="time_on">Connettività; ATTIVA (minuti)</string>
+    <string name="time_on_desc">Numero di minuti nei quali la connettività; deve restare ATTIVA dopo che lo schermo è stato spento.</string>
+    <string name="time_on_check">Tempo prima del prossimo test (minuti)</string>
+    <string name="time_on_check_desc">Numero di minuti nei quali la connettività; viene mantenuta ATTIVA dopo che i minuti di \'Connettività; Attiva\' sono trascorsi ed è stato riscontrato che la connettività; è ancora in uso. Dopo questo ritardo, un altro test per verificare l\'utilizzo dei dati verrà; eseguito. Se i dati sono in uso, questo timer ripartirà;, altrimenti subentrerà; il \'Tempo di Riposo\'.</string>
+    <string name="time_off">Tempo di Riposo (minuti)</string>
+    <string name="time_off_desc">Numero di minuti nei quali la connettività; deve rimanere DISATTIVA quando lo schermo viene spento.</string>
+    <string name="interval_check">Tempo per controllo connettività; (s)</string>
+    <string name="interval_check_desc">Numero di secondi in cui l\'applicazione controlla se la connessione dati (Wifi/3G) è in uso. Naturalmente più il valore è grande e più diminuiscono le probabilità; di interrompere eventuali download in corso, streaming di contenuti e sincronizzazioni; ma ciò mantiene le connessioni attive per un tempo maggiore con un conseguente aumento del consumo di batteria</string>
+    <string name="button_save">Salva Impostazioni</string>
+    <string name="toggle_sleep_hours">Ore di Sleep</string>
+    <string name="toggle_sleep_hours_desc">Durante le ore di Sleep, tutte le connessioni dati verranno disattivate quando lo schermo è SPENTO</string>
+    <string name="label_sleep_hours">Ore di Sleep :</string>
+    <string name="button_change_sleep_hours">Modifica</string>
+    <string name="label_time_on">Connettività; ATTIVA (minuti)</string>
+    <string name="label_time_off">Tempo di Riposo (minuti)</string>
+    <string name="label_time_Interval">Tempo per controllo connettività; (s)</string>
+    <string name="label_sleep_off">Disattiva Connettività;</string>
+    <string name="label_sleep_off_desc">Tutte le connessioni (3G/Wifi/Sincronizzazione) verranno disattivate nell\'intervallo specificato. La normale attività; di ACCENSIONE/SPEGNIMENTO eseguita da CleverConnectivity, verrà; fermata. Le connessioni saranno disabilitate in automatico solo a schermo spento.</string>
+    <string name="label_sleep_on">Riattiva Connettività;</string>
+    <string name="label_sleep_on_desc">La normale attività; di CleverConnectivity verrà; ripristinata nell\'orario specificato.</string>
+    <string name="button_save_sleep_hours">Salva ore di sleep</string>
+    <string name="SleepHoursActivityName">Modifica ore di sleep</string>
+    <string name="developerName">© gyagapen</string>
+    <string name="report_bug">Segnala un bug</string>
+    <string name="view_log_file">Visualizza file di log</string>
+    <string name="view_log_details">Genera un log nel file "CleverConnectivity.log", lo posiziona nella root della memoria esterna, e lo visualizza. Devi avere un editor di testo per poter visualizzare questi log.</string>
+    <string name="deactivate_service">Disattiva CleverConnectivity</string>
+    <string name="deactivate_service_desc">Se selezionato, arresta completamente l\'applicazione. é come se l\'app fosse disinstallata.</string>
+    <string name="deactivate_service_plugged">Disattiva quando \'in carica\'</string>
+    <string name="deactivate_service__plugged_desc">Se selezionato, arresta completamente l\'applicazione quando il telefono è IN CARICA.</string>
+    <string name="screen_on_delay">Ritardo Connettività; dopo Schermo Acceso (s)</string>
+    <string name="screen_on_delay_desc">Dopo che lo schermo viene acceso, la connettività; viene riabilitata dopo questo ritardo (in secondi). Se lo schermo viene spento prima di questo tot di secondi, la normale attività; di CleverConnectivity continuerà; normalmente. Per esempio, questo permette di rispondere alle chiamate senza interferire con la normale attività; di CleverConnectivity.</string>
+    <string name="advanced">Avanzate</string>
+    <string name="cbox_diff_first_time_on">Aggiungi timer extra</string>
+    <string name="first_time_on">Prima del timer Connettività; ATTIVA</string>
+    <string name="first_time_on_desc">Appena lo schermo viene acceso, questo timer subentra al posto del normale timer \'Connettività; ATTIVA\'. Ma dopo che il \'Tempo di Riposo\' è scaduto, è il timer \'Connettività; ATTIVA\' che viene preso in considerazione. </string>
+    <string name="general_title">Generale</string>
+    <string name="data_title">Dati</string>
+    <string name="wifi_title">Wifi</string>
+    <string name="sync_title">Sincronizzazione</string>
+    <string name="sleep_title">Modalità; Sleep</string>
+    <string name="timers_title">Timers</string>
+    <string name="switch2G">2G con Schermo Spento</string>
+    <string name="switch_desc2G">La modalità; di rete preferita verrà; impostata quando lo schermo è SPENTO. Quando lo schermo verrà; riacceso, la modalità; 3G verrà; riattivata. Nota: se nelle impostazioni del telefono, viene impostata la modalità; 2G, essa non verrà; sovrascritta da CleverConnectivity.</string>
+    <string name="switch_incompatible2G">Attenzione, per sbloccare questa funzionalità; devi avere una rom basata sulla CYANOGENMOD</string>
+    <string name="button_create_activation_shortcut">Crea uno shortcut (Dis)Attiva</string>
+    <string name="shortcut_activation_name">(Dis)Attiva</string>
+    <string name="button_manage_app">Gestisci Connettività; per Applicazione</string>
+    <string name="mgr_app_conn_master_switch">Switch Generale</string>
+    <string name="mgr_app_conn_desc">Quando una delle applicazioni selezionate è in esecuzione, la connettività; non verrà; disabilitata.</string>
+    <string name="check_net_conn_wifi">Controlla Connessione ad Internet</string>
+    <string name="check_net_conn_wifi_desc">Controlla se il telefono è in grado di collegarsi ad internet attraverso la connessione wifi. Se non è in grado, il wifi verrà; disabilitato.</string>
+    <string name="keyguard_off">Connettività; attiva dopo schermata di sblocco</string>
+    <string name="keyguard_off_desc">La connettività; verrà; riabilitata quando l\'utente toglie il blocco schermo (invece di riattivare la connettività; quando lo schermo viene acceso)</string>
+    <string name="logs_off">Disattiva la creazione dei file di log</string>
+    <string name="bluetooth_tab">Bluetooth</string>
+    <string name="bluetooth_off_sleep_mode">Bluetooth spento durante lo sleep</string>
+    <string name="bluetooth_off_sleep_mode_desc">Se il bluetooth è attivo, verrà; disattivato durante le ore di sleep. Verrà; riattivato quando il periodo di sleep sarà; terminato.</string>
+    <string name="notification">Attiva Notifica</string>
+    <string name="notification_desc">Visualizza un\'icona nella barra delle notifiche quando l\'applicazione è in esecuzione.</string>
+    <string name="battery_level">Modalità; Sleep quando la batteria è &lt;= </string>
+    <string name="battery_level_desc">La modalità; Sleep verrà; attivata in automatico quando il livello di carica della batteria sarà; minore o uguale al valore specificato</string>
+    <string name="percentage">%</string>
+    <string name="notif_running">In Esecuzione</string>
+    <string name="notif_bat_low">Batteria Scarica</string>
+    <string name="notif_sleep_on">Modalità; Sleep ATTIVA</string>
+    <string name="notif_sleep_off">Modalità; Sleep DISATTIVA</string>
+    
+    <color name="separator">#B2E0FF</color>
+    <color name="name">#666699</color>
+    
+    <!-- <drawable name="advanced.png"></drawable>
+    <drawable name="bluetooth.png"></drawable>
+    <drawable name="data.png"></drawable>
+    <drawable name="general.png"></drawable>
+    <drawable name="misc.png"></drawable>
+    <drawable name="sleep.png"></drawable>
+    <drawable name="sync.png"></drawable>
+    <drawable name="timers.png"></drawable>
+    <drawable name="wifi.png"></drawable> -->
+    
+    
+    
+    
+
+</resources>
