@@ -87,11 +87,10 @@
     <string name="notif_bat_low">Batterie Faible</string>
     <string name="notif_sleep_on">Mode Nuit ON</string>
     <string name="notif_sleep_off">Mode Nuit OFF</string>
-    
-    
-    
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>
-    
 
 </resources>

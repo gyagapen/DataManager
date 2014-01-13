@@ -1,5 +1,6 @@
 package tabActivities;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.example.datamanager.DataActivation;
 import com.example.datamanager.LogsProvider;
 import com.example.datamanager.SharedPrefsEditor;
@@ -8,10 +9,13 @@ import com.gyagapen.cleverconnectivity.R;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-public class TimersTabActivity extends Activity {
+public class TimersTabActivity extends SherlockFragment {
 
 	private EditText edTimeOn = null;
 	private EditText edTimeOnCheck = null;
@@ -25,21 +29,25 @@ public class TimersTabActivity extends Activity {
 	private SharedPrefsEditor sharedPrefsEditor = null;
 	private DataActivation dataActivation;
 
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.timers_tab);
+	private View rootView;
 
-		logsProvider = new LogsProvider(getApplicationContext(), this.getClass());
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = inflater.inflate(R.layout.timers_tab, container, false);
+
+		logsProvider = new LogsProvider(rootView.getContext(), this.getClass());
 
 		// shared prefs init
-		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
-				Activity.MODE_PRIVATE);
+		prefs = rootView.getContext().getSharedPreferences(
+				SharedPrefsEditor.PREFERENCE_NAME, Activity.MODE_PRIVATE);
 
-		dataActivation = new DataActivation(getBaseContext());
+		dataActivation = new DataActivation(rootView.getContext());
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
 		loadUiComponents();
 		initializeUiComponentsData();
+
+		return rootView;
 
 	}
 
@@ -49,13 +57,12 @@ public class TimersTabActivity extends Activity {
 	 */
 	private void loadUiComponents() {
 
-		edTimeOn = (EditText) findViewById(R.id.editTextTimeOn);
-		edTimeOnCheck = (EditText) findViewById(R.id.EditTextTimeOnCheck);
-		edTimeOff = (EditText) findViewById(R.id.editTextTimeOff);
-		edInterval = (EditText) findViewById(R.id.editTextInterval);
+		edTimeOn = (EditText) rootView.findViewById(R.id.editTextTimeOn);
+		edTimeOnCheck = (EditText) rootView
+				.findViewById(R.id.EditTextTimeOnCheck);
+		edTimeOff = (EditText) rootView.findViewById(R.id.editTextTimeOff);
+		edInterval = (EditText) rootView.findViewById(R.id.editTextInterval);
 	}
-
-
 
 	/**
 	 * Init ui components from value extracted from shared preferences
@@ -76,49 +83,34 @@ public class TimersTabActivity extends Activity {
 
 	}
 
-
-
-	private void applySettings()
-	{
+	private void applySettings() {
 		// get settings values
 		int timeOn = 0;
-		try
-		{
+		try {
 			timeOn = Integer.parseInt(edTimeOn.getText().toString());
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			timeOn = sharedPrefsEditor.getTimeOn();
 		}
 
-		int timeOnCheck=0;
-		try
-		{
+		int timeOnCheck = 0;
+		try {
 			timeOnCheck = Integer.parseInt(edTimeOnCheck.getText().toString());
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			timeOnCheck = sharedPrefsEditor.getTimeOnCheck();
 		}
 
 		int timeOff = 0;
 
-		try
-		{
+		try {
 			timeOff = Integer.parseInt(edTimeOff.getText().toString());
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			timeOff = sharedPrefsEditor.getTimeOff();
 		}
 
 		int intervalCheck = 0;
-		try
-		{
+		try {
 			intervalCheck = Integer.parseInt(edInterval.getText().toString());
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			intervalCheck = sharedPrefsEditor.getIntervalCheck();
 		}
 
@@ -129,14 +121,9 @@ public class TimersTabActivity extends Activity {
 
 	}
 
-
-
-	protected void onDestroy() {
-
+	public void onDestroy() {
 		applySettings();
-
 		super.onDestroy();
 	}
-
 
 }

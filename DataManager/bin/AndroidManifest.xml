@@ -48,11 +48,11 @@
         </receiver>
         <receiver android:name="com.example.datamanager.TimerOffReceiver" >
         </receiver>
-        <receiver android:name="com.example.datamanager.VolumeButtonReceiver" >
-            <intent-filter>
-                <action android:name="android.media.VOLUME_CHANGED_ACTION" />
-            </intent-filter>
-        </receiver>
+<!--         <receiver android:name="com.example.datamanager.VolumeButtonReceiver" > -->
+<!--             <intent-filter> -->
+<!--                 <action android:name="android.media.VOLUME_CHANGED_ACTION" /> -->
+<!--             </intent-filter> -->
+<!--         </receiver> -->
         <receiver android:name="com.example.datamanager.TimeScreenDelayReceiver" >
         </receiver>
         <receiver android:name="com.example.datamanager.WifiConnectionReceiver" >
@@ -101,7 +101,7 @@
         <service android:name="com.example.datamanager.MainService" >
         </service>
 
-        <activity android:name="com.example.datamanager.SleepTimerPickerActivity" >
+        <activity android:name="tabActivities.SleepTimerPickerActivity" >
         </activity>
         <activity
             android:name="com.google.ads.AdActivity"
@@ -112,7 +112,7 @@
         <activity android:name="tabActivities.BluetoothTabActivity"></activity>
         <activity android:name="tabActivities.DataTabActivity"></activity>
         <activity android:name="tabActivities.GeneralTabActivity"></activity>
-        <activity android:name="tabActivities.MainTabActivity"
+        <activity android:name="tabActivities.AppLauncher"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

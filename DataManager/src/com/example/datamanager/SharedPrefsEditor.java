@@ -3,6 +3,7 @@ package com.example.datamanager;
 import java.io.IOException;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class SharedPrefsEditor {
 
@@ -55,6 +56,8 @@ public class SharedPrefsEditor {
 	static final String STR_BATTERY_LEVEL_TO_MONITOR = "batteryLevelToMonitor";
 	static final String STR_CURRENTLY__BATTERY_LOW = "currentlyBatteryLow";
 	static final String STR_CURRENTLY_SLEEP_TIME_ON = "currentlySleepTimeOn";
+	static final String STR_SCREEN_WAS_OFF = "screenWasOff";
+	static final String STR_DATA_OFF_WHEN_WIFI = "dataOffWhenWifi";
 
 	// Default values
 	static final int TIME_ON = 2; // min
@@ -103,6 +106,8 @@ public class SharedPrefsEditor {
 	static final int BATTERY_LEVEL_TO_MONITOR = 15;
 	static final boolean CURRENTLY_BATTERY_LOW = false;
 	static final boolean CURRENTLY_SLEEP_TIME_ON = false;
+	static final boolean SCREEN_WAS_OFF = false;
+	static final boolean DATA_OFF_WHEN_WIFI = false;
 	
 	// gives access to connection states
 	DataActivation dataConnectionState;
@@ -172,6 +177,8 @@ public class SharedPrefsEditor {
 			prefEditor.putInt(STR_BATTERY_LEVEL_TO_MONITOR, BATTERY_LEVEL_TO_MONITOR);
 			prefEditor.putBoolean(STR_CURRENTLY__BATTERY_LOW, CURRENTLY_BATTERY_LOW);
 			prefEditor.putBoolean(STR_CURRENTLY_SLEEP_TIME_ON, CURRENTLY_SLEEP_TIME_ON);
+			prefEditor.putBoolean(STR_SCREEN_WAS_OFF, SCREEN_WAS_OFF);
+			prefEditor.putBoolean(STR_DATA_MANAGER_IS_ACTIVATED, DATA_OFF_WHEN_WIFI);
 
 			prefEditor.commit();
 		}
@@ -226,6 +233,8 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_SHOW_NOTIFICATION, SHOW_NOTIFICATION);
 		prefEditor.putBoolean(STR_CURRENTLY__BATTERY_LOW, CURRENTLY_BATTERY_LOW);
 		prefEditor.putBoolean(STR_CURRENTLY_SLEEP_TIME_ON, CURRENTLY_SLEEP_TIME_ON);
+		prefEditor.putBoolean(STR_SCREEN_WAS_OFF, SCREEN_WAS_OFF);
+		prefEditor.putBoolean(STR_DATA_MANAGER_IS_ACTIVATED, DATA_OFF_WHEN_WIFI);
 		prefEditor.commit();
 	}
 
@@ -275,6 +284,16 @@ public class SharedPrefsEditor {
 	public boolean isSleeping()
 	{
 		return dataManagerSettings.getBoolean(STR_IS_SLEEPING, IS_SLEEPING);
+	}
+	
+	public boolean wasScreenOff()
+	{
+		return dataManagerSettings.getBoolean(STR_SCREEN_WAS_OFF, SCREEN_WAS_OFF);
+	}
+	
+	public boolean isDataOffWhenWifi()
+	{
+		return dataManagerSettings.getBoolean(STR_DATA_OFF_WHEN_WIFI, DATA_OFF_WHEN_WIFI);
 	}
 	
 	public boolean getCheckNetConnectionWifi()
@@ -546,6 +565,18 @@ public class SharedPrefsEditor {
 		prefEditor.commit();
 	}
 	
+	public void setScrenWasOff(boolean screenWasOff)
+	{
+		prefEditor.putBoolean(STR_SCREEN_WAS_OFF, screenWasOff);
+		prefEditor.commit();
+	}
+	
+	public void setDataOffWhenWifi(boolean dataOffWhenWifi)
+	{
+		prefEditor.putBoolean(STR_DATA_OFF_WHEN_WIFI, dataOffWhenWifi);
+		prefEditor.commit();
+	}
+	
 	public void setFirstTimeOn(int firstTimeOn) {
 		prefEditor.putInt(STR_FIRST_TIME_ON_VALUE, firstTimeOn);
 		prefEditor.commit();
@@ -633,6 +664,7 @@ public class SharedPrefsEditor {
 	}
 	
 	public void setScreenOnIsDelayed(boolean isDelayed) {
+		Log.d("IMMMPORTANT", "value screen on delay: "+isDelayed);
 		prefEditor.putBoolean(STR_SCREEN_ON_ACTIVATION_DELAYED, isDelayed);
 		prefEditor.commit();
 	}

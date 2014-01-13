@@ -1,5 +1,7 @@
 package tabActivities;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.example.datamanager.ChangeNetworkMode;
 import com.example.datamanager.DataActivation;
 import com.example.datamanager.LogsProvider;
@@ -9,10 +11,13 @@ import com.gyagapen.cleverconnectivity.R;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-public class DataTabActivity extends Activity {
+public class DataTabActivity extends SherlockFragment {
 
 	private CheckBox cbData = null;
 	private CheckBox cbDataMgr = null;
@@ -26,21 +31,25 @@ public class DataTabActivity extends Activity {
 	private SharedPrefsEditor sharedPrefsEditor = null;
 	private DataActivation dataActivation;
 
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.tab_data);
+	private View rootView;
 
-		logsProvider = new LogsProvider(getApplicationContext(), this.getClass());
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = inflater.inflate(R.layout.tab_data, container, false);
+
+		logsProvider = new LogsProvider(rootView.getContext(), this.getClass());
 
 		// shared prefs init
-		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
-				Activity.MODE_PRIVATE);
+		prefs = rootView.getContext().getSharedPreferences(
+				SharedPrefsEditor.PREFERENCE_NAME, Activity.MODE_PRIVATE);
 
-		dataActivation = new DataActivation(getBaseContext());
+		dataActivation = new DataActivation(rootView.getContext());
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
 		loadUiComponents();
 		initializeUiComponentsData();
+
+		return rootView;
 	}
 
 	/**
@@ -49,14 +58,12 @@ public class DataTabActivity extends Activity {
 	 */
 	private void loadUiComponents() {
 
-		cbData = (CheckBox) findViewById(R.id.checkBoxData);
-		cbDataMgr = (CheckBox) findViewById(R.id.checkBoxDataMgr);
+		cbData = (CheckBox) rootView.findViewById(R.id.checkBoxData);
+		cbDataMgr = (CheckBox) rootView.findViewById(R.id.checkBoxDataMgr);
 
-		cbox2GSwitch = (CheckBox)findViewById(R.id.CheckBox2GSwitch);
-		tv2GSwitch = (TextView)findViewById(R.id.TextView2GSwitch);
+		cbox2GSwitch = (CheckBox) rootView.findViewById(R.id.CheckBox2GSwitch);
+		tv2GSwitch = (TextView) rootView.findViewById(R.id.TextView2GSwitch);
 	}
-
-
 
 	/**
 	 * Init ui components from value extracted from shared preferences
@@ -69,47 +76,38 @@ public class DataTabActivity extends Activity {
 		boolean dataMgrIsActivated = sharedPrefsEditor.isDataMgrActivated();
 		cbDataMgr.setChecked(dataMgrIsActivated);
 
-		//show or hide 2G switch fields
-		ChangeNetworkMode changeNetworkMode = new ChangeNetworkMode(this);
+		// show or hide 2G switch fields
+		ChangeNetworkMode changeNetworkMode = new ChangeNetworkMode(
+				rootView.getContext());
 		activate2GSwitch(changeNetworkMode.isCyanogenMod());
-
 
 	}
 
-
 	/**
 	 * SHow or hide fields related to the 2g switch
+	 * 
 	 * @param isActivate
 	 */
-	private void activate2GSwitch(boolean isActivate)
-	{
+	private void activate2GSwitch(boolean isActivate) {
 
-
-		if(!isActivate)
-		{
-			//hide fields related to 2G switch
+		if (!isActivate) {
+			// hide fields related to 2G switch
 			tv2GSwitch.setText(R.string.switch_incompatible2G);
 			tv2GSwitch.setEnabled(false);
 			cbox2GSwitch.setEnabled(false);
 
-		}
-		else
-		{
-			//show fields related to 2G switch
+		} else {
+			// show fields related to 2G switch
 			tv2GSwitch.setEnabled(true);
 			cbox2GSwitch.setEnabled(true);
 
-			//init checkbox
+			// init checkbox
 			cbox2GSwitch.setChecked(sharedPrefsEditor.is2GSwitchActivated());
 
 		}
 	}
 
-
-
-
-	private void applySettings()
-	{
+	private void applySettings() {
 		boolean dataIsActivated = cbData.isChecked();
 		boolean dataMgrIsActivated = cbDataMgr.isChecked();
 		boolean is2GSwitchActivated = cbox2GSwitch.isChecked();
@@ -118,8 +116,7 @@ public class DataTabActivity extends Activity {
 		sharedPrefsEditor.setDataActivationManager(dataMgrIsActivated);
 		sharedPrefsEditor.set2GSwitchActivation(is2GSwitchActivated);
 
-
-		try{
+		try {
 			// if data is disabled; data connection is stopped
 			if (!dataIsActivated) {
 
@@ -136,21 +133,11 @@ public class DataTabActivity extends Activity {
 			logsProvider.error(e);
 		}
 
-
-
 	}
 
-
-
-	protected void onDestroy() {
-
+	public void onDestroy() {
 		applySettings();
-
 		super.onDestroy();
 	}
-
-
-
-
 
 }

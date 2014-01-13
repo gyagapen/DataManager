@@ -11,7 +11,6 @@ import com.example.datamanager.LogsProvider;
 import com.example.datamanager.MainService;
 import com.example.datamanager.SaveConnectionPreferences;
 import com.example.datamanager.SharedPrefsEditor;
-import com.example.datamanager.SleepTimerPickerActivity;
 import com.gyagapen.cleverconnectivity.R;
 
 
@@ -120,26 +119,7 @@ public class MainTabActivity extends TabActivity{
 	}
 	
 	
-	/**
-	 * Stop data manager service
-	 */
-	public static void stopDataManagerService(Context context, SharedPrefsEditor sharedPrefsEditor) {
-		// if service is started
-		// if (sharedPrefsEditor.isServiceActivated()) {
-		// register service stopped in preferences
-		sharedPrefsEditor.setServiceActivation(false);
-		context.stopService(new Intent(context, MainService.class));
-		// }
-	}
 
-	public static void StartDataManagerService(Context context, SharedPrefsEditor sharedPrefsEditor) {
-		// if service is not started
-		// if (!sharedPrefsEditor.isServiceActivated()) {
-		sharedPrefsEditor.setServiceActivation(true);
-		Intent serviceIntent = new Intent(context, MainService.class);
-		context.startService(serviceIntent);
-		// }
-	}
 	
 	
 	/**

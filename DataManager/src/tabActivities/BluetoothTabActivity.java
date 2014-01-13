@@ -3,14 +3,18 @@ package tabActivities;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.example.datamanager.DataActivation;
 import com.example.datamanager.LogsProvider;
 import com.example.datamanager.SharedPrefsEditor;
 import com.gyagapen.cleverconnectivity.R;
 
-public class BluetoothTabActivity extends Activity {
+public class BluetoothTabActivity extends SherlockFragment {
 	
 	private CheckBox cboxBluetoothOffSleepM = null;
 	
@@ -23,22 +27,25 @@ public class BluetoothTabActivity extends Activity {
 
 	
 	
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.tab_bluetooth);
+	private View rootView;
+
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = inflater.inflate(R.layout.tab_bluetooth, container, false);
 		
-		logsProvider = new LogsProvider(getApplicationContext(), this.getClass());
+		logsProvider = new LogsProvider(rootView.getContext(), this.getClass());
 
 		// shared prefs init
-		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
+		prefs = rootView.getContext().getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
 
-		dataActivation = new DataActivation(getBaseContext());
+		dataActivation = new DataActivation(rootView.getContext());
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 		
 		loadUiComponents();
 		initializeUiComponentsData();
 
+		return rootView;
 	}
 	
 	/**
@@ -47,7 +54,7 @@ public class BluetoothTabActivity extends Activity {
 	 */
 	private void loadUiComponents() {
 		
-		cboxBluetoothOffSleepM = (CheckBox)findViewById(R.id.checkBoxBluetoothOffSleepM);
+		cboxBluetoothOffSleepM = (CheckBox)rootView.findViewById(R.id.checkBoxBluetoothOffSleepM);
 	}
 	
 	
@@ -71,10 +78,8 @@ public class BluetoothTabActivity extends Activity {
 	
 	
 	
-	protected void onDestroy() {
-		
+	public void onDestroy() {
 		applySettings();
-		
 		super.onDestroy();
 	}
 

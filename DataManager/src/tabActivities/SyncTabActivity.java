@@ -3,14 +3,18 @@ package tabActivities;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.example.datamanager.DataActivation;
 import com.example.datamanager.LogsProvider;
 import com.example.datamanager.SharedPrefsEditor;
 import com.gyagapen.cleverconnectivity.R;
 
-public class SyncTabActivity extends Activity {
+public class SyncTabActivity extends SherlockFragment {
 
 	private CheckBox cbAutoSync = null;
 	private CheckBox cbAutoSyncMgr = null;
@@ -22,25 +26,26 @@ public class SyncTabActivity extends Activity {
 	private SharedPrefsEditor sharedPrefsEditor = null;
 	private DataActivation dataActivation;
 
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.tab_sync);
+	private View rootView;
 
-		logsProvider = new LogsProvider(getApplicationContext(), this.getClass());
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = inflater.inflate(R.layout.tab_sync, container, false);
+
+		logsProvider = new LogsProvider(rootView.getContext(), this.getClass());
 
 		// shared prefs init
-		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
-				Activity.MODE_PRIVATE);
+		prefs = rootView.getContext().getSharedPreferences(
+				SharedPrefsEditor.PREFERENCE_NAME, Activity.MODE_PRIVATE);
 
-		dataActivation = new DataActivation(getBaseContext());
+		dataActivation = new DataActivation(rootView.getContext());
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
 		loadUiComponents();
 		initializeUiComponentsData();
 
-
+		return rootView;
 	}
-
 
 	/**
 	 * 
@@ -48,11 +53,10 @@ public class SyncTabActivity extends Activity {
 	 */
 	private void loadUiComponents() {
 
-		cbAutoSync = (CheckBox) findViewById(R.id.checkBoxAutoSync);
-		cbAutoSyncMgr = (CheckBox) findViewById(R.id.checkBoxAutoSyncMgr);
+		cbAutoSync = (CheckBox) rootView.findViewById(R.id.checkBoxAutoSync);
+		cbAutoSyncMgr = (CheckBox) rootView
+				.findViewById(R.id.checkBoxAutoSyncMgr);
 	}
-
-
 
 	/**
 	 * Init ui components from value extracted from shared preferences
@@ -66,19 +70,14 @@ public class SyncTabActivity extends Activity {
 				.isAutoSyncMgrIsActivated();
 		cbAutoSyncMgr.setChecked(autoSyncMgrIsActivated);
 
-
 	}
 
-
-
-	private void applySettings()
-	{
+	private void applySettings() {
 		boolean autoSyncIsActivated = cbAutoSync.isChecked();
 		boolean isAutoSyncMgrIsActivated = cbAutoSyncMgr.isChecked();
 
 		sharedPrefsEditor.setAutoSyncActivation(autoSyncIsActivated);
 		sharedPrefsEditor.setAutoSyncMgrActivation(isAutoSyncMgrIsActivated);
-
 
 		// enable/disable autosync
 		if (autoSyncIsActivated) {
@@ -90,15 +89,9 @@ public class SyncTabActivity extends Activity {
 
 	}
 
-
-
-	protected void onDestroy() {
-
+	public void onDestroy() {
 		applySettings();
-
 		super.onDestroy();
 	}
-
-
 
 }

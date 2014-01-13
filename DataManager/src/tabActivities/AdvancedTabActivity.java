@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,6 +15,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.example.datamanager.ApplicationListActivity;
 import com.example.datamanager.DataActivation;
 import com.example.datamanager.LogsProvider;
@@ -20,7 +23,8 @@ import com.example.datamanager.SharedPrefsEditor;
 import com.example.datamanager.ShortcutActivateReceiver;
 import com.gyagapen.cleverconnectivity.R;
 
-public class AdvancedTabActivity extends Activity implements OnClickListener, OnCheckedChangeListener {
+public class AdvancedTabActivity extends SherlockFragment implements
+		OnClickListener, OnCheckedChangeListener {
 
 	private EditText edScreenOnDelay = null;
 	private CheckBox cboxFirstTimeOn = null;
@@ -32,57 +36,55 @@ public class AdvancedTabActivity extends Activity implements OnClickListener, On
 
 	private LogsProvider logsProvider = null;
 
-	
-	
-	
 	// SharedPreferences
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
 	private DataActivation dataActivation;
 
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.advanced_tab);
+	private View rootView;
 
-		logsProvider = new LogsProvider(getApplicationContext(), this.getClass());
-		
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = inflater.inflate(R.layout.advanced_tab, container, false);
+
+		logsProvider = new LogsProvider(rootView.getContext(), this.getClass());
+
 		// shared prefs init
-		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
-				Activity.MODE_PRIVATE);
+		prefs = rootView.getContext().getSharedPreferences(
+				SharedPrefsEditor.PREFERENCE_NAME, Activity.MODE_PRIVATE);
 
-		dataActivation = new DataActivation(getBaseContext());
+		dataActivation = new DataActivation(rootView.getContext());
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
-		buttonDeactivationStc = (Button) findViewById(R.id.button_deactivation_shortcut);
+		buttonDeactivationStc = (Button) rootView
+				.findViewById(R.id.button_deactivation_shortcut);
 		buttonDeactivationStc.setOnClickListener(this);
 
-		buttonMgConnPerApp = (Button)findViewById(R.id.button_manage_app);
+		buttonMgConnPerApp = (Button) rootView
+				.findViewById(R.id.button_manage_app);
 		buttonMgConnPerApp.setOnClickListener(this);
 
 		loadUiComponents();
 		initializeUiComponentsData();
 
+		return rootView;
+
 	}
 
 	public void onClick(View v) {
 
-
-		if(v == buttonDeactivationStc)
-		{
-			//create shortcut
+		if (v == buttonDeactivationStc) {
+			// create shortcut
 			logsProvider.info("shortcut creation command");
 			createDeactivationShortcut();
-		}
-		else if(v == buttonMgConnPerApp)
-		{
-			//open new activity
-			Intent myIntent = new Intent(this, ApplicationListActivity.class);
+		} else if (v == buttonMgConnPerApp) {
+			// open new activity
+			Intent myIntent = new Intent(rootView.getContext(),
+					ApplicationListActivity.class);
 			startActivity(myIntent);
 		}
 
 	}
-
-
 
 	/**
 	 * 
@@ -90,18 +92,21 @@ public class AdvancedTabActivity extends Activity implements OnClickListener, On
 	 */
 	private void loadUiComponents() {
 
-		edScreenOnDelay = (EditText) findViewById(R.id.EditTextScreenDelay);
+		edScreenOnDelay = (EditText) rootView
+				.findViewById(R.id.EditTextScreenDelay);
 
-		//load fields related to firstTimeOn
-		tvFirstTimeOn = (TextView) findViewById(R.id.textViewFirstTimeOn);
-		tvFirstTimeOnDesc = (TextView) findViewById(R.id.textViewFirstTimeOnDesc);
-		cboxFirstTimeOn = (CheckBox)findViewById(R.id.checkBoxFirstTimeOn);
+		// load fields related to firstTimeOn
+		tvFirstTimeOn = (TextView) rootView
+				.findViewById(R.id.textViewFirstTimeOn);
+		tvFirstTimeOnDesc = (TextView) rootView
+				.findViewById(R.id.textViewFirstTimeOnDesc);
+		cboxFirstTimeOn = (CheckBox) rootView
+				.findViewById(R.id.checkBoxFirstTimeOn);
 		cboxFirstTimeOn.setOnCheckedChangeListener(this);
-		edFirstTimeOn = (EditText)findViewById(R.id.EditTextFirstTimeOn);
+		edFirstTimeOn = (EditText) rootView
+				.findViewById(R.id.EditTextFirstTimeOn);
 
 	}
-
-
 
 	/**
 	 * Init ui components from value extracted from shared preferences
@@ -111,78 +116,61 @@ public class AdvancedTabActivity extends Activity implements OnClickListener, On
 		int timeScreenOnDelay = sharedPrefsEditor.getScreenDelayTimer();
 		edScreenOnDelay.setText(String.valueOf(timeScreenOnDelay));
 
-
-		//show or hide first time on fields
-		cboxFirstTimeOn.setChecked(sharedPrefsEditor.isFirstTimeOnIsActivated());
-		edFirstTimeOn.setText(String.valueOf(sharedPrefsEditor.getFirstTimeOn()));
+		// show or hide first time on fields
+		cboxFirstTimeOn
+				.setChecked(sharedPrefsEditor.isFirstTimeOnIsActivated());
+		edFirstTimeOn
+				.setText(String.valueOf(sharedPrefsEditor.getFirstTimeOn()));
 
 		activateFirstTimeOn(sharedPrefsEditor.isFirstTimeOnIsActivated());
-		
-		
 
 	}
 
-
-
-	private void applySettings()
-	{
+	private void applySettings() {
 		int timeScreenOnDelay = 0;
-		try
-		{
-			timeScreenOnDelay = Integer.parseInt(edScreenOnDelay.getText().toString());
-		}
-		catch(Exception e)
-		{
+		try {
+			timeScreenOnDelay = Integer.parseInt(edScreenOnDelay.getText()
+					.toString());
+		} catch (Exception e) {
 			timeScreenOnDelay = sharedPrefsEditor.getScreenDelayTimer();
 		}
-		
 
 		int firstTimeOn = 0;
-		try
-		{
+		try {
 			firstTimeOn = Integer.parseInt(edFirstTimeOn.getText().toString());
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			firstTimeOn = sharedPrefsEditor.getFirstTimeOn();
 		}
-		
+
 		boolean isFirstTimeOnIsActivated = cboxFirstTimeOn.isChecked();
-		
+
 		sharedPrefsEditor.setFirstTimeOnIsActivated(isFirstTimeOnIsActivated);
 		sharedPrefsEditor.setScreenDelayTimer(timeScreenOnDelay);
 		sharedPrefsEditor.setFirstTimeOn(firstTimeOn);
 	}
 
-
-
-	protected void onDestroy() {
-
+	public void onDestroy() {
 		applySettings();
-
 		super.onDestroy();
 	}
 
 	/**
 	 * Create deactivation shortcut on homescreen
 	 */
-	public void createDeactivationShortcut()
-	{
-		Intent shortcutIntent = new Intent(getApplicationContext(),
+	public void createDeactivationShortcut() {
+		Intent shortcutIntent = new Intent(rootView.getContext(),
 				ShortcutActivateReceiver.class);
 
-
 		Intent addIntent = new Intent();
-		addIntent
-		.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-		addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getResources().getString(R.string.shortcut_activation_name));
+		addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+		addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getResources()
+				.getString(R.string.shortcut_activation_name));
 		addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-				Intent.ShortcutIconResource.fromContext(getApplicationContext(),
-						R.drawable.ic_launcher));
+				Intent.ShortcutIconResource.fromContext(
+						rootView.getContext(), R.drawable.ic_launcher));
 
-		addIntent
-		.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-		getApplicationContext().sendBroadcast(addIntent);
+		addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+		rootView.getContext().sendBroadcast(addIntent);
 	}
 
 	/**
@@ -191,45 +179,33 @@ public class AdvancedTabActivity extends Activity implements OnClickListener, On
 
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-		if(buttonView == cboxFirstTimeOn)
-		{
+		if (buttonView == cboxFirstTimeOn) {
 			boolean isFirstTimeOnActivated = cboxFirstTimeOn.isChecked();
 			activateFirstTimeOn(isFirstTimeOnActivated);
 		}
 
-
 	}
-
 
 	/**
 	 * SHow or hide fields related to first time off
+	 * 
 	 * @param isActivate
 	 */
-	private void activateFirstTimeOn(boolean isActivate)
-	{
+	private void activateFirstTimeOn(boolean isActivate) {
 
-
-		if(!isActivate)
-		{
-			//hide fields related to first time off
+		if (!isActivate) {
+			// hide fields related to first time off
 			tvFirstTimeOn.setEnabled(false);
 			tvFirstTimeOnDesc.setEnabled(false);
 			edFirstTimeOn.setEnabled(false);
 
-		}
-		else
-		{
-			//show fields related to first time off
+		} else {
+			// show fields related to first time off
 			tvFirstTimeOn.setEnabled(true);
 			tvFirstTimeOnDesc.setEnabled(true);
 			edFirstTimeOn.setEnabled(true);
 
-
 		}
 	}
-
-
-
-
 
 }

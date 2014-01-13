@@ -2,8 +2,8 @@ package com.example.datamanager;
 
 import org.apache.log4j.chainsaw.Main;
 
+import tabActivities.AppLauncher;
 import tabActivities.MainTabActivity;
-
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -18,6 +18,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.gyagapen.cleverconnectivity.R;
@@ -198,6 +199,7 @@ public class MainService extends Service {
 		} else { // screen is off
 
 
+			
 			sharedPrefsEditor.setScreenOnIsDelayed(false);
 
 			//get sleep state
@@ -219,6 +221,7 @@ public class MainService extends Service {
 			}
 			else
 			{
+				
 				//start timer
 				timerSetUp.StartTimerOn();
 			}
@@ -281,7 +284,7 @@ public class MainService extends Service {
 		if(sharedPrefsEditor.isNotificationEnabled())
 		{
 			logsProvider.info("new notification: "+message+ " - "+subText);
-			Intent intent = new Intent(context, MainTabActivity.class);
+			Intent intent = new Intent(context, AppLauncher.class);
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, 01, intent, Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			NotificationCompat.Builder  builder = new NotificationCompat.Builder(context);
 			Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher), 

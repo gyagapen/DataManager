@@ -1,5 +1,6 @@
 package tabActivities;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.example.datamanager.DataActivation;
 import com.example.datamanager.LogsProvider;
 import com.example.datamanager.SharedPrefsEditor;
@@ -8,9 +9,12 @@ import com.gyagapen.cleverconnectivity.R;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 
-public class WifiTabActivity extends Activity {
+public class WifiTabActivity extends SherlockFragment {
 
 	private CheckBox cbWifi = null;
 	private CheckBox cbWifiMgr = null;
@@ -25,22 +29,25 @@ public class WifiTabActivity extends Activity {
 	private SharedPrefsEditor sharedPrefsEditor = null;
 	private DataActivation dataActivation;
 
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.tab_wifi);
+	private View rootView;
 
-		logsProvider = new LogsProvider(getApplicationContext(), this.getClass());
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = inflater.inflate(R.layout.tab_wifi, container, false);
+
+		logsProvider = new LogsProvider(rootView.getContext(), this.getClass());
 
 		// shared prefs init
-		prefs = getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
+		prefs = rootView.getContext().getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
 
-		dataActivation = new DataActivation(getBaseContext());
+		dataActivation = new DataActivation(rootView.getContext());
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
 		loadUiComponents();
 		initializeUiComponentsData();
-
+		
+		return rootView;
 	}
 
 
@@ -50,11 +57,11 @@ public class WifiTabActivity extends Activity {
 	 */
 	private void loadUiComponents() {
 
-		cbWifi = (CheckBox) findViewById(R.id.checkBoxWifi);
-		cbWifiMgr = (CheckBox) findViewById(R.id.checkBoxWifiMgr);
-		cbAutoWifiOff = (CheckBox) findViewById(R.id.checkBoxAutoWifiOff);
-		cbAutoWifiOn = (CheckBox) findViewById(R.id.CheckBoxAutoWifiOn);
-		cbCheckNetConnWifi = (CheckBox)findViewById(R.id.cboxCheckNetConnectionWIfi);
+		cbWifi = (CheckBox) rootView.findViewById(R.id.checkBoxWifi);
+		cbWifiMgr = (CheckBox) rootView.findViewById(R.id.checkBoxWifiMgr);
+		cbAutoWifiOff = (CheckBox) rootView.findViewById(R.id.checkBoxAutoWifiOff);
+		cbAutoWifiOn = (CheckBox) rootView.findViewById(R.id.CheckBoxAutoWifiOn);
+		cbCheckNetConnWifi = (CheckBox)rootView.findViewById(R.id.cboxCheckNetConnectionWIfi);
 
 	}
 
@@ -112,11 +119,8 @@ public class WifiTabActivity extends Activity {
 	}
 
 
-
-	protected void onDestroy() {
-
+	public void onDestroy() {
 		applySettings();
-
 		super.onDestroy();
 	}
 
