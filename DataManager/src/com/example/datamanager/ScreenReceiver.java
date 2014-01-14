@@ -52,8 +52,6 @@ public class ScreenReceiver extends BroadcastReceiver {
 						// set is firt time on to true
 						sharedPrefsEditor.setIsFirstTimeOn(true);
 
-						// save the last screen state
-						sharedPrefsEditor.setScrenWasOff(true);
 
 						Intent i = new Intent(context, MainService.class);
 						i.putExtra("screen_state", screenOff);

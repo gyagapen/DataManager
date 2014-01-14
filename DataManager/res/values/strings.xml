@@ -87,6 +87,7 @@
     <string name="notif_bat_low">Battery Low</string>
     <string name="notif_sleep_on">Sleep Mode ON</string>
     <string name="notif_sleep_off">Sleep Mode OFF</string>
+    <string name="adId">a150d57cebe0f76</string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>

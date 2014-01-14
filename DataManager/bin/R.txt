@@ -366,7 +366,7 @@ int id abs__submit_area 0x7f04002f
 int id abs__textButton 0x7f040013
 int id abs__title 0x7f04001b
 int id abs__up 0x7f04000b
-int id adViewMainStart 0x7f040096
+int id adView 0x7f040056
 int id applcicationName 0x7f04004f
 int id applicationCbox 0x7f04004d
 int id applicationPhoto 0x7f04004e
@@ -396,7 +396,7 @@ int id checkBoxWifi 0x7f040034
 int id checkBoxWifiMgr 0x7f040035
 int id content_frame 0x7f040057
 int id disableHome 0x7f040009
-int id drawer_layout 0x7f040056
+int id drawer_layout 0x7f040055
 int id edBatteryLevel 0x7f040095
 int id editTextInterval 0x7f04003f
 int id editTextTimeOff 0x7f04003d
@@ -407,15 +407,14 @@ int id icon 0x7f040053
 int id listMode 0x7f040002
 int id listViewApplications 0x7f040052
 int id listview_drawer 0x7f040058
-int id menu_settings 0x7f04009a
+int id menu_settings 0x7f040099
 int id normal 0x7f040001
 int id showCustom 0x7f040008
 int id showHome 0x7f040005
 int id showTitle 0x7f040007
-int id subtitle 0x7f040055
-int id tab1 0x7f040097
-int id tab2 0x7f040098
-int id tab3 0x7f040099
+int id tab1 0x7f040096
+int id tab2 0x7f040097
+int id tab3 0x7f040098
 int id tabMode 0x7f040003
 int id tableRow1 0x7f04004c
 int id tableRow10 0x7f04006c
@@ -523,6 +522,7 @@ int string abs__searchview_description_submit 0x7f09000b
 int string abs__searchview_description_voice 0x7f09000c
 int string abs__shareactionprovider_share_with 0x7f090006
 int string abs__shareactionprovider_share_with_application 0x7f090007
+int string adId 0x7f090064
 int string advanced 0x7f090041
 int string app_name 0x7f09000d
 int string battery_level 0x7f09005d
@@ -544,8 +544,8 @@ int string deactivate_service__plugged_desc 0x7f09003e
 int string deactivate_service_desc 0x7f09003c
 int string deactivate_service_plugged 0x7f09003d
 int string developerName 0x7f090037
-int string drawer_close 0x7f090065
-int string drawer_open 0x7f090064
+int string drawer_close 0x7f090066
+int string drawer_open 0x7f090065
 int string first_time_on 0x7f090043
 int string first_time_on_desc 0x7f090044
 int string general_title 0x7f090045

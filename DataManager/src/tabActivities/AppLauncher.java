@@ -63,7 +63,6 @@ public class AppLauncher extends SherlockFragmentActivity {
 	ActionBarDrawerToggle mDrawerToggle;
 	MenuListAdapter mMenuAdapter;
 	String[] title;
-	String[] subtitle;
 	int[] icon;
 	Fragment fragmentGeneral = new GeneralTabActivity();
 	Fragment fragmentData = new DataTabActivity();
@@ -104,8 +103,6 @@ public class AppLauncher extends SherlockFragmentActivity {
 		title = new String[] { "General", "Data", "Wifi", "Sync", "Bluetooth",
 				"Sleep", "Timers", "Advanced", "Misc" };
 
-		// Generate subtitle
-		subtitle = new String[] { "", "", "", "", "", "", "", "", "", "" };
 
 		// Generate icon
 		icon = new int[] { R.drawable.general, R.drawable.data,
@@ -125,7 +122,7 @@ public class AppLauncher extends SherlockFragmentActivity {
 				GravityCompat.START);
 
 		// Pass string arrays to MenuListAdapter
-		mMenuAdapter = new MenuListAdapter(AppLauncher.this, title, subtitle,
+		mMenuAdapter = new MenuListAdapter(AppLauncher.this, title,
 				icon);
 
 		// Set the MenuListAdapter to the ListView
@@ -276,6 +273,7 @@ public class AppLauncher extends SherlockFragmentActivity {
 
 		// save the last screen state
 		sharedPrefsEditor.setScrenWasOff(false);
+		sharedPrefsEditor.setScreenOnIsDelayed(false);
 
 		// stop service if deactivate is checked or deactivate while plugged
 		// check and phone is plugged

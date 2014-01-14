@@ -1031,7 +1031,7 @@ containing a value of this type.
         public static final int abs__textButton=0x7f040013;
         public static final int abs__title=0x7f04001b;
         public static final int abs__up=0x7f04000b;
-        public static final int adViewMainStart=0x7f040096;
+        public static final int adView=0x7f040056;
         public static final int applcicationName=0x7f04004f;
         public static final int applicationCbox=0x7f04004d;
         public static final int applicationPhoto=0x7f04004e;
@@ -1061,7 +1061,7 @@ containing a value of this type.
         public static final int checkBoxWifiMgr=0x7f040035;
         public static final int content_frame=0x7f040057;
         public static final int disableHome=0x7f040009;
-        public static final int drawer_layout=0x7f040056;
+        public static final int drawer_layout=0x7f040055;
         public static final int edBatteryLevel=0x7f040095;
         public static final int editTextInterval=0x7f04003f;
         public static final int editTextTimeOff=0x7f04003d;
@@ -1072,15 +1072,14 @@ containing a value of this type.
         public static final int listMode=0x7f040002;
         public static final int listViewApplications=0x7f040052;
         public static final int listview_drawer=0x7f040058;
-        public static final int menu_settings=0x7f04009a;
+        public static final int menu_settings=0x7f040099;
         public static final int normal=0x7f040001;
         public static final int showCustom=0x7f040008;
         public static final int showHome=0x7f040005;
         public static final int showTitle=0x7f040007;
-        public static final int subtitle=0x7f040055;
-        public static final int tab1=0x7f040097;
-        public static final int tab2=0x7f040098;
-        public static final int tab3=0x7f040099;
+        public static final int tab1=0x7f040096;
+        public static final int tab2=0x7f040097;
+        public static final int tab3=0x7f040098;
         public static final int tabMode=0x7f040003;
         public static final int tableRow1=0x7f04004c;
         public static final int tableRow10=0x7f04006c;
@@ -1222,6 +1221,7 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f090007;
+        public static final int adId=0x7f090064;
         public static final int advanced=0x7f090041;
         public static final int app_name=0x7f09000d;
         public static final int battery_level=0x7f09005d;
@@ -1243,8 +1243,8 @@ containing a value of this type.
         public static final int deactivate_service_desc=0x7f09003c;
         public static final int deactivate_service_plugged=0x7f09003d;
         public static final int developerName=0x7f090037;
-        public static final int drawer_close=0x7f090065;
-        public static final int drawer_open=0x7f090064;
+        public static final int drawer_close=0x7f090066;
+        public static final int drawer_open=0x7f090065;
         public static final int first_time_on=0x7f090043;
         public static final int first_time_on_desc=0x7f090044;
         public static final int general_title=0x7f090045;

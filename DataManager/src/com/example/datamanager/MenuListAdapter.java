@@ -15,15 +15,13 @@ public class MenuListAdapter extends BaseAdapter {
 	// Declare Variables
 	Context context;
 	String[] mTitle;
-	String[] mSubTitle;
 	int[] mIcon;
 	LayoutInflater inflater;
 
-	public MenuListAdapter(Context context, String[] title, String[] subtitle,
+	public MenuListAdapter(Context context, String[] title, 
 			int[] icon) {
 		this.context = context;
 		this.mTitle = title;
-		this.mSubTitle = subtitle;
 		this.mIcon = icon;
 	}
 
@@ -44,7 +42,6 @@ public class MenuListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Declare Variables
 		TextView txtTitle;
-		TextView txtSubTitle;
 		ImageView imgIcon;
 
 		inflater = (LayoutInflater) context
@@ -54,14 +51,12 @@ public class MenuListAdapter extends BaseAdapter {
 
 		// Locate the TextViews in drawer_list_item.xml
 		txtTitle = (TextView) itemView.findViewById(R.id.title);
-		txtSubTitle = (TextView) itemView.findViewById(R.id.subtitle);
 
 		// Locate the ImageView in drawer_list_item.xml
 		imgIcon = (ImageView) itemView.findViewById(R.id.icon);
 
 		// Set the results into TextViews
 		txtTitle.setText(mTitle[position]);
-		txtSubTitle.setText(mSubTitle[position]);
 
 		// Set the results into ImageView
 		imgIcon.setImageResource(mIcon[position]);

@@ -25,15 +25,16 @@
                 android:layout_height="wrap_content" >
             </TabWidget>
             
-                     <com.google.ads.AdView
-					android:id="@+id/adViewMainStart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        ads:adSize="BANNER"
-                        ads:adUnitId="a150d57cebe0f76"
-                        ads:loadAdOnCreate="true"
-                         >
-          </com.google.ads.AdView>
+            
+<!--                      <com.google.ads.AdView -->
+<!-- 					android:id="@+id/adViewMainStart" -->
+<!--                         android:layout_width="wrap_content" -->
+<!--                         android:layout_height="wrap_content" -->
+<!--                         ads:adSize="BANNER" -->
+<!--                         ads:adUnitId="a150d57cebe0f76" -->
+<!--                         ads:loadAdOnCreate="true" -->
+<!--                          > -->
+<!--           </com.google.ads.AdView> -->
 
             <FrameLayout
                 android:id="@android:id/tabcontent"

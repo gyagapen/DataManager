@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true" />
  
-    <LinearLayout
+   	<LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical|left"
@@ -24,14 +24,7 @@
             android:ellipsize="end"
             android:singleLine="true" />
  
-        <TextView
-            android:id="@+id/subtitle"
-            style="?attr/spinnerDropDownItemStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textAppearance="?attr/textAppearanceSmall" />
+
     </LinearLayout>
     
 
