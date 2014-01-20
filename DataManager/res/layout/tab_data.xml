@@ -45,6 +45,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="4.50"
             android:text="@string/toggle_data_manager_desc" />
+        
+        <CheckBox
+            android:id="@+id/cbDataOffWhenWifiSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/data_off_when_wifi"/>
+
+        <TextView
+            android:id="@+id/cbDataOffWhenWifiDescr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4.50"
+            android:text="@string/data_off_when_wifi_desc" />
 
         <CheckBox
             android:id="@+id/CheckBox2GSwitch"

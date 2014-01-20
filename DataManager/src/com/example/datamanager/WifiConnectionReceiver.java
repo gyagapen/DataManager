@@ -10,8 +10,6 @@ import android.net.wifi.WifiManager;
 
 public class WifiConnectionReceiver extends BroadcastReceiver {
 
-
-
 	// SharedPreferences
 	private SharedPreferences prefs = null;
 	private SharedPrefsEditor sharedPrefsEditor = null;
@@ -21,7 +19,7 @@ public class WifiConnectionReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 
 		logsProvider = new LogsProvider(context, this.getClass());
-		
+
 		// shared prefs init
 		prefs = context.getSharedPreferences(SharedPrefsEditor.PREFERENCE_NAME,
 				Activity.MODE_PRIVATE);
@@ -29,37 +27,72 @@ public class WifiConnectionReceiver extends BroadcastReceiver {
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
+		if (intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
+			NetworkInfo networkInfo = intent
+					.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
 
-		if(intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
-			NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-			if(networkInfo.isConnected()) {
+			try {
 
-				// Wifi is connected
-				logsProvider.info("Wifi is connected, getcheckconnwifi: "+sharedPrefsEditor.getCheckNetConnectionWifi()+" netHasToBeChecked: "+sharedPrefsEditor.getNetHasToBeChecked());
+				if (networkInfo.isConnected()) {
 
-				//verify internet connection
-				//checking if internet connection is availaible
-				if(sharedPrefsEditor.getCheckNetConnectionWifi() && sharedPrefsEditor.getNetHasToBeChecked())
-				{
-					if(!dataActivation.isInternetConnectionAvailable())
-					{
-						//shut down wifi
-						dataActivation.setWifiConnectionEnabled(false, false, sharedPrefsEditor);
+					// disable data if option isDataOffWhenWifi checked
+					if (sharedPrefsEditor.isDataOffWhenWifi()) {
+						dataActivation.setMobileDataEnabled(false,
+								sharedPrefsEditor);
 					}
-					
-					sharedPrefsEditor.setNetConnHasToBeChecked(false);
+
+					// Wifi is connected
+					logsProvider.info("Wifi is connected, getcheckconnwifi: "
+							+ sharedPrefsEditor.getCheckNetConnectionWifi()
+							+ " netHasToBeChecked: "
+							+ sharedPrefsEditor.getNetHasToBeChecked());
+
+					// verify internet connection
+					// checking if internet connection is availaible
+					if (sharedPrefsEditor.getCheckNetConnectionWifi()
+							&& sharedPrefsEditor.getNetHasToBeChecked()) {
+						if (!dataActivation.isInternetConnectionAvailable()) {
+							// shut down wifi
+							dataActivation.setWifiConnectionEnabled(false,
+									false, sharedPrefsEditor);
+						}
+
+						sharedPrefsEditor.setNetConnHasToBeChecked(false);
+					}
+
+				} else if (!networkInfo.isConnected()) {
+
+					// Wifi is disconnected
+					logsProvider.info("Wifi is disconnected: ");
+
+					// if option isDataOffWhenWifi checked and data is enabled
+					if (sharedPrefsEditor.isDataOffWhenWifi() && sharedPrefsEditor.isDataActivated()) {
+						// if screen is on then enable data
+						if (dataActivation.isScreenIsOn()) {
+							dataActivation.setMobileDataEnabled(true,
+									sharedPrefsEditor);
+						} else {
+
+							// if timeOn then activate data
+							if (!sharedPrefsEditor.isTimeOffIsActivated()) {
+								dataActivation.setMobileDataEnabled(true,
+										sharedPrefsEditor);
+							} else // if time off, then deactivate data
+							{
+								dataActivation.setMobileDataEnabled(false,
+										sharedPrefsEditor);
+							}
+						}
+					}
+
 				}
 
-			}
-			else if(!networkInfo.isConnected())
-			{
-				// Wifi is connected
-				logsProvider.info("Wifi is disconnected: ");
+			} catch (Exception e) {
+				logsProvider.error(e);
+				e.printStackTrace();
 			}
 
 		}
-		
-		
 
 	}
 }

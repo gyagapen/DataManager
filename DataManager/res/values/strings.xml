@@ -88,11 +88,18 @@
     <string name="notif_sleep_on">Sleep Mode ON</string>
     <string name="notif_sleep_off">Sleep Mode OFF</string>
     <string name="adId">a150d57cebe0f76</string>
-    
+    <string name="data_off_when_wifi">Data Off When Wifi</string>
+    <string name="data_off_when_wifi_warn_title">Warning</string>
+    <string name="data_off_when_wifi_desc">Disable data connectivity when the phone is connected to a Wifi network</string>
+    <string name="data_off_when_wifi_warn">Once ticked, you will have to control the data mobile state (ON/OFF) from this app, it will take over precedence from other toggles</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>
-    
-    <!-- <drawable name="advanced.png"></drawable>
+
+    <!--
+    <drawable name="advanced.png"></drawable>
     <drawable name="bluetooth.png"></drawable>
     <drawable name="data.png"></drawable>
     <drawable name="general.png"></drawable>
@@ -100,10 +107,7 @@
     <drawable name="sleep.png"></drawable>
     <drawable name="sync.png"></drawable>
     <drawable name="timers.png"></drawable>
-    <drawable name="wifi.png"></drawable> -->
-    
-    
-    
-    
+    <drawable name="wifi.png"></drawable>
+    -->
 
 </resources>

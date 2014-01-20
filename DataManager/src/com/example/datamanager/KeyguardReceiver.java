@@ -52,10 +52,11 @@ public class KeyguardReceiver extends BroadcastReceiver {
 
 					if(!sharedPrefsEditor.isScreenOnDelayed())
 					{
+						// save the last screen state
+						sharedPrefsEditor.setScrenWasOff(false);
+						
 						Intent i = new Intent(context, MainService.class);
-
 						i.putExtra("screen_state", screenOff);
-
 						context.startService(i);
 					}
 				}

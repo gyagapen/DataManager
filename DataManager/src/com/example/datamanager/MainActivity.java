@@ -556,11 +556,11 @@ OnCheckedChangeListener {
 			if (!dataIsActivated) {
 
 				// keep auto sync (in case of wifi connection)
-				dataActivation.setMobileDataEnabled(false);
+				dataActivation.setMobileDataEnabled(false, sharedPrefsEditor);
 				// dataActivation.setAutoSync(true);
 			} else {
 				// activate data
-				dataActivation.setMobileDataEnabled(true);
+				dataActivation.setMobileDataEnabled(true, sharedPrefsEditor);
 				// dataActivation.setAutoSync(true);
 			}
 

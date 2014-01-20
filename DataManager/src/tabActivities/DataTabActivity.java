@@ -1,26 +1,30 @@
 package tabActivities;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.example.datamanager.ChangeNetworkMode;
-import com.example.datamanager.DataActivation;
-import com.example.datamanager.LogsProvider;
-import com.example.datamanager.SharedPrefsEditor;
-import com.gyagapen.cleverconnectivity.R;
-
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
-public class DataTabActivity extends SherlockFragment {
+import com.actionbarsherlock.app.SherlockFragment;
+import com.example.datamanager.ChangeNetworkMode;
+import com.example.datamanager.DataActivation;
+import com.example.datamanager.LogsProvider;
+import com.example.datamanager.SharedPrefsEditor;
+import com.gyagapen.cleverconnectivity.R;
+
+public class DataTabActivity extends SherlockFragment implements OnCheckedChangeListener {
 
 	private CheckBox cbData = null;
 	private CheckBox cbDataMgr = null;
+	private CheckBox cbDataOffWhenWifi = null;
 	private CheckBox cbox2GSwitch = null;
 	private TextView tv2GSwitch = null;
 
@@ -60,9 +64,14 @@ public class DataTabActivity extends SherlockFragment {
 
 		cbData = (CheckBox) rootView.findViewById(R.id.checkBoxData);
 		cbDataMgr = (CheckBox) rootView.findViewById(R.id.checkBoxDataMgr);
+		cbDataOffWhenWifi = (CheckBox)rootView.findViewById(R.id.cbDataOffWhenWifiSwitch);
+		
+		//register warning popup
+		cbDataOffWhenWifi.setOnCheckedChangeListener(this);
 
 		cbox2GSwitch = (CheckBox) rootView.findViewById(R.id.CheckBox2GSwitch);
 		tv2GSwitch = (TextView) rootView.findViewById(R.id.TextView2GSwitch);
+		
 	}
 
 	/**
@@ -75,6 +84,9 @@ public class DataTabActivity extends SherlockFragment {
 
 		boolean dataMgrIsActivated = sharedPrefsEditor.isDataMgrActivated();
 		cbDataMgr.setChecked(dataMgrIsActivated);
+		
+		boolean dataOffWhenWifi = sharedPrefsEditor.isDataOffWhenWifi();
+		cbDataOffWhenWifi.setChecked(dataOffWhenWifi);
 
 		// show or hide 2G switch fields
 		ChangeNetworkMode changeNetworkMode = new ChangeNetworkMode(
@@ -111,22 +123,22 @@ public class DataTabActivity extends SherlockFragment {
 		boolean dataIsActivated = cbData.isChecked();
 		boolean dataMgrIsActivated = cbDataMgr.isChecked();
 		boolean is2GSwitchActivated = cbox2GSwitch.isChecked();
+		boolean isDataOffWhenWifi = cbDataOffWhenWifi.isChecked();
 
 		sharedPrefsEditor.setDataActivation(dataIsActivated);
 		sharedPrefsEditor.setDataActivationManager(dataMgrIsActivated);
 		sharedPrefsEditor.set2GSwitchActivation(is2GSwitchActivated);
+		sharedPrefsEditor.setDataOffWhenWifi(isDataOffWhenWifi);
 
 		try {
 			// if data is disabled; data connection is stopped
 			if (!dataIsActivated) {
 
 				// keep auto sync (in case of wifi connection)
-				dataActivation.setMobileDataEnabled(false);
-				// dataActivation.setAutoSync(true);
+				dataActivation.setMobileDataEnabled(false, sharedPrefsEditor);
 			} else {
 				// activate data
-				dataActivation.setMobileDataEnabled(true);
-				// dataActivation.setAutoSync(true);
+				dataActivation.setMobileDataEnabled(true, sharedPrefsEditor);
 			}
 
 		} catch (Exception e) {
@@ -138,6 +150,33 @@ public class DataTabActivity extends SherlockFragment {
 	public void onDestroy() {
 		applySettings();
 		super.onDestroy();
+	}
+
+	public void onCheckedChanged(CompoundButton button, boolean isChecked) {
+		
+		if(button == cbDataOffWhenWifi)
+		{
+			if (isChecked)
+			{
+				//warning popup
+				createDataOffWhenWifiWarning();
+			}
+		}
+		
+	}
+	
+	public void createDataOffWhenWifiWarning()
+	{
+		AlertDialog alertDialog = new AlertDialog.Builder(this.getActivity()).create();
+		alertDialog.setTitle(getResources().getString(R.string.data_off_when_wifi_warn_title));
+		alertDialog.setMessage(getResources().getString(R.string.data_off_when_wifi_warn));
+		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+		   public void onClick(DialogInterface dialog, int which) {
+		      dialog.dismiss();
+		   }
+		});
+		// Set the Icon for the Dialog
+		alertDialog.show();
 	}
 
 }

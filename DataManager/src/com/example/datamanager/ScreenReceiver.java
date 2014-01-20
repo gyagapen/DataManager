@@ -28,6 +28,8 @@ public class ScreenReceiver extends BroadcastReceiver {
 		dataActivation = new DataActivation(context);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
 
+		logsProvider.info("Screen was off: "+sharedPrefsEditor.wasScreenOff());
+		
 		// if service is running
 		if (sharedPrefsEditor.isServiceActivated()) {
 
@@ -41,6 +43,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 
 						// save the last screen state
 						sharedPrefsEditor.setScrenWasOff(true);
+						logsProvider.info("set Screen was off to TRUE");
 						
 						// initialize connectivity positions
 						SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(
@@ -61,12 +64,16 @@ public class ScreenReceiver extends BroadcastReceiver {
 
 			} else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 
-				// if not enabling connectivity when keyguard is off or keyguard
+				logsProvider.info("screen is ON, isEnabledWhenKeyguardOff: "+sharedPrefsEditor.isEnabledWhenKeyguardOff()+", isKeyguardIsActive: "+dataActivation.isKeyguardIsActive());
+				
+				//  not enabling connectivity when keyguard is off or keyguard
 				// is not active
-				if (!sharedPrefsEditor.isEnabledWhenKeyguardOff()
-						|| !dataActivation.isKeyguardIsActive()) {
+				if (!(sharedPrefsEditor.isEnabledWhenKeyguardOff()
+						&& dataActivation.isKeyguardIsActive())) {
 					screenOff = false;
 
+					logsProvider.info("SCREEN ON");
+					
 					if (!sharedPrefsEditor.isScreenOnDelayed()
 							&& sharedPrefsEditor.getScreenDelayTimer() > 0) {
 						logsProvider
@@ -81,6 +88,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 						if (!sharedPrefsEditor.isScreenOnDelayed()) {
 							// save the last screen state
 							sharedPrefsEditor.setScrenWasOff(false);
+							logsProvider.info("set Screen was off to FALSE");
 
 							Intent i = new Intent(context, MainService.class);
 							i.putExtra("screen_state", screenOff);

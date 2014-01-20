@@ -109,10 +109,19 @@ public class WifiTabActivity extends SherlockFragment {
 		// if wifi is disabled, wifi connection is stopped
 		if (!wifiIsActivated) {
 			dataActivation.setWifiConnectionEnabled(false, false, sharedPrefsEditor);
-			// dataActivation.setAutoSync(true);
 		} else {
 			dataActivation.setWifiConnectionEnabled(true, false, sharedPrefsEditor);
-			// dataActivation.setAutoSync(true);
+			// disable data if option isDataOffWhenWifi checked
+			if (sharedPrefsEditor.isDataOffWhenWifi()) {
+				try {
+					dataActivation.setMobileDataEnabled(false,
+							sharedPrefsEditor);
+				} catch (Exception e) {
+					logsProvider.error(e);
+					e.printStackTrace();
+				}
+			}
+
 		}
 
 

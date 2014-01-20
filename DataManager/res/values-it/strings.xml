@@ -87,6 +87,10 @@
     <string name="notif_bat_low">Batteria Scarica</string>
     <string name="notif_sleep_on">Modalità Sleep ATTIVA</string>
     <string name="notif_sleep_off">Modalità Sleep DISATTIVA</string>
+    <string name="data_off_when_wifi">Disattiva dati quando Wifi</string>
+    <string name="data_off_when_wifi_desc">Connessione dati mobile verrà disattivata quando il telefono si connette a una rete WiFi nota</string>
+    <string name="data_off_when_wifi_warn_title">Attenzione</string>
+    <string name="data_off_when_wifi_warn">Una volta che questa opzione è selezionata, è necessario controllare l\'attivazione o la disattivazione di dati mobili solo attraverso questa app</string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>

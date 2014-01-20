@@ -53,7 +53,7 @@ public class NetworkModeReceiver extends BroadcastReceiver {
 					if(sharedPrefsEditor.isDataActivated())
 					{
 						try {
-							dataActivation.setMobileDataEnabled(true);
+							dataActivation.setMobileDataEnabled(true, sharedPrefsEditor);
 						} catch (Exception e) {
 							logsProvider.error(e);
 						}
@@ -75,7 +75,7 @@ public class NetworkModeReceiver extends BroadcastReceiver {
 					if(sharedPrefsEditor.isDataActivated())
 					{
 						try {
-							dataActivation.setMobileDataEnabled(true);
+							dataActivation.setMobileDataEnabled(true, sharedPrefsEditor);
 						} catch (Exception e) {
 							logsProvider.error(e);
 						}

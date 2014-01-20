@@ -127,7 +127,7 @@ public class TimerOnReceiver extends BroadcastReceiver {
 					//auto sync off
 					if(sharedPrefsEditor.isDataMgrActivated())
 					{
-						dataActivation.setMobileDataEnabled(false);
+						dataActivation.setMobileDataEnabled(false, sharedPrefsEditor);
 					}
 					
 					if(sharedPrefsEditor.isAutoSyncMgrIsActivated())

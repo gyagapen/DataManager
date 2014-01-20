@@ -145,7 +145,7 @@ public class WifiScanReceiver extends BroadcastReceiver {
 								{
 									Thread.sleep(3000);
 								}
-								dataActivation.setMobileDataEnabled(true);
+								dataActivation.setMobileDataEnabled(true, sharedPrefsEditor);
 							} catch (Exception e) {
 								logsProvider.error(e);
 							}

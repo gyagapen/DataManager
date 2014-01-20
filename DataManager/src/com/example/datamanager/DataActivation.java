@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SyncAdapterType;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -26,7 +27,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.StrictMode;
-
+import android.util.Log;
 
 public class DataActivation {
 
@@ -35,16 +36,14 @@ public class DataActivation {
 
 	private Context context = null;
 
-	//when wifi and data are on, data activation will be delayed
+	// when wifi and data are on, data activation will be delayed
 	private int timeBeforeActivateData = 5000;
 	private LogsProvider logsProvider = null;
-
 
 	public DataActivation(Context aContext) {
 		context = aContext;
 
 		logsProvider = new LogsProvider(aContext, this.getClass());
-
 
 	}
 
@@ -55,29 +54,40 @@ public class DataActivation {
 	 * @param enableAutoSync
 	 * @throws Exception
 	 */
-	public void setMobileDataEnabled(boolean enabled) throws Exception {
+	public void setMobileDataEnabled(boolean enabled,
+			SharedPrefsEditor sharedPrefsEditor) throws Exception {
 
-		//only if necessary
-		if((!isDataChipActivated() && enabled) || (isDataChipActivated() && !enabled))
-		{
+		logsProvider.info("setMobileDataEnabled method");
+		
+		// if option isDataOffWhenWifi is checked and wifi is connected: data
+		// remains disabled
+		if (!(sharedPrefsEditor.isDataOffWhenWifi() && isWifiConnectedToANetwork() && enabled==true)) {
 
-			logsProvider.info("Data is activate : " + enabled);
+			// only if necessary
+			if ((!isDataChipActivated() && enabled)
+					|| (isDataChipActivated() && !enabled)) {
 
-			final ConnectivityManager conman = (ConnectivityManager) context
-					.getSystemService(Context.CONNECTIVITY_SERVICE);
-			final Class conmanClass = Class.forName(conman.getClass().getName());
-			final Field iConnectivityManagerField = conmanClass
-					.getDeclaredField("mService");
-			iConnectivityManagerField.setAccessible(true);
-			final Object iConnectivityManager = iConnectivityManagerField
-					.get(conman);
-			final Class iConnectivityManagerClass = Class
-					.forName(iConnectivityManager.getClass().getName());
-			final Method setMobileDataEnabledMethod = iConnectivityManagerClass
-					.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-			setMobileDataEnabledMethod.setAccessible(true);
+				logsProvider.info("Data is activate : " + enabled);
 
-			setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
+				final ConnectivityManager conman = (ConnectivityManager) context
+						.getSystemService(Context.CONNECTIVITY_SERVICE);
+				final Class conmanClass = Class.forName(conman.getClass()
+						.getName());
+				final Field iConnectivityManagerField = conmanClass
+						.getDeclaredField("mService");
+				iConnectivityManagerField.setAccessible(true);
+				final Object iConnectivityManager = iConnectivityManagerField
+						.get(conman);
+				final Class iConnectivityManagerClass = Class
+						.forName(iConnectivityManager.getClass().getName());
+				final Method setMobileDataEnabledMethod = iConnectivityManagerClass
+						.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+				setMobileDataEnabledMethod.setAccessible(true);
+
+				setMobileDataEnabledMethod
+						.invoke(iConnectivityManager, enabled);
+
+			}
 
 		}
 	}
@@ -90,9 +100,9 @@ public class DataActivation {
 	public void setAutoSync(boolean isEnabled,
 			SharedPrefsEditor sharedPrefsEditor, boolean forceSync) {
 
-		//only if necessary
-		if ( (isAutoSyncIsActivated() && !isEnabled) || (!isAutoSyncIsActivated() && isEnabled) )
-		{
+		// only if necessary
+		if ((isAutoSyncIsActivated() && !isEnabled)
+				|| (!isAutoSyncIsActivated() && isEnabled)) {
 
 			if (sharedPrefsEditor.isAutoSyncActivated() && isEnabled) {
 
@@ -112,22 +122,21 @@ public class DataActivation {
 	 * 
 	 * @param enabled
 	 */
-	public void setWifiConnectionEnabled(boolean enabled, boolean netHasToBeChecked, SharedPrefsEditor sharedPrefsEditor) {
+	public void setWifiConnectionEnabled(boolean enabled,
+			boolean netHasToBeChecked, SharedPrefsEditor sharedPrefsEditor) {
 
-		//if internet conn has to be checked
+		// if internet conn has to be checked
 		sharedPrefsEditor.setNetConnHasToBeChecked(netHasToBeChecked);
 
 		WifiManager wifiManager = (WifiManager) this.context
 				.getSystemService(Context.WIFI_SERVICE);
 
-		//only if necessary
-		if( (isWifiChipActivated() && !enabled) || (!isWifiChipActivated() && enabled))
-		{
+		// only if necessary
+		if ((isWifiChipActivated() && !enabled)
+				|| (!isWifiChipActivated() && enabled)) {
 
 			wifiManager.setWifiEnabled(enabled);
 		}
-
-
 
 	}
 
@@ -136,20 +145,31 @@ public class DataActivation {
 	 */
 	public boolean isWifiChipActivated() {
 
-		/**
-		 * ConnectivityManager connec = (ConnectivityManager) context
-		 * .getSystemService(Context.CONNECTIVITY_SERVICE);
-		 * 
-		 * NetworkInfo mobile = connec
-		 * .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		 * 
-		 * return mobile.isConnectedOrConnecting();
-		 **/
-
 		WifiManager wifiManager = (WifiManager) context
 				.getSystemService(Context.WIFI_SERVICE);
 
 		return wifiManager.isWifiEnabled();
+	}
+
+	/**
+	 * Is Wifi connected to a known network
+	 * 
+	 * @return
+	 */
+	public boolean isWifiConnectedToANetwork() {
+		
+		boolean isWifiConnected = false;
+		
+		ConnectivityManager cm = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		
+		isWifiConnected = wifi.isConnected();
+		
+		logsProvider.info("isWifiConnectedToANetwork : "+isWifiConnected);
+
+		return isWifiConnected;
+
 	}
 
 	/**
@@ -182,25 +202,24 @@ public class DataActivation {
 	public void setConnectivityEnabled(SharedPrefsEditor sharedPrefsEditor)
 			throws Exception {
 
-		if (sharedPrefsEditor.isAutoSyncMgrIsActivated() && sharedPrefsEditor.isAutoSyncActivated()) {
+		if (sharedPrefsEditor.isAutoSyncMgrIsActivated()
+				&& sharedPrefsEditor.isAutoSyncActivated()) {
 			// activate sync
 			setAutoSync(true, sharedPrefsEditor, true);
 		}
 
-
-		if (sharedPrefsEditor.isWifiManagerActivated() && sharedPrefsEditor.isWifiActivated()) {
+		if (sharedPrefsEditor.isWifiManagerActivated()
+				&& sharedPrefsEditor.isWifiActivated()) {
 			// activate wifi
 			setWifiConnectionEnabled(true, true, sharedPrefsEditor);
 
-			//if data is activated
-			if(sharedPrefsEditor.isDataActivated())
-			{
+			// if data is activated
+			if (sharedPrefsEditor.isDataActivated()) {
 
-				//if  data is not activated
-				if(isDataChipActivated() && !isWifiChipActivated())
-				{
+				// if data is not activated
+				if (isDataChipActivated() && !isWifiChipActivated()) {
 
-					//wait 5s to activate data
+					// wait 5s to activate data
 					sharedPrefsEditor.setDataActivationDelayed(true);
 					try {
 						logsProvider.info("WIFI : waiting for wifi activation");
@@ -214,27 +233,24 @@ public class DataActivation {
 			}
 		}
 
-		if (sharedPrefsEditor.isDataMgrActivated() && sharedPrefsEditor.isDataActivated()) {
+		if (sharedPrefsEditor.isDataMgrActivated()
+				&& sharedPrefsEditor.isDataActivated()) {
 			// activate data connection
-			//else data will be activated by network mode receiver
-			if(!sharedPrefsEditor.isNetworkModeSwitching())
-			{
-				setMobileDataEnabled(true);
+			// else data will be activated by network mode receiver
+			if (!sharedPrefsEditor.isNetworkModeSwitching()) {
+				setMobileDataEnabled(true,sharedPrefsEditor);
 			}
 		}
-		
-		if(sharedPrefsEditor.getBluetoothActivation())
-		{
+
+		if (sharedPrefsEditor.getBluetoothActivation()) {
 			setBluetoothChipActivation(true);
 		}
 
 	}
 
-
-
-
 	// disable all connectivity
-	public void setConnectivityDisabled(SharedPrefsEditor sharedPrefsEditor) throws Exception {
+	public void setConnectivityDisabled(SharedPrefsEditor sharedPrefsEditor)
+			throws Exception {
 
 		if (sharedPrefsEditor.isWifiManagerActivated()) {
 			// activate wifi
@@ -243,17 +259,17 @@ public class DataActivation {
 
 		if (sharedPrefsEditor.isDataMgrActivated()) {
 			// activate data connection
-			setMobileDataEnabled(false);
+			setMobileDataEnabled(false,sharedPrefsEditor);
 		}
 
 		if (sharedPrefsEditor.isAutoSyncMgrIsActivated()) {
 			// activate sync
 			setAutoSync(false, sharedPrefsEditor, false);
 		}
-		
-		//disable bluetooth only when sleep
-		if(sharedPrefsEditor.isSleeping()  && sharedPrefsEditor.getBluetoothDeactivateDuringSleep())
-		{
+
+		// disable bluetooth only when sleep
+		if (sharedPrefsEditor.isSleeping()
+				&& sharedPrefsEditor.getBluetoothDeactivateDuringSleep()) {
 			setBluetoothChipActivation(false);
 		}
 	}
@@ -283,23 +299,20 @@ public class DataActivation {
 	public void checkWifiScanResults(SharedPrefsEditor sharedPrefsEditor) {
 		logsProvider.info("CHECK WIFI : check wifi scan results");
 
-		//turn wifi on if off
-		if(!isWifiChipActivated())
-		{
+		// turn wifi on if off
+		if (!isWifiChipActivated()) {
 			WifiManager wifiManager = (WifiManager) this.context
 					.getSystemService(Context.WIFI_SERVICE);
 			wifiManager.setWifiEnabled(true);
 		}
 
-		//set checking to false
+		// set checking to false
 		sharedPrefsEditor.setIsCheckingAutoWifi(true);
 
 		WifiManager wifi = (WifiManager) context
 				.getSystemService(Context.WIFI_SERVICE);
-		//results will be handle WifiScanreceiver
+		// results will be handle WifiScanreceiver
 		wifi.startScan();
-
-
 
 	}
 
@@ -330,12 +343,11 @@ public class DataActivation {
 				if (yourAccount.type.equals(type.accountType)) {
 					boolean isSyncable = ContentResolver.getIsSyncable(
 							yourAccount, type.authority) > 0;
-							if (isSyncable) {
-								ContentResolver.requestSync(yourAccount,
-										type.authority, bundle);
+					if (isSyncable) {
+						ContentResolver.requestSync(yourAccount,
+								type.authority, bundle);
 
-
-							}
+					}
 				}
 			}
 		}
@@ -377,96 +389,85 @@ public class DataActivation {
 
 	/**
 	 * Return true is the phone is in charge
+	 * 
 	 * @return
 	 */
-	public boolean isPhonePlugged()
-	{
-		Intent intent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+	public boolean isPhonePlugged() {
+		Intent intent = context.registerReceiver(null, new IntentFilter(
+				Intent.ACTION_BATTERY_CHANGED));
 		int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
 		boolean isPlugged = (plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB);
 
-		logsProvider.info("phone plugge  : phone is plugged : "+isPlugged);
+		logsProvider.info("phone plugge  : phone is plugged : " + isPlugged);
 
 		return isPlugged;
 	}
 
-
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-	public boolean isInternetConnectionAvailable()
-	{
+	public boolean isInternetConnectionAvailable() {
 		boolean isInternetAvailaible = false;
 
-
-		//avoid androidblockguard policy error
+		// avoid androidblockguard policy error
 		if (android.os.Build.VERSION.SDK_INT > 9) {
-			StrictMode.ThreadPolicy policy = 
-					new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+					.permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 		}
 
 		URL url;
 		try {
 			url = new URL(PING_HOST_1);
-			HttpURLConnection conn= (HttpURLConnection) url.openConnection();
-			//3 seconds time out
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			// 3 seconds time out
 			conn.setConnectTimeout(3000);
-			
+
 			int responseCode = conn.getResponseCode();
-			
 
 			isInternetAvailaible = (responseCode == 200);
 
 		} catch (MalformedURLException e) {
-			logsProvider.info("net check err : "+e.getMessage());
+			logsProvider.info("net check err : " + e.getMessage());
 			isInternetAvailaible = false;
 		} catch (IOException e) {
-			logsProvider.info("net check err : "+e.getMessage());
+			logsProvider.info("net check err : " + e.getMessage());
 			isInternetAvailaible = false;
 		}
 
-
-
-
-
-		logsProvider.info("Internet connection check: "+isInternetAvailaible);
+		logsProvider.info("Internet connection check: " + isInternetAvailaible);
 
 		return isInternetAvailaible;
 	}
 
-	public boolean isKeyguardIsActive()
-	{
-		KeyguardManager keyguardManager = (KeyguardManager)context.getSystemService(Activity.KEYGUARD_SERVICE);
+	public boolean isKeyguardIsActive() {
+		KeyguardManager keyguardManager = (KeyguardManager) context
+				.getSystemService(Activity.KEYGUARD_SERVICE);
 
-		boolean keyGActive =  keyguardManager.inKeyguardRestrictedInputMode();
-		logsProvider.info("keyguard state: "+keyGActive);
+		boolean keyGActive = keyguardManager.inKeyguardRestrictedInputMode();
+		logsProvider.info("keyguard state: " + keyGActive);
 
 		return keyGActive;
 	}
 
-	public void setBluetoothChipActivation(boolean activate)
-	{
-		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+	public void setBluetoothChipActivation(boolean activate) {
+		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter
+				.getDefaultAdapter();
 
-		
-		if (!mBluetoothAdapter.isEnabled() && activate) //enable 
+		if (!mBluetoothAdapter.isEnabled() && activate) // enable
 		{
-			
-			mBluetoothAdapter.enable();
-		}
-		else if (mBluetoothAdapter.isEnabled() && !activate) { //disable
 
-			mBluetoothAdapter.disable(); 
-		} 
-		logsProvider.info("bluetooth activation: "+activate);
+			mBluetoothAdapter.enable();
+		} else if (mBluetoothAdapter.isEnabled() && !activate) { // disable
+
+			mBluetoothAdapter.disable();
+		}
+		logsProvider.info("bluetooth activation: " + activate);
 	}
-	
-	
-	public boolean isBluetoothChipEnabled()
-	{
-		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+	public boolean isBluetoothChipEnabled() {
+		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter
+				.getDefaultAdapter();
 
 		return mBluetoothAdapter.isEnabled();
 	}
-
 
 }

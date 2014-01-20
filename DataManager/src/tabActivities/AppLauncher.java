@@ -274,6 +274,7 @@ public class AppLauncher extends SherlockFragmentActivity {
 		// save the last screen state
 		sharedPrefsEditor.setScrenWasOff(false);
 		sharedPrefsEditor.setScreenOnIsDelayed(false);
+		
 
 		// stop service if deactivate is checked or deactivate while plugged
 		// check and phone is plugged

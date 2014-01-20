@@ -150,7 +150,7 @@ public class MainService extends Service {
 		// if screen is on
 		if (!screenOff) {
 
-
+			logsProvider.info("main service : screen is on");
 
 			// stop all timers if there are running
 			timerSetUp.CancelTimeOff();
@@ -198,7 +198,7 @@ public class MainService extends Service {
 
 		} else { // screen is off
 
-
+			logsProvider.info("main service : screen is off");
 			
 			sharedPrefsEditor.setScreenOnIsDelayed(false);
 

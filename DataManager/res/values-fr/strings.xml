@@ -87,8 +87,10 @@
     <string name="notif_bat_low">Batterie Faible</string>
     <string name="notif_sleep_on">Mode Nuit ON</string>
     <string name="notif_sleep_off">Mode Nuit OFF</string>
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
+    <string name="data_off_when_wifi">Désactiver données lorsque Wifi</string>
+    <string name="data_off_when_wifi_desc">La connexion aux données mobiles sera désactivée lorsque le téléphone se connectera à un réseau Wifi connu</string>
+    <string name="data_off_when_wifi_warn_title">Attention</string>
+    <string name="data_off_when_wifi_warn">Une fois cette option cochée, vous devrez controler l\' activation ou la désactivation aux données mobile uniquement à travers cette app.</string>
 
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>
