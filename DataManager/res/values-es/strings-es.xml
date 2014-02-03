@@ -91,6 +91,9 @@
     <string name="data_off_when_wifi_warn_title">Advertencia</string>
     <string name="data_off_when_wifi_desc">Desactivar la conectividad de datos móviles cuando el teléfono está conectado a una red Wi-Fi</string>
     <string name="data_off_when_wifi_warn">Una vez seleccionada esta opción, debe controlar el activación o desactivación de los datos móviles sólo a través de esta aplicación</string>
+    <string name="adId">a150d57cebe0f76</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
     
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>
