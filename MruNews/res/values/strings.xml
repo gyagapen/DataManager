@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="app_name">Moris News</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="butComText">Comments</string>
+    <string name="butShareText">Share</string>
+    <string name="developerName">Developed by gyagapen</string>
+    <string name="menuContactDev">Contact Developer</string>
+    <string name="adId">ca-app-pub-4662434208516595/3831694465</string>
+
+    <color name="separator">#B2E0FF</color>
+    <color name="white">#ffffff</color>
+    <color name="lvHeader">#DEF2FA</color>
+
+    <string name="linkArticle">Link to article</string>
+
+    <string name="butLinkWeb">Web View</string>
+    
+    <dimen name="actionBarText">17dp</dimen>
+</resources>

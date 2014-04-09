@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/tvSemdexName"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:text="Name"
+                android:layout_weight="2" />
+
+            <TextView
+                android:id="@+id/tvSemdexNominal"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:text="Nominal"
+                android:gravity="center"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvSemdexLastClosingPrice"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:text="Closing Price"
+                android:gravity="center"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvSemdexLatest"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:text="Last Price"
+                android:gravity="center"
+                android:layout_weight="1" />
+            
+            <TextView
+                android:id="@+id/tvSemdexChangePerc"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:text="Last Price"
+                android:gravity="center"
+                android:layout_weight="1" />
+
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
