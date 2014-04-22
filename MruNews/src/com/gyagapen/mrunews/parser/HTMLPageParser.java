@@ -115,10 +115,14 @@ public class HTMLPageParser {
 		String cssLexpress = "<link href=\"http://www.lexpress.mu/sites/all/themes/lexpress_desk1/css/global.css\" rel=\"stylesheet\">";
 
 
+		//remove author image due to size bug
+		doc.select("div.field-content").remove();
+		
+		//to keep correct ratio on images
+		doc.select("img").removeAttr("style");
+		
 		// html content
 		String htmlContent = doc.select("article div.content").first().html();
-		
-		
 		
 		//cater for youtube links
 		Pattern paragraph = Pattern.compile("src=\"//");
@@ -131,6 +135,8 @@ public class HTMLPageParser {
 		sourceMatcher = paragraph.matcher(htmlContent);
 		htmlContent = sourceMatcher
 				.replaceAll("src=\"http://www.lexpress.mu/sites");
+		
+		
 		
 		artContent.setHtmlContent(cssLexpress+htmlContent);
 		
