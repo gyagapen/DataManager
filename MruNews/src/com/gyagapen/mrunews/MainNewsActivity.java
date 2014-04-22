@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.google.ads.AdView;
 import com.gyagapen.mrunews.adapters.MainNewsAdapter;
+import com.gyagapen.mrunews.common.AppRater;
 import com.gyagapen.mrunews.common.LogsProvider;
 import com.gyagapen.mrunews.common.MenuHelper;
 import com.gyagapen.mrunews.common.StaticValues;
@@ -109,6 +110,8 @@ public class MainNewsActivity extends Activity implements Runnable {
 			mHandler.sendEmptyMessage(1);
 		}
 		progressDialog.dismiss();
+		
+
 
 	}
 
@@ -126,6 +129,9 @@ public class MainNewsActivity extends Activity implements Runnable {
 
 			}
 		});
+		
+		//app rater
+		AppRater.app_launched(this);
 
 	}
 

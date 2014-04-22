@@ -110,19 +110,37 @@ public class HTMLPageParser {
 		// get image
 		artContent.setImageLink(getImageFromLink(linkToParse,
 				StaticValues.LEXPRESS_CODE, doc));
+		
+		// css link
+		String cssLexpress = "<link href=\"http://www.lexpress.mu/sites/all/themes/lexpress_desk1/css/global.css\" rel=\"stylesheet\">";
+
 
 		// html content
 		String htmlContent = doc.select("article div.content").first().html();
-		artContent.setHtmlContent(htmlContent);
+		
+		
+		
+		//cater for youtube links
+		Pattern paragraph = Pattern.compile("src=\"//");
+		Matcher sourceMatcher = paragraph.matcher(htmlContent);
+		htmlContent = sourceMatcher
+				.replaceAll("src=\"http://");
+		
+		//cater for images
+		paragraph = Pattern.compile("src=\"/sites");
+		sourceMatcher = paragraph.matcher(htmlContent);
+		htmlContent = sourceMatcher
+				.replaceAll("src=\"http://www.lexpress.mu/sites");
+		
+		artContent.setHtmlContent(cssLexpress+htmlContent);
+		
 
 		// get Title
 		Element TitleElement = doc.select("h1#page-title").first();
 		String title = TitleElement.text();
 		artContent.setTitle(title);
 
-		// css link
-		String cssLexpress = "<link href=\"http://www.lexpress.mu/sites/all/themes/lexpress_desk1/css/global.css\" rel=\"stylesheet\">";
-
+		
 		// comments in html format
 		Element htmlComments = doc.select("div#comments").first();
 		if (htmlComments != null) {
@@ -148,21 +166,26 @@ public class HTMLPageParser {
 				StaticValues.DEFI_PLUS_CODE, doc));
 
 		// html content
-		String htmlContent = doc.select("div.itemImageBlock").first().html();
+		 Element htmlContentElt = doc.select("div.itemImageBlock").first();
+		//remove iframe
+		 htmlContentElt.select("iframe").remove();
+		 String htmlContent = htmlContentElt.html();
 
 		htmlContent += doc.select("div.itemIntroText").first().html();
 		htmlContent += doc.select("div.itemFullText").first().html();
 
+		
+		
 		// cater for images sources
-		Pattern paragraph = Pattern.compile("href=\"");
+		Pattern paragraph = Pattern.compile("href=\"/media");
 		Matcher sourceMatcher = paragraph.matcher(htmlContent);
 		htmlContent = sourceMatcher
-				.replaceAll("href=\"http://www.defimedia.info");
+				.replaceAll("href=\"http://www.defimedia.info/media");
 
-		paragraph = Pattern.compile("src=\"");
+		paragraph = Pattern.compile("src=\"/media");
 		sourceMatcher = paragraph.matcher(htmlContent);
 		htmlContent = sourceMatcher
-				.replaceAll("src=\"http://www.defimedia.info");
+				.replaceAll("src=\"http://www.defimedia.info/media");
 
 		artContent.setHtmlContent(htmlContent);
 

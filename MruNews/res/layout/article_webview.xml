@@ -11,10 +11,12 @@
         android:layout_height="fill_parent" >
 
         <RelativeLayout
+            android:id="@+id/mainContainer"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
 
             <LinearLayout
+                android:id="@+id/webContent"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical" >

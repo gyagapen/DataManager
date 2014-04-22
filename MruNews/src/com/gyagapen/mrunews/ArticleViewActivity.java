@@ -1,7 +1,5 @@
 package com.gyagapen.mrunews;
 
-import java.util.ArrayList;
-
 import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
@@ -14,6 +12,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
@@ -26,17 +26,23 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebChromeClient;
+import android.webkit.WebChromeClient.CustomViewCallback;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.gyagapen.mrunews.common.MenuHelper;
+import com.gyagapen.mrunews.common.VideoChromeWebClient;
 import com.gyagapen.mrunews.entities.ArticleContent;
 import com.gyagapen.mrunews.parser.HTMLPageParser;
 
@@ -64,6 +70,8 @@ public class ArticleViewActivity extends Activity implements Runnable {
 	private int screenWidth;
 
 	private FrameLayout frameLayout;
+	private LinearLayout contentLinearView;
+	private VideoChromeWebClient customWebClient;
 	private MenuHelper menuHelper;
 
 	// SocialAuth Component
@@ -131,6 +139,10 @@ public class ArticleViewActivity extends Activity implements Runnable {
 					// set number of comments
 					buttonComments.setText(buttonCommentText);
 
+					// resize display content
+					displayContent = "<html><head><style>iframe {max-width: 100%; width:auto; height: auto;}img {max-width: 100%;height: auto;}</style></head><body>"
+							+ displayContent + "</body></html>";
+
 					webView.loadData(displayContent,
 							"text/html; charset=utf-8", "utf-8");
 				}
@@ -148,11 +160,27 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 		webView = (WebView) findViewById(R.id.htmlWebView);
 
-		// ajust image size
-		webView.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+		frameLayout = (FrameLayout) findViewById(R.id.articleViewFrame);
+		//contentLinearView = (LinearLayout)findViewById(R.id.webContent);
+		
+		// Initialize the WebView
+		webView.setScrollbarFadingEnabled(true);
+		webView.getSettings().setLoadsImagesAutomatically(true);
+		webView.getSettings().setJavaScriptEnabled(true);
+		webView.getSettings().setPluginState(PluginState.ON);
+		
+		RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.mainContainer);
+		
+		customWebClient = new VideoChromeWebClient(frameLayout, this);
+		webView.setWebChromeClient(customWebClient);
+
+		// cache
+		webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+		webView.getSettings().setAppCachePath(
+				getExternalCacheDir().getAbsolutePath());
+		webView.getSettings().setAppCacheEnabled(true);
 
 		buttonComments = (Button) findViewById(R.id.butComment);
-		frameLayout = (FrameLayout) findViewById(R.id.articleViewFrame);
 		frameLayout.getForeground().setAlpha(0);
 
 		buttonComments.setBackgroundResource(R.drawable.blue_gradient);
@@ -217,7 +245,6 @@ public class ArticleViewActivity extends Activity implements Runnable {
 			buttonCommentText = buttonComments.getText() + " ("
 					+ artContent.getCommentCount() + ")";
 
-
 			mHandler.sendEmptyMessage(0);
 
 			progressDialog.dismiss();
@@ -246,7 +273,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 				R.animator.push_right_out);
 	}
 
-	@Override
+	
 	protected void onPause() {
 
 		// close progress dialog if it's opened
@@ -256,10 +283,27 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 		super.onPause();
 	}
+	
+	
+	public void onBackPressed() {
+		
+		//close video full screen view
+		
+		if (customWebClient.getmCustomViewContainer() != null)
+		{
+			customWebClient.onHideCustomView();
+		}
+	    else
+	    {
+	        super.onBackPressed();
+	    }
+		
+	}
 
 	@Override
 	protected void onDestroy() {
 
+		webView.destroy();
 		super.onDestroy();
 	}
 
@@ -298,27 +342,21 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		WebView commentWebView = (WebView) layout
 				.findViewById(R.id.commentWebView);
 
-		
-		if(artContent.getCommentsHtml() != null)
-		{
-			commentWebView.loadData(artContent.getCommentsHtml(), "text/html; charset=utf-8",
-				"utf-8");
-		}
-		else if(artContent.getCommentsIframeLink()!= null)
-		{
-			//load from link
+		if (artContent.getCommentsHtml() != null) {
+			commentWebView.loadData(artContent.getCommentsHtml(),
+					"text/html; charset=utf-8", "utf-8");
+		} else if (artContent.getCommentsIframeLink() != null) {
+			// load from link
 			commentWebView.getSettings().setJavaScriptEnabled(true);
 			commentWebView.loadUrl(artContent.getCommentsIframeLink());
 		}
-		
-		
+
 		// Creating the PopupWindow
 		final PopupWindow popup = new PopupWindow(context);
 		popup.setContentView(layout);
 		popup.setWidth(popupWidth);
 		popup.setHeight(popupHeight);
 		popup.setFocusable(true);
-
 
 		// Some offset to align the popup a bit to the right, and a bit down,
 		// relative to button's position.
@@ -344,6 +382,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		frameLayout.getForeground().setAlpha(200);
 
 	}
+	
 
 	/**
 	 * Listens Response from Library
@@ -453,5 +492,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		}
 
 	}
+
+	
 
 }
