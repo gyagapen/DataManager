@@ -124,15 +124,10 @@ public class MainService extends Service {
 		//start time on if screen is off
 		if(!dataActivation.isScreenIsOn())
 		{
-
-
 			//set first time on
 			sharedPrefsEditor.setIsFirstTimeOn(true);
-
 			Intent i = new Intent(getBaseContext(), MainService.class);
-
 			i.putExtra("screen_state", true);
-
 			getBaseContext().startService(i);
 		}
 

@@ -184,6 +184,7 @@ public class SharedPrefsEditor {
 			prefEditor.putBoolean(STR_MANAGE_APP_IS_OPEN, MANAGE_APP_IS_OPEN);
 
 			prefEditor.apply();
+			prefEditor.commit();
 		}
 	}
 
@@ -240,6 +241,7 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_DATA_MANAGER_IS_ACTIVATED, DATA_OFF_WHEN_WIFI);
 		prefEditor.putBoolean(STR_MANAGE_APP_IS_OPEN, MANAGE_APP_IS_OPEN);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 
 	public int getTimeOn() {
@@ -480,6 +482,7 @@ public class SharedPrefsEditor {
 	{
 		prefEditor.putString(STR_SLEEP_ON_HOUR, sleepTimeOn);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 
@@ -487,243 +490,287 @@ public class SharedPrefsEditor {
 	{
 		prefEditor.putBoolean(STR_CURRENTLY_SLEEP_TIME_ON, sleepTimeOnIsActivated);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setSleepTimeOff(String sleepTimeOff)
 	{
 		prefEditor.putString(STR_SLEEP_OFF_HOUR, sleepTimeOff);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setIsCheckingAutoWifi(boolean isChecking)
 	{
 		prefEditor.putBoolean(STR_CHECKING_AUTO_WIFI, isChecking);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setCheckNetConnectionWifi(boolean isChecking)
 	{
 		prefEditor.putBoolean(STR_CHECK_NET_CONNECTION_WIFI, isChecking);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setBluetoothActivation(boolean isEnabled)
 	{
 		prefEditor.putBoolean(STR_BLUETOOTH_ACTIVATION, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setBluetoothDeactivationDuringSleep(boolean isDisabled)
 	{
 		prefEditor.putBoolean(STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE, isDisabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setManageAppIsOpened(boolean isOpened)
 	{
 		prefEditor.putBoolean(STR_MANAGE_APP_IS_OPEN, isOpened);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void set2GSwitchActivation(boolean isSwitchEnabled)
 	{
 		prefEditor.putBoolean(STR_IS_2G_SWITCH_ACTIVATED, isSwitchEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setApplicationConnMgrActivatation(boolean isActivated)
 	{
 		prefEditor.putBoolean(STR_IS_APPLICATION_ON_SET_IS_ACTIVATED, isActivated);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void set2GActivation(boolean isActivated)
 	{
 		prefEditor.putBoolean(STR_IS_2G_ACTIVATED, isActivated);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setNotificationActivation(boolean isActivated)
 	{
 		prefEditor.putBoolean(STR_SHOW_NOTIFICATION, isActivated);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 
 	public void setTimeOn(int timeOn) {
 		prefEditor.putInt(STR_TIME_ON, timeOn);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setOriginalPreferredNetwork(int originalPreferredNetwork) {
 		prefEditor.putInt(STR_ORIGINAL_PREFERRED_NETWORK_MODE, originalPreferredNetwork);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setTimeOnCheck(int timeOn) {
 		prefEditor.putInt(STR_TIME_ON_CHECK, timeOn);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setLowBatteryProfileActiviation(Boolean isEnabled) {
 		prefEditor.putBoolean(STR_LOW_PROFILE_BATTERY, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	} 
 	
 	public void setBatteryLevelToMonitor(int batteryLevel) {
 		prefEditor.putInt(STR_BATTERY_LEVEL_TO_MONITOR, batteryLevel);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setBatteryIsCurrentlyLow(boolean isCurrentlyLow)
 	{
 		prefEditor.putBoolean(STR_CURRENTLY__BATTERY_LOW, isCurrentlyLow);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setScrenWasOff(boolean screenWasOff)
 	{
 		prefEditor.putBoolean(STR_SCREEN_WAS_OFF, screenWasOff);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setDataOffWhenWifi(boolean dataOffWhenWifi)
 	{
 		prefEditor.putBoolean(STR_DATA_OFF_WHEN_WIFI, dataOffWhenWifi);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setFirstTimeOn(int firstTimeOn) {
 		prefEditor.putInt(STR_FIRST_TIME_ON_VALUE, firstTimeOn);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setScreenDelayTimer(int delayTimer) {
 		prefEditor.putInt(STR_SCREEN_DELAY_TIMER, delayTimer);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 
 	public void setTimeOff(int timeOff) {
 		prefEditor.putInt(STR_TIME_OFF, timeOff);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setIsFirstTimeOn(boolean isFirstTimeon) {
 		prefEditor.putBoolean(STR_IS_FIRST_TIME_ON, isFirstTimeon);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 
 	public void setIntervalCheckTime(int intervalCheckTime) {
 		prefEditor.putInt(STR_INTERVAL_CHECK, intervalCheckTime);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setLogsEnabled(boolean enabled) {
 		prefEditor.putBoolean(STR_LOGS_ENABLED, enabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 
 	public void setDataActivation(boolean isEnabled) {
 		prefEditor.putBoolean(STR_DATA_IS_ACTIVATED, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setFirstTimeOnIsActivated(boolean isEnabled) {
 		prefEditor.putBoolean(STR_FIRST_TIME_ON_IS_ACTIVATED, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setDeactivateWhilePlugged(boolean isEnabled) {
 		prefEditor.putBoolean(STR_DEACTIVATE_PLUGGED, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setDeactivateAll(boolean isEnabled) {
 		prefEditor.putBoolean(STR_DEACTIVATE_ALL, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 
 	public void setDataActivationManager(boolean isEnabled) {
 		prefEditor.putBoolean(STR_DATA_MANAGER_IS_ACTIVATED, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setEnabledWhenKeyguardOff(boolean isEnabled)
 	{
 		prefEditor.putBoolean(STR_ENABLE_WHEN_KEYGUARD_OFF, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 
 	public void setWifiActivation(boolean isEnabled) {
 		prefEditor = prefEditor.putBoolean(STR_WIFI_IS_ACTIVATED, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 
 	public void setWifiActivationManager(boolean isEnabled) {
 		prefEditor.putBoolean(STR_WIFI_MANAGER_IS_ACTIVATED, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 
 	public void setAutoSyncActivation(boolean isEnabled) {
 		prefEditor.putBoolean(STR_AUTO_SYNC, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setAutoSyncMgrActivation(boolean isEnabled) {
 		prefEditor.putBoolean(STR_AUTO_SYNC_MGR_IS_ACTIVATED, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 
 	public void setServiceActivation(boolean isEnabled) {
 		prefEditor.putBoolean(STR_SERVICE_RUNNING, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setScreenOnIsDelayed(boolean isDelayed) {
 		Log.d("IMMMPORTANT", "value screen on delay: "+isDelayed);
 		prefEditor = prefEditor.putBoolean(STR_SCREEN_ON_ACTIVATION_DELAYED, isDelayed);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	
 	public void setDataActivationDelayed(boolean isEnabled) {
 		prefEditor.putBoolean(STR_DATA_ACTIVATION_DELAYED, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	
 	public void setNetworkModeIsSwitching(boolean isSwitching) {
 		prefEditor.putBoolean(STR_NETWORK_MODE_IS_SWITCHING, isSwitching);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	
 	public void setTimeOffActivation(boolean isEnabled) {
 		prefEditor.putBoolean(STR_TIME_OFF_IS_ACTIVATED, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setSleepHoursActivation(boolean isEnabled)
 	{
 		prefEditor.putBoolean(STR_SLEEP_IS_ACTIVATED, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setIsSleeping(boolean isSleeping)
 	{
 		prefEditor.putBoolean(STR_IS_SLEEPING, isSleeping);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setAutoWifiOffActivation(boolean isEnabled)
 	{
 		prefEditor.putBoolean(STR_AUTO_WIFI_OFF_IS_ACTIVATED, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	public void setApplicationOnSet(String apps)
 	{
 		prefEditor.putString(STR_APPLICATION_ON_SET, apps);
 		prefEditor.apply();
+		prefEditor.commit();
 		
 	}
 	
@@ -731,6 +778,7 @@ public class SharedPrefsEditor {
 	{
 		prefEditor.putBoolean(STR_NET_CONN_HAS_TO_BE_CHECKED, hasToBeChecked);
 		prefEditor.apply();
+		prefEditor.commit();
 		
 	}
 	
@@ -739,6 +787,7 @@ public class SharedPrefsEditor {
 	{
 		prefEditor.putBoolean(STR_AUTO_WIFI_ON_IS_ACTIVATED, isEnabled);
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 
 	public void setAllValues(int timeOn, int timeOff, int checkTime,
@@ -778,6 +827,7 @@ public class SharedPrefsEditor {
 		prefEditor.putBoolean(STR_BLUETOOTH_DEACTIVATE_SLEEP_MODE, bluetoothOffSleep);
 		
 		prefEditor.apply();
+		prefEditor.commit();
 	}
 	
 	

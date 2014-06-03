@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gyagapen.cleverconnectivity"
-    android:versionCode="33"
-    android:versionName="1.4.2" >
+    android:versionCode="35"
+    android:versionName="1.4.3" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -33,15 +33,16 @@
         <receiver android:name="com.datamanager.core.Autostart" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <!-- <action android:name="android.intent.action.MEDIA_MOUNTED" />  -->
-                <!-- <data android:scheme="file" />  -->
+                <!-- <action android:name="android.intent.action.MEDIA_MOUNTED" /> -->
+                <!-- <data android:scheme="file" /> -->
             </intent-filter>
         </receiver>
         <receiver android:name="com.datamanager.core.NetworkModeReceiver" >
             <intent-filter>
                 <action android:name="com.android.internal.telephony.NETWORK_MODE_CHANGED" />
             </intent-filter>
-        </receiver>>
+        </receiver>
+>
         <receiver android:name="com.datamanager.core.AlarmReceiver" >
         </receiver>
         <receiver android:name="com.datamanager.core.ScreenReceiver" >
@@ -50,18 +51,20 @@
         </receiver>
         <receiver android:name="com.datamanager.core.TimerOffReceiver" >
         </receiver>
-<!--         <receiver android:name="com.example.datamanager.VolumeButtonReceiver" > -->
-<!--             <intent-filter> -->
-<!--                 <action android:name="android.media.VOLUME_CHANGED_ACTION" /> -->
-<!--             </intent-filter> -->
-<!--         </receiver> -->
+        <receiver android:name="com.datamanager.core.TimerCheckReceiver" >
+        </receiver>
+        <!-- <receiver android:name="com.example.datamanager.VolumeButtonReceiver" > -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.media.VOLUME_CHANGED_ACTION" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
         <receiver android:name="com.datamanager.core.TimeScreenDelayReceiver" >
         </receiver>
         <receiver android:name="com.datamanager.core.WifiConnectionReceiver" >
-        <intent-filter>
+            <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.STATE_CHANGE" />
-        </intent-filter>
+            </intent-filter>
         </receiver>
         <receiver android:name="com.datamanager.core.WifiScanReceiver" >
             <intent-filter>
@@ -85,11 +88,14 @@
             android:name="com.datamanager.core.MainActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_main" >
-            <!-- <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name="com.datamanager.core.ShortcutActivateReceiver"
@@ -100,7 +106,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.datamanager.core.MainService" android:process=":remote" >
+        <service
+            android:name="com.datamanager.core.MainService"
+            android:process=":remote" >
         </service>
 
         <activity android:name="com.datamanager.tabActivities.SleepTimerPickerActivity" >
@@ -110,23 +118,31 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity android:name="com.datamanager.tabActivities.ApplicationListActivity" >
         </activity>
-        <activity android:name="com.datamanager.tabActivities.AdvancedTabActivity"></activity>
-        <activity android:name="com.datamanager.tabActivities.BluetoothTabActivity"></activity>
-        <activity android:name="com.datamanager.tabActivities.DataTabActivity"></activity>
-        <activity android:name="com.datamanager.tabActivities.GeneralTabActivity"></activity>
-        <activity android:name="com.datamanager.tabActivities.AppLauncher"
-            android:configChanges="orientation|screenSize">
+        <activity android:name="com.datamanager.tabActivities.AdvancedTabActivity" >
+        </activity>
+        <activity android:name="com.datamanager.tabActivities.BluetoothTabActivity" >
+        </activity>
+        <activity android:name="com.datamanager.tabActivities.DataTabActivity" >
+        </activity>
+        <activity android:name="com.datamanager.tabActivities.GeneralTabActivity" >
+        </activity>
+        <activity
+            android:name="com.datamanager.tabActivities.AppLauncher"
+            android:configChanges="orientation|screenSize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.datamanager.tabActivities.MiscTabActivity"></activity>
-        <activity android:name="com.datamanager.tabActivities.SyncTabActivity"></activity>
-        <activity android:name="com.datamanager.tabActivities.TimersTabActivity"></activity>
-        <activity android:name="com.datamanager.tabActivities.WifiTabActivity"></activity>
-
+        <activity android:name="com.datamanager.tabActivities.MiscTabActivity" >
+        </activity>
+        <activity android:name="com.datamanager.tabActivities.SyncTabActivity" >
+        </activity>
+        <activity android:name="com.datamanager.tabActivities.TimersTabActivity" >
+        </activity>
+        <activity android:name="com.datamanager.tabActivities.WifiTabActivity" >
+        </activity>
     </application>
 
 </manifest>

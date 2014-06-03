@@ -123,11 +123,13 @@ public class TimersTabActivity extends SherlockFragment {
 
 	public void onDestroy() {
 		applySettings();
+		logsProvider.info("on destroy is called");
 		super.onDestroy();
 	}
 	
 	public void onPause() {
 		applySettings();
+		logsProvider.info("onPause is called");
 		super.onPause();
 	}
 
