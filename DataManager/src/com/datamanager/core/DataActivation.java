@@ -58,10 +58,11 @@ public class DataActivation {
 			SharedPrefsEditor sharedPrefsEditor) throws Exception {
 
 		logsProvider.info("setMobileDataEnabled method");
-		
+
 		// if option isDataOffWhenWifi is checked and wifi is connected: data
 		// remains disabled
-		if (!(sharedPrefsEditor.isDataOffWhenWifi() && isWifiConnectedToANetwork() && enabled==true)) {
+		if (!(sharedPrefsEditor.isDataOffWhenWifi()
+				&& isWifiConnectedToANetwork() && enabled == true)) {
 
 			// only if necessary
 			if ((!isDataChipActivated() && enabled)
@@ -79,13 +80,34 @@ public class DataActivation {
 				final Object iConnectivityManager = iConnectivityManagerField
 						.get(conman);
 				final Class iConnectivityManagerClass = Class
+					
 						.forName(iConnectivityManager.getClass().getName());
-				final Method setMobileDataEnabledMethod = iConnectivityManagerClass
-						.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-				setMobileDataEnabledMethod.setAccessible(true);
+				try {
+					final Method setMobileDataEnabledMethod = iConnectivityManagerClass
+							.getDeclaredMethod("setMobileDataEnabled",
+									Boolean.TYPE);
+					setMobileDataEnabledMethod.setAccessible(true);
 
-				setMobileDataEnabledMethod
-						.invoke(iConnectivityManager, enabled);
+					setMobileDataEnabledMethod.invoke(iConnectivityManager,
+							enabled);
+				} catch (NoSuchMethodException ex) {
+					logsProvider.info("setMobileDataEnabled used from cyanogen");
+					// in case new data method defined in 4.4+ cyanogen
+					Class[] cArg = new Class[2];
+					cArg[0] = String.class;
+					cArg[1] = Boolean.TYPE;
+					Method setMobileDataEnabledMethod;
+
+					setMobileDataEnabledMethod = iConnectivityManagerClass
+							.getDeclaredMethod("setMobileDataEnabled", cArg);
+
+					Object[] pArg = new Object[2];
+					pArg[0] = context.getPackageName();
+					pArg[1] = enabled;
+					setMobileDataEnabledMethod.setAccessible(true);
+					setMobileDataEnabledMethod.invoke(iConnectivityManager,
+							pArg);
+				}
 
 			}
 
@@ -157,16 +179,16 @@ public class DataActivation {
 	 * @return
 	 */
 	public boolean isWifiConnectedToANetwork() {
-		
+
 		boolean isWifiConnected = false;
-		
+
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		
+
 		isWifiConnected = wifi.isConnected();
-		
-		logsProvider.info("isWifiConnectedToANetwork : "+isWifiConnected);
+
+		logsProvider.info("isWifiConnectedToANetwork : " + isWifiConnected);
 
 		return isWifiConnected;
 
@@ -238,7 +260,7 @@ public class DataActivation {
 			// activate data connection
 			// else data will be activated by network mode receiver
 			if (!sharedPrefsEditor.isNetworkModeSwitching()) {
-				setMobileDataEnabled(true,sharedPrefsEditor);
+				setMobileDataEnabled(true, sharedPrefsEditor);
 			}
 		}
 
@@ -259,7 +281,7 @@ public class DataActivation {
 
 		if (sharedPrefsEditor.isDataMgrActivated()) {
 			// activate data connection
-			setMobileDataEnabled(false,sharedPrefsEditor);
+			setMobileDataEnabled(false, sharedPrefsEditor);
 		}
 
 		if (sharedPrefsEditor.isAutoSyncMgrIsActivated()) {
