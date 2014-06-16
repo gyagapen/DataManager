@@ -113,8 +113,8 @@ public class ListArticleAdapter  extends ArrayAdapter<ArticleHeader> implements 
 		articleDate.setText(currentEntry.getPublishedDate());
 
 		//add onclick listener
-		ArticleOnClickListener articleClickListener = new ArticleOnClickListener(currentEntry, newsName);
-		convertView.setOnClickListener(articleClickListener);
+		//ArticleOnClickListener articleClickListener = new ArticleOnClickListener(currentEntry, newsName);
+		//convertView.setOnClickListener(articleClickListener);
 		
 		//animation
 		/*Animation anim = AnimationUtils.loadAnimation(getContext(),

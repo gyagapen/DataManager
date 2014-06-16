@@ -202,7 +202,7 @@ public class HTMLPageParser {
 		artContent.setTitle(title);
 
 		// disqus iframe
-		String commentsIframeUrl = "http://disqus.com/embed/comments/?base=default&disqus_version=1e42086a&f=ledefimediagroup&t_u="
+		String commentsIframeUrl = "http://disqus.com/embed/comments/?base=default&disqus_version=ae2cfce6&f=ledefimediagroup&t_u="
 				+ linkToParse;
 
 		// get comments count

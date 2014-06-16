@@ -1,5 +1,8 @@
 package com.gyagapen.mrunews.adapters;
 
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.Card.OnCardClickListener;
+
 import com.gyagapen.mrunews.ArticleViewActivity;
 import com.gyagapen.mrunews.entities.ArticleHeader;
 
@@ -7,7 +10,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class ArticleOnClickListener implements OnClickListener {
+public class ArticleOnClickListener implements OnCardClickListener {
 
 	ArticleHeader article = null;
 	String newsName;
@@ -18,20 +21,17 @@ public class ArticleOnClickListener implements OnClickListener {
 	}
 
 	
-	/**
-	 * Trigerred when clicking on a article
-	 */
 
-	public void onClick(View v) {
-				
-		Intent intent = new Intent(v.getContext(), ArticleViewActivity.class);
+	@Override
+	public void onClick(Card card, View view) {
+		
+		Intent intent = new Intent(view.getContext(), ArticleViewActivity.class);
 		intent.putExtra("ArticleLink",article.getLink());
 		intent.putExtra("ArticleId",article.getId());
 		intent.putExtra("NewsName",newsName);
 		
-		v.getContext().startActivity(intent);
+		view.getContext().startActivity(intent);
 		
-
 	}
 
 }

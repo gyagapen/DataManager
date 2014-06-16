@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
-import com.google.ads.AdView;
+import com.google.android.gms.ads.AdView;
 import com.gyagapen.mrunews.R;
 
 /**
@@ -88,7 +88,7 @@ public class MenuHelper {
 	}
 	
 	//generate ads banner
-	public void generateAdsBanner(AdView adView, LinearLayout layout, Activity activity)
+	/*public void generateAdsBanner(AdView adView, LinearLayout layout, Activity activity)
 	{
 		// Create the adView
 	    adView = new AdView(activity, AdSize.BANNER, StaticValues.MY_AD_UNIT_ID);
@@ -99,6 +99,6 @@ public class MenuHelper {
 
 	    // Initiate a generic request to load it with an ad
 	    adView.loadAd(new AdRequest());
-	}
+	}*/
 
 }

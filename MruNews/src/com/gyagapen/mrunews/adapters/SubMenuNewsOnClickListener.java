@@ -1,5 +1,8 @@
 package com.gyagapen.mrunews.adapters;
 
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.Card.OnCardClickListener;
+
 import java.util.ArrayList;
 
 import com.gyagapen.mrunews.ArticleListActivity;
@@ -9,7 +12,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class SubMenuNewsOnClickListener implements OnClickListener {
+public class SubMenuNewsOnClickListener implements OnCardClickListener {
 
 	private NewsSubEntry newsSubMenu = null;
 	private String newsName;
@@ -21,21 +24,19 @@ public class SubMenuNewsOnClickListener implements OnClickListener {
 		this.newsCode = newsCode;
 	}
 
-	/**
-	 * Trigerred when clicking on a article
-	 */
 
-	public void onClick(View v) {
+	public void onClick(Card card, View view) {
 		
+
 		ArrayList<String> rssFeedList = new ArrayList<String>();
 		rssFeedList.add(newsSubMenu.getRssFeed());
 
-		Intent intent = new Intent(v.getContext(), ArticleListActivity.class);
+		Intent intent = new Intent(view.getContext(), ArticleListActivity.class);
 		intent.putExtra("rssFeed", rssFeedList);
 		intent.putExtra("rssCode", newsCode);
 		intent.putExtra("newsTitle", newsName+newsSubMenu.getSubMenuName());
-		v.getContext().startActivity(intent);
-
+		view.getContext().startActivity(intent);
+		
 	}
 
 }

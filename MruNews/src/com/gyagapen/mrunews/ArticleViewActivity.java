@@ -12,8 +12,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
@@ -26,22 +24,22 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.webkit.WebChromeClient;
-import android.webkit.WebChromeClient.CustomViewCallback;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.gyagapen.mrunews.common.MenuHelper;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.gyagapen.mrunews.common.VideoChromeWebClient;
 import com.gyagapen.mrunews.entities.ArticleContent;
 import com.gyagapen.mrunews.parser.HTMLPageParser;
@@ -63,16 +61,16 @@ public class ArticleViewActivity extends Activity implements Runnable {
 	private String buttonCommentText = null;
 	private String artTitle = null;
 	private String imageLink = null;
+	private LinearLayout buttonsLayout = null;
 
 	HTMLPageParser htmlPageParser = null;
 
 	private int screenHeight;
 	private int screenWidth;
+	private boolean activityIsActive = true;
 
 	private FrameLayout frameLayout;
-	private LinearLayout contentLinearView;
 	private VideoChromeWebClient customWebClient;
-	private MenuHelper menuHelper;
 
 	// SocialAuth Component
 	SocialAuthAdapter adapter;
@@ -86,11 +84,19 @@ public class ArticleViewActivity extends Activity implements Runnable {
 	private ProgressDialog progressDialog;
 
 	private Handler mHandler = null;
+	
+	private AdView adView = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.article_webview);
+		
+		//load ads
+		adView = (AdView)this.findViewById(R.id.adViewWeb);
+	    AdRequest adRequest = new AdRequest.Builder()
+	    .build();
+	    adView.loadAd(adRequest);
 
 		// screen size
 		DisplayMetrics metrics = new DisplayMetrics();
@@ -145,6 +151,17 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 					webView.loadData(displayContent,
 							"text/html; charset=utf-8", "utf-8");
+
+					// button layout is shown
+					buttonsLayout.setVisibility(View.VISIBLE);
+
+					progressDialog.dismiss();
+
+					// animation
+					anim = AnimationUtils.loadAnimation(
+							getApplicationContext(), R.animator.zoom_in_center);
+					frameLayout.setAnimation(anim);
+					anim.start();
 				}
 			}
 		};
@@ -161,16 +178,15 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		webView = (WebView) findViewById(R.id.htmlWebView);
 
 		frameLayout = (FrameLayout) findViewById(R.id.articleViewFrame);
-		//contentLinearView = (LinearLayout)findViewById(R.id.webContent);
-		
+
 		// Initialize the WebView
 		webView.setScrollbarFadingEnabled(true);
 		webView.getSettings().setLoadsImagesAutomatically(true);
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.getSettings().setPluginState(PluginState.ON);
-		
-		RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.mainContainer);
-		
+
+		buttonsLayout = (LinearLayout) findViewById(R.id.buttonsLayout);
+
 		customWebClient = new VideoChromeWebClient(frameLayout, this);
 		webView.setWebChromeClient(customWebClient);
 
@@ -247,7 +263,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 			mHandler.sendEmptyMessage(0);
 
-			progressDialog.dismiss();
+			// progressDialog.dismiss();
 
 		} catch (Exception e) {
 
@@ -255,25 +271,29 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 			progressDialog.dismiss();
 
-			// fallback : open webview activity
-			Intent webViewIntent = new Intent(this, WebViewActivity.class);
-			webViewIntent.putExtra("link", articleLink);
-			startActivity(webViewIntent);
+			if (activityIsActive) {
+				// fallback : open webview activity
+				Intent webViewIntent = new Intent(this, WebViewActivity.class);
+				webViewIntent.putExtra("link", articleLink);
+				startActivity(webViewIntent);
 
-			// end the activity
-			finish();
+				// end the activity
+				finish();
+			}
 		}
 
 	}
 
 	public void finish() {
 		super.finish();
+
+		activityIsActive = false;
+
 		// transition animation
-		overridePendingTransition(R.animator.push_right_in,
-				R.animator.push_right_out);
+		overridePendingTransition(R.animator.zoom_in_center,
+				R.animator.zoom_out);
 	}
 
-	
 	protected void onPause() {
 
 		// close progress dialog if it's opened
@@ -283,27 +303,26 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 		super.onPause();
 	}
-	
-	
+
 	public void onBackPressed() {
-		
-		//close video full screen view
-		
-		if (customWebClient.getmCustomViewContainer() != null)
-		{
+
+		// close video full screen view
+
+		if (customWebClient.getmCustomViewContainer() != null) {
 			customWebClient.onHideCustomView();
+		} else {
+			super.onBackPressed();
 		}
-	    else
-	    {
-	        super.onBackPressed();
-	    }
-		
+
 	}
 
 	@Override
 	protected void onDestroy() {
 
-		webView.destroy();
+		activityIsActive = false;
+		adView.destroy();
+
+		// webView.destroy();
 		super.onDestroy();
 	}
 
@@ -339,15 +358,34 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		View layout = layoutInflater.inflate(R.layout.comment_webview,
 				viewGroup);
 
-		WebView commentWebView = (WebView) layout
+		final WebView commentWebView = (WebView) layout
 				.findViewById(R.id.commentWebView);
+
+		final WebView waitingWebView = (WebView) layout.findViewById(R.id.loadWebView);
+		waitingWebView.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+		waitingWebView.loadUrl("file:///android_asset/loading.gif");
 
 		if (artContent.getCommentsHtml() != null) {
 			commentWebView.loadData(artContent.getCommentsHtml(),
 					"text/html; charset=utf-8", "utf-8");
+			commentWebView.setVisibility(View.VISIBLE);
+			waitingWebView.setVisibility(View.GONE);
 		} else if (artContent.getCommentsIframeLink() != null) {
 			// load from link
 			commentWebView.getSettings().setJavaScriptEnabled(true);
+
+			// set loading image
+			commentWebView.setWebViewClient(new WebViewClient() {
+
+				public void onPageFinished(WebView view, String url) {
+					// hide loading image
+					commentWebView.setVisibility(View.VISIBLE);
+					waitingWebView.setVisibility(View.GONE);
+
+				}
+
+			});
+
 			commentWebView.loadUrl(artContent.getCommentsIframeLink());
 		}
 
@@ -382,7 +420,6 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		frameLayout.getForeground().setAlpha(200);
 
 	}
-	
 
 	/**
 	 * Listens Response from Library
@@ -492,7 +529,5 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		}
 
 	}
-
-	
 
 }

@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
-import com.gyagapen.mrunews.common.AppRater;
 import com.gyagapen.mrunews.common.LogsProvider;
 import com.gyagapen.mrunews.common.MenuHelper;
 
@@ -25,11 +24,13 @@ public class MainTabActivity extends TabActivity {
 
 	// cache max size
 	private static final long MAX_SIZE = 25242880L; // 25MB
+	
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tabbed_layout);
-
+		
+		
 		logsProvider = new LogsProvider(getApplicationContext(),
 				this.getClass());
 

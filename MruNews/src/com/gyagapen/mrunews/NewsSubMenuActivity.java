@@ -1,13 +1,11 @@
 package com.gyagapen.mrunews;
 
-import java.util.ArrayList;
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.internal.CardThumbnail;
+import it.gmariotti.cardslib.library.view.CardListView;
 
-import com.gyagapen.mrunews.R;
-import com.gyagapen.mrunews.R.animator;
-import com.gyagapen.mrunews.R.id;
-import com.gyagapen.mrunews.R.layout;
-import com.gyagapen.mrunews.adapters.SubMenuAdapter;
-import com.gyagapen.mrunews.entities.NewsSubEntry;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +13,16 @@ import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ListView;
+
+import com.gyagapen.mrunews.adapters.ArticleOnClickListener;
+import com.gyagapen.mrunews.adapters.SubMenuAdapter;
+import com.gyagapen.mrunews.adapters.SubMenuNewsOnClickListener;
+import com.gyagapen.mrunews.common.CustomCardThumbails;
+import com.gyagapen.mrunews.common.NewsCard;
+import com.gyagapen.mrunews.entities.NewsSubEntry;
+import com.gyagapen.mrunews.parser.GetImageLinkAsync;
+import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
+import com.nhaarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 public class NewsSubMenuActivity extends Activity{
 
@@ -25,7 +33,7 @@ public class NewsSubMenuActivity extends Activity{
 
 	private Animation anim;
 
-	private ListView subMenuListView;
+	private CardListView subMenuListView;
 	
 	private String newsTitle;
 
@@ -51,23 +59,48 @@ public class NewsSubMenuActivity extends Activity{
 	}
 
 	public void initUIComponent() {
-		subMenuListView = (ListView) findViewById(R.id.lv_submenu);
+		subMenuListView = (CardListView) findViewById(R.id.lv_submenu);
 	}
 
 	public void populateSubMenuList() {
-		SubMenuAdapter subMenuAdapter = new SubMenuAdapter(
-				subMenuList, this, newsTitle, rssId);
-		subMenuListView.setAdapter(subMenuAdapter);
+//		SubMenuAdapter subMenuAdapter = new SubMenuAdapter(
+//				subMenuList, this, newsTitle, rssId);
+//		subMenuListView.setAdapter(subMenuAdapter);
+//
+//		// scroll bar
+//		subMenuListView.setFastScrollEnabled(true);
+//		subMenuListView.setScrollbarFadingEnabled(false);
+//		subMenuListView.setScrollContainer(true);
+//		subMenuListView.setTextFilterEnabled(true);
+		
+		ArrayList<Card> cards = new ArrayList<Card>();
+		CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, cards);
 
-		// scroll bar
-		subMenuListView.setFastScrollEnabled(true);
-		subMenuListView.setScrollbarFadingEnabled(false);
-		subMenuListView.setScrollContainer(true);
-		subMenuListView.setTextFilterEnabled(true);
+		for (int i = 0; i < subMenuList.size(); i++) {
+			// Create a Card
+			Card card = new Card(this, R.layout.submenu_row_card);
+			card.setTitle(subMenuList.get(i).getSubMenuName());
+
+			CardThumbnail cardThumbnail = new CardThumbnail(this);
+			cardThumbnail.setDrawableResource(subMenuList.get(i).getImageResource());
+			card.addCardThumbnail(cardThumbnail);
+
+			SubMenuNewsOnClickListener subMenuClickListener = new SubMenuNewsOnClickListener(subMenuList.get(i), newsTitle, rssId);
+			card.setOnClickListener(subMenuClickListener);
+
+			cards.add(card);
+		}
+
+		AnimationAdapter animCardArrayAdapter = new SwingBottomInAnimationAdapter(
+				mCardArrayAdapter);
+		animCardArrayAdapter.setAbsListView(subMenuListView);
+		
+		subMenuListView.setExternalAdapter(animCardArrayAdapter,
+				mCardArrayAdapter);
 		
 		// animation
 		anim = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.animator.push_right_in);
+				R.animator.fade_in);
 		subMenuListView.setAnimation(anim);
 		anim.start();
 

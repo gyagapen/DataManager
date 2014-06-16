@@ -1,8 +1,10 @@
 package com.gyagapen.mrunews.common;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -30,6 +32,8 @@ public class VideoChromeWebClient extends WebChromeClient {
 		return mCustomView;
 	}
 
+	 
+	
 	@Override
 	public void onShowCustomView(View view, CustomViewCallback callback) {
 		// if a view already exists then immediately terminate the new one
@@ -68,5 +72,7 @@ public class VideoChromeWebClient extends WebChromeClient {
 			activity.setContentView(mContentView);
 		}
 	}
+
+	
 	
 }

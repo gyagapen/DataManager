@@ -1,44 +1,38 @@
 package com.gyagapen.mrunews;
 
-import java.io.File;
-import java.io.IOException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.net.http.HttpResponseCache;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.google.ads.AdView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.gyagapen.mrunews.adapters.MainNewsAdapter;
 import com.gyagapen.mrunews.common.AppRater;
 import com.gyagapen.mrunews.common.LogsProvider;
-import com.gyagapen.mrunews.common.MenuHelper;
 import com.gyagapen.mrunews.common.StaticValues;
 import com.gyagapen.mrunews.parser.HTMLPageParser;
 
-public class MainNewsActivity extends Activity implements Runnable {
+public class MainNewsActivity extends Activity implements Runnable   {
 
 	private ListView mainArticleListView;
 	private LogsProvider logsProvider = null;
 	
 	// waiting dialog
 	private ProgressDialog progressDialog;
+	
+	//intersticial ad
+	 private InterstitialAd interstitial;
 
 	private Handler mHandler = null;
 
@@ -51,8 +45,33 @@ public class MainNewsActivity extends Activity implements Runnable {
 		
 		
 		logsProvider = new LogsProvider(null, this.getClass());
+		
+		//load ads
+		AdView adView = (AdView)this.findViewById(R.id.adViewMain);
+	    AdRequest adRequest = new AdRequest.Builder()
+	    //.addTestDevice("BE9072DE1ECC3A345AD3A63B1D0FBD50")
+	    .build();
+	    adView.loadAd(adRequest);
 
+		// Create intersticial
+	    interstitial = new InterstitialAd(this);
+	    interstitial.setAdUnitId(StaticValues.MY_INTER_AD_UNIT_ID);
 
+	    // Cretate ad request
+	    AdRequest adInterRequest = new AdRequest.Builder()
+	    //.addTestDevice("BE9072DE1ECC3A345AD3A63B1D0FBD50")
+	    .build();
+
+	    //load intersticial
+	    interstitial.loadAd(adInterRequest);
+	    interstitial.setAdListener(new AdListener() {
+	    	
+	    	public void onAdLoaded() {
+	    		interstitial.show();
+	    		super.onAdLoaded();
+	    	}
+	    	
+		});
 
 
 		mainArticleListView = (ListView) findViewById(R.id.ArticleListViewMain);
@@ -109,6 +128,7 @@ public class MainNewsActivity extends Activity implements Runnable {
 		} else {
 			mHandler.sendEmptyMessage(1);
 		}
+		
 		progressDialog.dismiss();
 		
 
@@ -152,11 +172,16 @@ public class MainNewsActivity extends Activity implements Runnable {
 
 	@Override
 	protected void onDestroy() {
+		
+		
 		//kill all linked tasks
 		System.exit(0);
 		
 		super.onDestroy();
 	}
+	
+
+
 
 
 	

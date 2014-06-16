@@ -74,7 +74,7 @@ public class SubMenuAdapter  extends ArrayAdapter<NewsSubEntry> implements ListA
 		//add onclick listener
 		final TableRow table = (TableRow)convertView.findViewById(R.id.tableSubMenu); 
 		SubMenuNewsOnClickListener subMenuClickListener = new SubMenuNewsOnClickListener(currentEntry, newsName, newsCode);
-		table.setOnClickListener(subMenuClickListener);
+		//table.setOnClickListener(subMenuClickListener);
 		
 		
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_gradient" >
@@ -32,13 +32,20 @@
         android:text="@string/developerName"
         android:textSize="10dp" />
 
-    <com.google.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/adId"
-        ads:loadAdOnCreate="true" />
+    <!-- <com.google.android.gms.ads.AdView -->
+    <!-- android:id="@+id/adView" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignParentBottom="true" -->
+    <!-- ads:adSize="SMART_BANNER" -->
+    <!-- ads:adUnitId="@string/adId" -->
+    <!-- ads:loadAdOnCreate="true" /> -->
+
+  <com.google.android.gms.ads.AdView android:id="@+id/adViewMain"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentBottom="true"
+                         ads:adUnitId="@string/adId"
+                         ads:adSize="SMART_BANNER"/>
 
 </RelativeLayout>

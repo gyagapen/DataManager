@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background_gradient" >
+    android:background="@drawable/background_gradient"
+    android:orientation="vertical" >
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/listViewArticle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </com.handmark.pulltorefresh.library.PullToRefreshListView>
+<!--     <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout -->
+<!--         android:id="@+id/pull_to_refresh_layout" -->
+<!--         android:layout_width="fill_parent" -->
+<!--         android:layout_height="fill_parent" > -->
+
+        <it.gmariotti.cardslib.library.view.CardListView
+            android:id="@+id/listViewArticle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout" />
+<!--     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout> -->
 
 </LinearLayout>

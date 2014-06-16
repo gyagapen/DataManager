@@ -1,5 +1,9 @@
 package com.gyagapen.mrunews;
 
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.view.CardListView;
+
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
@@ -15,15 +19,17 @@ import android.os.Message;
 import android.os.StrictMode;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ListView;
 
+import com.gyagapen.mrunews.adapters.ArticleOnClickListener;
 import com.gyagapen.mrunews.adapters.ListArticleAdapter;
+import com.gyagapen.mrunews.common.CustomCardThumbails;
 import com.gyagapen.mrunews.common.LogsProvider;
+import com.gyagapen.mrunews.common.NewsCard;
 import com.gyagapen.mrunews.entities.ArticleHeader;
+import com.gyagapen.mrunews.parser.GetImageLinkAsync;
 import com.gyagapen.mrunews.parser.RSSReader;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
+import com.nhaarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 @SuppressLint("NewApi")
 public class ArticleListActivity extends Activity implements Runnable {
@@ -31,9 +37,9 @@ public class ArticleListActivity extends Activity implements Runnable {
 	private ArrayList<String> rssFeed;
 	private String rssId;
 	private ArrayList<ArticleHeader> articleList = null;
-	private ListArticleAdapter listArticleAdapter;
 	private boolean isRefreshed = false;
 	private LogsProvider logsProvider = null;
+	private ArrayList<GetImageLinkAsync> imageAsyncTasks = null;
 
 	// waiting dialog
 	private ProgressDialog progressDialog;
@@ -42,7 +48,8 @@ public class ArticleListActivity extends Activity implements Runnable {
 
 	private Handler mHandler = null;
 
-	private PullToRefreshListView HeaderListView;
+	// private PullToRefreshListView HeaderListView;
+	private CardListView HeaderListView;
 
 	String newsTitle;
 
@@ -75,62 +82,106 @@ public class ArticleListActivity extends Activity implements Runnable {
 	}
 
 	public void initUIComponent() {
-		HeaderListView = (PullToRefreshListView) findViewById(R.id.listViewArticle);
+		HeaderListView = (CardListView) findViewById(R.id.listViewArticle);
 
 		// set behavior on pull to refresh action
-		HeaderListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
-			@Override
-			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-				isRefreshed = true;
-				loadArticles();
-			}
-		});
+		/*
+		 * HeaderListView.setOnRefreshListener(new OnRefreshListener<ListView>()
+		 * {
+		 * 
+		 * @Override public void onRefresh(PullToRefreshBase<ListView>
+		 * refreshView) { isRefreshed = true; loadArticles(); } });
+		 */
 	}
 
 	public void populateArticleList(ArrayList<ArticleHeader> articleList) {
-		listArticleAdapter = new ListArticleAdapter(articleList, this,
-				newsTitle);
-		HeaderListView.getRefreshableView().setAdapter(listArticleAdapter);
+
+		ArrayList<Card> cards = new ArrayList<Card>();
+		imageAsyncTasks = new ArrayList<GetImageLinkAsync>();
+		CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, cards);
+
+		for (int i = 0; i < articleList.size(); i++) {
+			// Create a Card
+			NewsCard card = new NewsCard(this, R.layout.row_card,
+					articleList.get(i));
+			card.setTitle(articleList.get(i).getTitle());
+
+			CustomCardThumbails cardThumbnail = new CustomCardThumbails(null,
+					this);
+			cardThumbnail.setExternalUsage(true);
+			card.addCardThumbnail(cardThumbnail);
+
+			GetImageLinkAsync getImgASync = new GetImageLinkAsync(card, this,
+					mCardArrayAdapter);
+			getImgASync.execute(articleList.get(i).getLink(), articleList
+					.get(i).getId());
+			imageAsyncTasks.add(getImgASync);
+
+			card.setOnClickListener(new ArticleOnClickListener(articleList
+					.get(i), newsTitle));
+
+			cards.add(card);
+		}
+
+		mCardArrayAdapter.notifyDataSetChanged();
+
+		AnimationAdapter animCardArrayAdapter = new SwingBottomInAnimationAdapter(
+				mCardArrayAdapter);
+		animCardArrayAdapter.setAbsListView(HeaderListView);
+		
+		HeaderListView.setExternalAdapter(animCardArrayAdapter,
+				mCardArrayAdapter);
+
+		// HeaderListView.setAdapter(mCardArrayAdapter);
 
 		// scroll bar
-		HeaderListView.getRefreshableView().setFastScrollEnabled(true);
-		HeaderListView.getRefreshableView().setScrollbarFadingEnabled(false);
-		HeaderListView.getRefreshableView().setScrollContainer(true);
-		HeaderListView.getRefreshableView().setTextFilterEnabled(true);
+		HeaderListView.setFastScrollEnabled(true);
+		HeaderListView.setScrollbarFadingEnabled(false);
+		HeaderListView.setScrollContainer(true);
+		HeaderListView.setTextFilterEnabled(true);
+
+		/*
+		 * HeaderListView.getRefreshableView().setAdapter(listArticleAdapter);
+		 * 
+		 * // scroll bar
+		 * HeaderListView.getRefreshableView().setFastScrollEnabled(true);
+		 * HeaderListView.getRefreshableView().setScrollbarFadingEnabled(false);
+		 * HeaderListView.getRefreshableView().setScrollContainer(true);
+		 * HeaderListView.getRefreshableView().setTextFilterEnabled(true);
+		 */
 
 	}
 
 	@Override
 	public void run() {
 
-		
-			RSSReader rssReader = new RSSReader();
-			articleList = new ArrayList<ArticleHeader>();
-			boolean useCache = true;
+		RSSReader rssReader = new RSSReader();
+		articleList = new ArrayList<ArticleHeader>();
+		boolean useCache = true;
 
-			try {
+		try {
 
-				// force network response
-				if (isRefreshed) {
-					useCache = false;
-				}
-
-				articleList = rssReader.readFeed(rssFeed, rssId, useCache);
-				isRefreshed = false;
-
-				mHandler.sendEmptyMessage(0);
-
-			} catch (Exception e) {
-				mHandler.sendEmptyMessage(1);
+			// force network response
+			if (isRefreshed) {
+				useCache = false;
 			}
-		
+
+			articleList = rssReader.readFeed(rssFeed, rssId, useCache);
+			isRefreshed = false;
+
+			mHandler.sendEmptyMessage(0);
+
+		} catch (Exception e) {
+			mHandler.sendEmptyMessage(1);
+			logsProvider.error(e);
+		}
 
 		progressDialog.dismiss();
 
 		// animation
 		anim = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.animator.push_right_in);
-		HeaderListView.getRefreshableView().setAnimation(anim);
+				R.animator.fade_in);
+		HeaderListView.setAnimation(anim);
 		anim.start();
 
 	}
@@ -139,8 +190,12 @@ public class ArticleListActivity extends Activity implements Runnable {
 		super.finish();
 
 		// stop asynctask
-		if (listArticleAdapter != null) {
-			listArticleAdapter.stopAllASyncTask();
+		if (imageAsyncTasks != null) {
+			
+			for(int i=0;i<imageAsyncTasks.size();i++)
+			{
+				imageAsyncTasks.get(i).cancel(true);
+			}
 		}
 
 		// transition animation
@@ -162,12 +217,12 @@ public class ArticleListActivity extends Activity implements Runnable {
 						ArticleListActivity.this.finish();
 					}
 				});
-		
+
 		progressDialog.setOnCancelListener(new OnCancelListener() {
-			
-			//when progress dialog is cancelled
+
+			// when progress dialog is cancelled
 			public void onCancel(DialogInterface dialog) {
-				//close activity
+				// close activity
 				ArticleListActivity.this.finish();
 			}
 		});
@@ -180,7 +235,7 @@ public class ArticleListActivity extends Activity implements Runnable {
 				if (msg.what == 0) {
 
 					populateArticleList(articleList);
-					HeaderListView.onRefreshComplete();
+					// HeaderListView.onRefreshComplete();
 				} else if (msg.what == 1) {
 					displayErrorMessage("An error has occured");
 				}
@@ -209,7 +264,5 @@ public class ArticleListActivity extends Activity implements Runnable {
 
 		ad.show();
 	}
-	
-	
 
 }
