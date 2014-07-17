@@ -110,43 +110,37 @@ public class HTMLPageParser {
 		// get image
 		artContent.setImageLink(getImageFromLink(linkToParse,
 				StaticValues.LEXPRESS_CODE, doc));
-		
+
 		// css link
 		String cssLexpress = "<link href=\"http://www.lexpress.mu/sites/all/themes/lexpress_desk1/css/global.css\" rel=\"stylesheet\">";
 
-
-		//remove author image due to size bug
+		// remove author image due to size bug
 		doc.select("div.field-content").remove();
-		
-		//to keep correct ratio on images
+
+		// to keep correct ratio on images
 		doc.select("img").removeAttr("style");
-		
+
 		// html content
 		String htmlContent = doc.select("article div.content").first().html();
-		
-		//cater for youtube links
+
+		// cater for youtube links
 		Pattern paragraph = Pattern.compile("src=\"//");
 		Matcher sourceMatcher = paragraph.matcher(htmlContent);
-		htmlContent = sourceMatcher
-				.replaceAll("src=\"http://");
-		
-		//cater for images
+		htmlContent = sourceMatcher.replaceAll("src=\"http://");
+
+		// cater for images
 		paragraph = Pattern.compile("src=\"/sites");
 		sourceMatcher = paragraph.matcher(htmlContent);
 		htmlContent = sourceMatcher
 				.replaceAll("src=\"http://www.lexpress.mu/sites");
-		
-		
-		
-		artContent.setHtmlContent(cssLexpress+htmlContent);
-		
+
+		artContent.setHtmlContent(cssLexpress + htmlContent);
 
 		// get Title
 		Element TitleElement = doc.select("h1#page-title").first();
 		String title = TitleElement.text();
 		artContent.setTitle(title);
 
-		
 		// comments in html format
 		Element htmlComments = doc.select("div#comments").first();
 		if (htmlComments != null) {
@@ -172,16 +166,14 @@ public class HTMLPageParser {
 				StaticValues.DEFI_PLUS_CODE, doc));
 
 		// html content
-		 Element htmlContentElt = doc.select("div.itemImageBlock").first();
-		//remove iframe
-		 htmlContentElt.select("iframe").remove();
-		 String htmlContent = htmlContentElt.html();
+		Element htmlContentElt = doc.select("div.itemImageBlock").first();
+		// remove iframe
+		htmlContentElt.select("iframe").remove();
+		String htmlContent = htmlContentElt.html();
 
 		htmlContent += doc.select("div.itemIntroText").first().html();
 		htmlContent += doc.select("div.itemFullText").first().html();
 
-		
-		
 		// cater for images sources
 		Pattern paragraph = Pattern.compile("href=\"/media");
 		Matcher sourceMatcher = paragraph.matcher(htmlContent);
@@ -202,24 +194,30 @@ public class HTMLPageParser {
 		artContent.setTitle(title);
 
 		// disqus iframe
-		String commentsIframeUrl = "http://disqus.com/embed/comments/?base=default&disqus_version=ae2cfce6&f=ledefimediagroup&t_u="
+		String commentsIframeUrl = "http://disqus.com/embed/comments/?base=default&amp;disqus_version=634c8a73&amp;f=ledefimediagroup&amp;t_u="
 				+ linkToParse;
+
+		artContent.setCommentsIframeLink(commentsIframeUrl);
 
 		// get comments count
 		String countCommnetUrl = "http://ledefimediagroup.disqus.com/count-data.js?2="
 				+ linkToParse;
-		Document countCommentDoc = Jsoup.connect(countCommnetUrl)
-				.timeout(10 * 2500).get();
-		artContent.setCommentsIframeLink(commentsIframeUrl);
+		try {
+			Document countCommentDoc = Jsoup.connect(countCommnetUrl)
+					.ignoreContentType(true).timeout(10 * 2500).get();
 
-		String countText = countCommentDoc.text();
-		Pattern p = Pattern.compile("[0-9]+");
-		Matcher m = p.matcher(countText);
-		int commentCount = 0;
-		while (m.find()) {
-			commentCount = Integer.parseInt(m.group());
+			String countText = countCommentDoc.text();
+			Pattern p = Pattern.compile("[0-9]+");
+			Matcher m = p.matcher(countText);
+			int commentCount = 0;
+			while (m.find()) {
+				commentCount = Integer.parseInt(m.group());
+			}
+			artContent.setCommentCount(commentCount);
+		} catch (Exception e) {
+			logsProvider.error(e);
+			artContent.setCommentCount(0);
 		}
-		artContent.setCommentCount(commentCount);
 
 		return artContent;
 	}

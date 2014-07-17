@@ -159,7 +159,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 					// animation
 					anim = AnimationUtils.loadAnimation(
-							getApplicationContext(), R.animator.zoom_in_center);
+							getApplicationContext(), R.animator.fade_in);
 					frameLayout.setAnimation(anim);
 					anim.start();
 				}
@@ -290,8 +290,8 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		activityIsActive = false;
 
 		// transition animation
-		overridePendingTransition(R.animator.zoom_in_center,
-				R.animator.zoom_out);
+		overridePendingTransition(R.animator.push_right_in,
+				R.animator.push_right_out);
 	}
 
 	protected void onPause() {
