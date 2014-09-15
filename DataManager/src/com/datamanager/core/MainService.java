@@ -322,7 +322,7 @@ public class MainService extends Service {
 	public static void showNotification(String message, String subText, Context context, LogsProvider logsProvider, SharedPrefsEditor sharedPrefsEditor)
 	{
 		//if service is running
-		if(sharedPrefsEditor.isNotificationEnabled() && serviceInstance != null)
+		if(sharedPrefsEditor.isNotificationEnabled() && sharedPrefsEditor.isServiceActivated())
 		{
 			logsProvider.info("new notification: "+message+ " - "+subText);
 			Intent intent = new Intent(context, AppLauncher.class);

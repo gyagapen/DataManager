@@ -87,13 +87,15 @@
     <string name="notif_bat_low">Battery Low</string>
     <string name="notif_sleep_on">Sleep Mode ON</string>
     <string name="notif_sleep_off">Sleep Mode OFF</string>
-    <string name="adId">a150d57cebe0f76</string>
     <string name="data_off_when_wifi">Data Off When Wifi</string>
     <string name="data_off_when_wifi_warn_title">Warning</string>
     <string name="data_off_when_wifi_desc">Disable data connectivity when the phone is connected to a Wifi network</string>
     <string name="data_off_when_wifi_warn">Once ticked, you will have to control the data mobile state (ON/OFF) from this app, it will take over precedence from other toggles</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    
+    <string name="adId">ca-app-pub-4662434208516595/7442825666</string>
+    <string name="bannerId">ca-app-pub-4662434208516595/9490979664</string>
 
     <color name="separator">#B2E0FF</color>
     <color name="name">#666699</color>

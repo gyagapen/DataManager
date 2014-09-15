@@ -58,11 +58,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 				//if battery level is ok
 				if(!sharedPrefsEditor.isBatteryCurrentlyLow())
-				{					sharedPrefsEditor.setSleepTimeOnIsCurrentlyActivated(false);
-
-				MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_off), context,logsProvider,sharedPrefsEditor);
-				setSleepHoursOff(sharedPrefsEditor, context, dataActivation, logsProvider);
+				{					
+					MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_off), context,logsProvider,sharedPrefsEditor);
 				}
+				sharedPrefsEditor.setSleepTimeOnIsCurrentlyActivated(false);
+				setSleepHoursOff(sharedPrefsEditor, context, dataActivation, logsProvider);
 			}
 
 		}

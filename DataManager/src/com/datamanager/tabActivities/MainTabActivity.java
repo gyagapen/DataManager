@@ -1,24 +1,23 @@
 package com.datamanager.tabActivities;
 
 import android.app.TabActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
 import com.datamanager.core.LogsProvider;
-import com.datamanager.core.MainService;
 import com.datamanager.core.SaveConnectionPreferences;
-import com.datamanager.core.SharedPrefsEditor;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.gyagapen.cleverconnectivity.R;
 
-
-
-public class MainTabActivity extends TabActivity{
+public class MainTabActivity extends TabActivity {
 
 	private LogsProvider logsProvider = null;
-	
+
 	public static final String STR_ACTIVATE_CONNECTIVITY = "activateConnectivity";
 
 	public static final int ID_ALARM_TIME_ON = 1879;
@@ -29,8 +28,8 @@ public class MainTabActivity extends TabActivity{
 	public static final String LOG_FILE_NAME = "CleverConnectivity.log";
 
 	public static final boolean APPLICATION_IS_FREE = true;
-	
-	
+
+
 
 	// mail data
 	public static final String MAIL_RECIPIENT = "gyagapen@gmail.com";
@@ -40,8 +39,10 @@ public class MainTabActivity extends TabActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tabbed_layout);
+
+		logsProvider = new LogsProvider(getApplicationContext(),
+				this.getClass());
 		
-		logsProvider = new LogsProvider(getApplicationContext(), this.getClass());
 
 
 		// initialize connectivity positions
@@ -77,37 +78,40 @@ public class MainTabActivity extends TabActivity{
 		syncspec.setContent(syncIntent);
 
 		TabSpec bluetootspec = tabHost.newTabSpec("Bluetooth");
-		bluetootspec.setIndicator("", getResources().getDrawable(R.drawable.bluetooth));
+		bluetootspec.setIndicator("",
+				getResources().getDrawable(R.drawable.bluetooth));
 		Intent bluetoothIntent = new Intent(this, BluetoothTabActivity.class);
 		bluetootspec.setContent(bluetoothIntent);
 
 		// Tab for sleep hours
 		TabSpec sleepspec = tabHost.newTabSpec("Sleep");
-		sleepspec.setIndicator("", getResources().getDrawable(R.drawable.sleep));
+		sleepspec
+				.setIndicator("", getResources().getDrawable(R.drawable.sleep));
 		Intent sleepIntent = new Intent(this, SleepTimerPickerActivity.class);
 		sleepspec.setContent(sleepIntent);
 
-		// Tab for timers 
+		// Tab for timers
 		TabSpec timerspec = tabHost.newTabSpec("Timers");
-		timerspec.setIndicator("", getResources().getDrawable(R.drawable.timers));
+		timerspec.setIndicator("", getResources()
+				.getDrawable(R.drawable.timers));
 		Intent timerIntent = new Intent(this, TimersTabActivity.class);
 		timerspec.setContent(timerIntent);
 
-
-		// Tab for advanced 
+		// Tab for advanced
 		TabSpec advancedspec = tabHost.newTabSpec("Advanced");
-		advancedspec.setIndicator("", getResources().getDrawable(R.drawable.advanced));
+		advancedspec.setIndicator("",
+				getResources().getDrawable(R.drawable.advanced));
 		Intent advancedIntent = new Intent(this, AdvancedTabActivity.class);
 		advancedspec.setContent(advancedIntent);
 
-		// Tab for Misc 
+		// Tab for Misc
 		TabSpec miscspec = tabHost.newTabSpec("Misc");
 		miscspec.setIndicator("", getResources().getDrawable(R.drawable.misc));
 		Intent miscIntent = new Intent(this, MiscTabActivity.class);
 		miscspec.setContent(miscIntent);
 
 		// Adding all TabSpec to TabHost
-		tabHost.addTab(genspec); 
+		tabHost.addTab(genspec);
 		tabHost.addTab(dataspec);
 		tabHost.addTab(wifispec);
 		tabHost.addTab(syncspec);
@@ -117,11 +121,9 @@ public class MainTabActivity extends TabActivity{
 		tabHost.addTab(advancedspec);
 		tabHost.addTab(miscspec);
 	}
-	
-	
 
 	
-	
+
 	/**
 	 * Whenever application is closed
 	 */
@@ -131,7 +133,6 @@ public class MainTabActivity extends TabActivity{
 		super.onDestroy();
 
 		System.exit(0);
-
 
 	}
 

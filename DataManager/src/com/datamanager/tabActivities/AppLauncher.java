@@ -23,6 +23,10 @@ import com.datamanager.core.MainService;
 import com.datamanager.core.MenuListAdapter;
 import com.datamanager.core.SaveConnectionPreferences;
 import com.datamanager.core.SharedPrefsEditor;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.gyagapen.cleverconnectivity.R;
 
 /**
@@ -37,7 +41,6 @@ public class AppLauncher extends SherlockFragmentActivity {
 	private LogsProvider logsProvider = null;
 
 	public static final String STR_ACTIVATE_CONNECTIVITY = "activateConnectivity";
-
 	public static final int ID_ALARM_TIME_ON = 1879;
 	public static final int ID_ALARM_TIME_OFF = 1899;
 
@@ -46,6 +49,10 @@ public class AppLauncher extends SherlockFragmentActivity {
 	public static final String LOG_FILE_NAME = "CleverConnectivity.log";
 
 	public static final boolean APPLICATION_IS_FREE = true;
+
+	// intersticial ad
+	private InterstitialAd interstitial;
+	private boolean adIsShown = false;
 
 	// SharedPreferences
 	private SharedPreferences prefs = null;
@@ -87,7 +94,6 @@ public class AppLauncher extends SherlockFragmentActivity {
 
 		logsProvider = new LogsProvider(this, this.getClass());
 		logsProvider.info("Main app is launched");
-		
 
 		// initialize connectivity positions
 		SaveConnectionPreferences connPrefs = new SaveConnectionPreferences(
@@ -100,9 +106,12 @@ public class AppLauncher extends SherlockFragmentActivity {
 
 		dataActivation = new DataActivation(this);
 		sharedPrefsEditor = new SharedPrefsEditor(prefs, dataActivation);
-		
-		//by default manage app list is not opened
+
+		// by default manage app list is not opened
 		sharedPrefsEditor.setManageAppIsOpened(false);
+
+		// load intersticial
+		loadInsterticialAds();
 
 		// stop main service
 		stopDataManagerService(this, sharedPrefsEditor, logsProvider);
@@ -324,14 +333,13 @@ public class AppLauncher extends SherlockFragmentActivity {
 
 	protected void onStop() {
 
-		if (!sharedPrefsEditor.isManageAppIsOpened()) {
+		if (!sharedPrefsEditor.isManageAppIsOpened() && !adIsShown) {
 			logsProvider.info("AppLauncher onStop is called");
-
 			applySettings();
 			super.onStop();
 			System.exit(0);
 		} else {
-			logsProvider.info("Not stopping, manage list is opened");
+			logsProvider.info("Not stopping, manage list or adview is opened");
 			super.onStop();
 		}
 
@@ -348,6 +356,43 @@ public class AppLauncher extends SherlockFragmentActivity {
 		}
 
 		return accessMode;
+	}
+
+	public void loadInsterticialAds() {
+
+		// load ads
+		AdView adView = (AdView) this.findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().addTestDevice(
+				"BE9072DE1ECC3A345AD3A63B1D0FBD50").build();
+
+		adView.loadAd(adRequest);
+
+		// Create intersticial
+		interstitial = new InterstitialAd(this);
+		interstitial.setAdUnitId(getResources().getString(R.string.bannerId));
+
+		// Cretate ad request
+		AdRequest adInterRequest = new AdRequest.Builder().addTestDevice(
+				"0123456789ABCDEF").build();
+
+		// load intersticial
+		interstitial.loadAd(adInterRequest);
+		interstitial.setAdListener(new AdListener() {
+
+			public void onAdLoaded() {
+				interstitial.show();
+				adIsShown = true;
+				super.onAdLoaded();
+			}
+
+			@Override
+			public void onAdClosed() {
+				adIsShown = false;
+				super.onAdClosed();
+			}
+
+		});
+
 	}
 
 }
