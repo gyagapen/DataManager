@@ -110,7 +110,11 @@ public class MainService extends Service {
 
 		if(sharedPrefsEditor.isNotificationEnabled())
 		{
-			manageNotifications(sharedPrefsEditor, getApplicationContext(), logsProvider);
+			Notification note = manageNotifications(sharedPrefsEditor, getApplicationContext(), logsProvider);
+			if(note != null)
+			{
+				startForeground( 42, note );
+			}
 		}
 		else
 		{
@@ -319,8 +323,10 @@ public class MainService extends Service {
 
 
 
-	public static void showNotification(String message, String subText, Context context, LogsProvider logsProvider, SharedPrefsEditor sharedPrefsEditor)
+	public static Notification showNotification(String message, String subText, Context context, LogsProvider logsProvider, SharedPrefsEditor sharedPrefsEditor)
 	{
+		Notification notification = null;
+		
 		//if service is running
 		if(sharedPrefsEditor.isNotificationEnabled() && sharedPrefsEditor.isServiceActivated())
 		{
@@ -346,11 +352,14 @@ public class MainService extends Service {
 			builder.setLargeIcon(bm);
 			builder.setAutoCancel(true);
 			builder.setPriority(0);
-			Notification notification = builder.build();
-			NotificationManager notificationManger = 
+			notification = builder.build();
+			/*NotificationManager notificationManger = 
 					(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-			notificationManger.notify(NOTIFICATION_ID, notification);
+			notificationManger.notify(NOTIFICATION_ID, notification);*/
+			
 		}
+		
+		return notification;
 	}
 
 	public void registerBatteryMonitoring()
@@ -373,30 +382,34 @@ public class MainService extends Service {
 		notificationManager.cancel(NOTIFICATION_ID);
 	}
 
-	public static void manageNotifications(SharedPrefsEditor sharedPrefsEditor, Context context, LogsProvider logsProvider)
+	public static Notification manageNotifications(SharedPrefsEditor sharedPrefsEditor, Context context, LogsProvider logsProvider)
 	{
+		Notification notification = null;
+		
 		if(sharedPrefsEditor.isSleeping())
 		{
 			if(sharedPrefsEditor.isBatteryCurrentlyLow())
 			{
-				showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_bat_low), context, logsProvider,sharedPrefsEditor);
+				notification = showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_bat_low), context, logsProvider,sharedPrefsEditor);
 			}
 			else
 			{
-				MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider,sharedPrefsEditor);
+				notification = showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider,sharedPrefsEditor);
 			}
 		}
 		else
 		{
 			if(sharedPrefsEditor.isSleepHoursActivated())
 			{
-				MainService.showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider,sharedPrefsEditor);
+				notification = showNotification(context.getString(R.string.notif_running),context.getString(R.string.notif_sleep_on), context,logsProvider,sharedPrefsEditor);
 			}
 			else
 			{
-				MainService.showNotification(context.getString(R.string.notif_running),"", context,logsProvider,sharedPrefsEditor);
+				notification = showNotification(context.getString(R.string.notif_running),"", context,logsProvider,sharedPrefsEditor);
 			}
 		}
+		
+		return notification;
 	}
 	
 
