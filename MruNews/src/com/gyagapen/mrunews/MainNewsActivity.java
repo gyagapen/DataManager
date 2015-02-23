@@ -49,7 +49,7 @@ public class MainNewsActivity extends Activity implements Runnable   {
 		//load ads
 		AdView adView = (AdView)this.findViewById(R.id.adViewMain);
 	    AdRequest adRequest = new AdRequest.Builder()
-	    //.addTestDevice("BE9072DE1ECC3A345AD3A63B1D0FBD50")
+	    //.addTestDevice("0123456789ABCDEF")
 	    .build();
 	    adView.loadAd(adRequest);
 
@@ -59,7 +59,7 @@ public class MainNewsActivity extends Activity implements Runnable   {
 
 	    // Cretate ad request
 	    AdRequest adInterRequest = new AdRequest.Builder()
-	    //.addTestDevice("BE9072DE1ECC3A345AD3A63B1D0FBD50")
+	    .addTestDevice("BE9072DE1ECC3A345AD3A63B1D0FBD50")
 	    .build();
 
 	    //load intersticial

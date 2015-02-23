@@ -27,6 +27,7 @@ import com.gyagapen.mrunews.common.LogsProvider;
 import com.gyagapen.mrunews.common.NewsCard;
 import com.gyagapen.mrunews.entities.ArticleHeader;
 import com.gyagapen.mrunews.parser.GetImageLinkAsync;
+import com.gyagapen.mrunews.parser.HTMLPageParser;
 import com.gyagapen.mrunews.parser.RSSReader;
 import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.nhaarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
@@ -40,6 +41,8 @@ public class ArticleListActivity extends Activity implements Runnable {
 	private boolean isRefreshed = false;
 	private LogsProvider logsProvider = null;
 	private ArrayList<GetImageLinkAsync> imageAsyncTasks = null;
+	private boolean isNotRssFeed;
+	private String notRssParseCode;
 
 	// waiting dialog
 	private ProgressDialog progressDialog;
@@ -65,6 +68,8 @@ public class ArticleListActivity extends Activity implements Runnable {
 		rssFeed = myIntent.getStringArrayListExtra("rssFeed");
 		rssId = myIntent.getStringExtra("rssCode");
 		newsTitle = myIntent.getStringExtra("newsTitle");
+		isNotRssFeed = myIntent.getBooleanExtra("isNotRssFeed", false);
+		notRssParseCode = myIntent.getStringExtra("notRssParseCode");
 
 		// set activity title
 		setTitle(newsTitle);
@@ -166,7 +171,13 @@ public class ArticleListActivity extends Activity implements Runnable {
 				useCache = false;
 			}
 
-			articleList = rssReader.readFeed(rssFeed, rssId, useCache);
+			if(isNotRssFeed)
+			{
+				articleList = HTMLPageParser.getArticleListFromHTML(notRssParseCode, rssFeed.get(0));
+			}else
+			{
+				articleList = rssReader.readFeed(rssFeed, rssId, useCache);
+			}
 			isRefreshed = false;
 
 			mHandler.sendEmptyMessage(0);

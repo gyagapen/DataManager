@@ -14,10 +14,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.os.StrictMode;
+import android.util.Log;
 
 import com.gyagapen.mrunews.common.LogsProvider;
 import com.gyagapen.mrunews.common.StaticValues;
 import com.gyagapen.mrunews.entities.ArticleContent;
+import com.gyagapen.mrunews.entities.ArticleHeader;
 import com.gyagapen.mrunews.entities.SemdexEntities;
 import com.gyagapen.mrunews.entities.SemdexEntity;
 
@@ -67,6 +69,8 @@ public class HTMLPageParser {
 			artContent = parseDefiPlusPage();
 		} else if (parseType.equals(StaticValues.lE_MATINAL_CODE)) {
 			artContent = parseLeMatinalPage();
+		} else if (parseType.equals(StaticValues.IONNEWS_CODE)) {
+			artContent = parseIonNewsPage();
 		}
 
 		return artContent;
@@ -100,6 +104,52 @@ public class HTMLPageParser {
 		return artContent;
 	}
 
+	private ArticleContent parseIonNewsPage() throws Exception {
+
+		ArticleContent artContent = new ArticleContent();
+
+		// get page content
+		Document doc = Jsoup.connect(linkToParse).timeout(10 * 2500).get();
+
+		// get image
+		artContent.setImageLink(getImageFromLink(linkToParse,
+				StaticValues.IONNEWS_CODE, doc));
+		
+		//to keep correct ratio on images
+		doc.select("img").removeAttr("style");
+		
+		//get photo
+		String photoFrame = doc.select("div.article-photo").first().html();
+		
+		// html content
+		String htmlContent = doc.select("div.shortcode-content").first().html();
+		
+				
+		artContent.setHtmlContent(photoFrame+htmlContent);
+		
+
+		// get Title
+		Element TitleElement = doc.select("div.content-article-title h2").first();
+		String title = TitleElement.text();
+		artContent.setTitle(title);
+
+		Log.i("IONNEWS TITLE", title);
+		Log.i("IONNEWS CONTENT", htmlContent);
+		
+		// comments in html format
+		/*Element htmlComments = doc.select("div#comments").first();
+		if (htmlComments != null) {
+			artContent.setCommentsHtml(cssLexpress + htmlComments.html());
+		}
+
+		// count number of comments
+		int commentCount = doc.select("div#comments h3 a").size();
+		artContent.setCommentCount(commentCount);*/
+
+		return artContent;
+	}
+	
+	
 	private ArticleContent parseExpressPage() throws Exception {
 
 		ArticleContent artContent = new ArticleContent();
@@ -110,37 +160,43 @@ public class HTMLPageParser {
 		// get image
 		artContent.setImageLink(getImageFromLink(linkToParse,
 				StaticValues.LEXPRESS_CODE, doc));
-
+		
 		// css link
 		String cssLexpress = "<link href=\"http://www.lexpress.mu/sites/all/themes/lexpress_desk1/css/global.css\" rel=\"stylesheet\">";
 
-		// remove author image due to size bug
+
+		//remove author image due to size bug
 		doc.select("div.field-content").remove();
-
-		// to keep correct ratio on images
+		
+		//to keep correct ratio on images
 		doc.select("img").removeAttr("style");
-
+		
 		// html content
 		String htmlContent = doc.select("article div.content").first().html();
-
-		// cater for youtube links
+		
+		//cater for youtube links
 		Pattern paragraph = Pattern.compile("src=\"//");
 		Matcher sourceMatcher = paragraph.matcher(htmlContent);
-		htmlContent = sourceMatcher.replaceAll("src=\"http://");
-
-		// cater for images
+		htmlContent = sourceMatcher
+				.replaceAll("src=\"http://");
+		
+		//cater for images
 		paragraph = Pattern.compile("src=\"/sites");
 		sourceMatcher = paragraph.matcher(htmlContent);
 		htmlContent = sourceMatcher
 				.replaceAll("src=\"http://www.lexpress.mu/sites");
-
-		artContent.setHtmlContent(cssLexpress + htmlContent);
+		
+		
+		
+		artContent.setHtmlContent(cssLexpress+htmlContent);
+		
 
 		// get Title
 		Element TitleElement = doc.select("h1#page-title").first();
 		String title = TitleElement.text();
 		artContent.setTitle(title);
 
+		
 		// comments in html format
 		Element htmlComments = doc.select("div#comments").first();
 		if (htmlComments != null) {
@@ -154,6 +210,7 @@ public class HTMLPageParser {
 		return artContent;
 	}
 
+
 	private ArticleContent parseDefiPlusPage() throws Exception {
 
 		ArticleContent artContent = new ArticleContent();
@@ -166,14 +223,18 @@ public class HTMLPageParser {
 				StaticValues.DEFI_PLUS_CODE, doc));
 
 		// html content
-		Element htmlContentElt = doc.select("div.itemImageBlock").first();
-		// remove iframe
-		htmlContentElt.select("iframe").remove();
-		String htmlContent = htmlContentElt.html();
+		 //Element htmlContentElt = doc.select("div.itemImageBlock img").first();
+		//remove iframe
+		 //htmlContentElt.select("iframe").remove();
+		 //String htmlContent = htmlContentElt.html();
+		String htmlContent = "<img src=\""+artContent.getImageLink()+"\"></img>";
+		
 
 		htmlContent += doc.select("div.itemIntroText").first().html();
 		htmlContent += doc.select("div.itemFullText").first().html();
 
+		
+		
 		// cater for images sources
 		Pattern paragraph = Pattern.compile("href=\"/media");
 		Matcher sourceMatcher = paragraph.matcher(htmlContent);
@@ -189,35 +250,29 @@ public class HTMLPageParser {
 
 		// get Title
 
-		Element TitleElement = doc.select("h1.itemTitle").first();
+		Element TitleElement = doc.select("h2.itemTitle").first();
 		String title = TitleElement.text();
 		artContent.setTitle(title);
 
 		// disqus iframe
-		String commentsIframeUrl = "http://disqus.com/embed/comments/?base=default&amp;disqus_version=634c8a73&amp;f=ledefimediagroup&amp;t_u="
+		String commentsIframeUrl = "http://disqus.com/embed/comments/?base=default&disqus_version=668f833c&f=ledefimediagroup&t_u="
 				+ linkToParse;
-
-		artContent.setCommentsIframeLink(commentsIframeUrl);
 
 		// get comments count
 		String countCommnetUrl = "http://ledefimediagroup.disqus.com/count-data.js?2="
 				+ linkToParse;
-		try {
-			Document countCommentDoc = Jsoup.connect(countCommnetUrl)
-					.ignoreContentType(true).timeout(10 * 2500).get();
+		Document countCommentDoc = Jsoup.connect(countCommnetUrl)
+				.timeout(10 * 2500).ignoreContentType(true).get();
+		artContent.setCommentsIframeLink(commentsIframeUrl);
 
-			String countText = countCommentDoc.text();
-			Pattern p = Pattern.compile("[0-9]+");
-			Matcher m = p.matcher(countText);
-			int commentCount = 0;
-			while (m.find()) {
-				commentCount = Integer.parseInt(m.group());
-			}
-			artContent.setCommentCount(commentCount);
-		} catch (Exception e) {
-			logsProvider.error(e);
-			artContent.setCommentCount(0);
+		String countText = countCommentDoc.text();
+		Pattern p = Pattern.compile("[0-9]+");
+		Matcher m = p.matcher(countText);
+		int commentCount = 0;
+		while (m.find()) {
+			commentCount = Integer.parseInt(m.group());
 		}
+		artContent.setCommentCount(commentCount);
 
 		return artContent;
 	}
@@ -274,13 +329,18 @@ public class HTMLPageParser {
 
 			} else if (newsCode.equals(StaticValues.DEFI_PLUS_CODE)) {
 				// get image
-				Element imgElement = doc.select("span.itemImage img[src]")
+				Element imgElement = doc.select("div.itemImageBlock img[src]")
 						.first();
 				imageLink = "http://www.defimedia.info"
 						+ imgElement.attr("src").toString();
 			} else if (newsCode.equals(StaticValues.lE_MATINAL_CODE)) {
 				// get image
 				Element imgElement = doc.select("div.image img[src]").first();
+				imageLink = imgElement.attr("src").toString();
+
+			} else if (newsCode.equals(StaticValues.IONNEWS_CODE)) {
+				// get image
+				Element imgElement = doc.select("div.article-photo img[src]").first();
 				imageLink = imgElement.attr("src").toString();
 
 			}
@@ -389,6 +449,54 @@ public class HTMLPageParser {
 
 		semdexEntities.setSemdexEntities(semdexList);
 		return semdexEntities;
+	}
+	
+	
+	public static ArrayList<ArticleHeader>  getArticleListFromHTML(String parseCode, String link) throws IOException
+	{
+		ArrayList<ArticleHeader> articleHeaderList = new ArrayList<ArticleHeader>();
+		if(parseCode.equals(StaticValues.LOAD_ARTICLE_HTML_EXPRESS))
+		{
+			articleHeaderList = getArticlesLexpressMainPage(link);
+		}
+		return articleHeaderList;
+	}
+	
+	public static ArrayList<ArticleHeader> getArticlesLexpressMainPage(String link) throws IOException
+	{
+		ArrayList<ArticleHeader> articleHeaderList = new ArrayList<ArticleHeader>();
+		
+		// get page content
+		Document doc = Jsoup.connect(link).timeout(10 * 2500).get();
+		
+		//retrieve articles
+		Elements articleElements = doc.select("div.views-row");
+		
+		for(int i=0; i<articleElements.size();i++)
+		{
+			Element articleElt = articleElements.get(i);
+			Element articleTitleElt = articleElt.select("div.views-field-title").first();
+			if (articleTitleElt != null)
+			{
+				String title = articleTitleElt.select("a").text();
+				String articleLink = "http://www.lexpress.mu"+articleElt.select("a").attr("href").toString();
+				String description = "";
+				String publishedDate = "";
+				
+				ArticleHeader articleHeader = new ArticleHeader();
+				articleHeader.setId(StaticValues.LEXPRESS_CODE);
+				articleHeader.setTitle(title);
+				articleHeader.setLink(articleLink);
+				articleHeader.setDescription(description);
+				articleHeader.setPublishedDate(publishedDate);
+				
+				articleHeaderList.add(articleHeader);
+			}
+			
+			
+		}
+		
+		return articleHeaderList;
 	}
 
 }

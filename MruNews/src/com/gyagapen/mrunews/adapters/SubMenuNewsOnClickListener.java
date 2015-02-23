@@ -35,6 +35,8 @@ public class SubMenuNewsOnClickListener implements OnCardClickListener {
 		intent.putExtra("rssFeed", rssFeedList);
 		intent.putExtra("rssCode", newsCode);
 		intent.putExtra("newsTitle", newsName+newsSubMenu.getSubMenuName());
+		intent.putExtra("isNotRssFeed", newsSubMenu.isNotRssFeed());
+		intent.putExtra("notRssParseCode", newsSubMenu.getNotRssParseCode());
 		view.getContext().startActivity(intent);
 		
 	}

@@ -159,7 +159,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 					// animation
 					anim = AnimationUtils.loadAnimation(
-							getApplicationContext(), R.animator.fade_in);
+							getApplicationContext(), R.animator.push_left_in);
 					frameLayout.setAnimation(anim);
 					anim.start();
 				}
@@ -320,7 +320,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 	protected void onDestroy() {
 
 		activityIsActive = false;
-		adView.destroy();
+		//adView.destroy();
 
 		// webView.destroy();
 		super.onDestroy();
@@ -448,7 +448,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 				Intent email = new Intent(Intent.ACTION_SEND);
 				// email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
-				email.putExtra(Intent.EXTRA_SUBJECT, artTitle
+				email.putExtra(Intent.EXTRA_SUBJECT, artContent.getTitle()
 						+ " via Moris News");
 				String content = "Please check this news: " + articleLink;
 				email.putExtra(Intent.EXTRA_TEXT, content);
@@ -466,7 +466,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 			else {
 				try {
 
-					adapter.updateStory(artTitle, "", "", "", articleLink,
+					adapter.updateStory(artContent.getTitle(), "", "", "", articleLink,
 							imageLink, new MessageListener());
 
 					status = true;

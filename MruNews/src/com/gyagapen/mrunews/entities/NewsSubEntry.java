@@ -10,18 +10,35 @@ public class NewsSubEntry implements Serializable {
 	private String rssFeed;
 	private int imageResource = R.drawable.actualites;
 	private static final long serialVersionUID = 1L;
+	//not rss feed, to parse page
+	private boolean isNotRssFeed;
+	private String notRssParseCode;
 	
 	public NewsSubEntry(String subMenuName, String rssFeed) {
 	
 		this.rssFeed = rssFeed;
 		this.subMenuName = subMenuName;
+		this.isNotRssFeed = false;
+		this.notRssParseCode= ""; 
 	}
+	
+	public NewsSubEntry(String subMenuName, String rssFeed, int imageResource, boolean isNotRssFeed, String notRssParseCode) {
+		
+		this.rssFeed = rssFeed;
+		this.subMenuName = subMenuName;
+		this.imageResource = imageResource;
+		this.isNotRssFeed = isNotRssFeed;
+		this.notRssParseCode= notRssParseCode;
+	}
+	
 	
 	public NewsSubEntry(String subMenuName, String rssFeed, int imageResource) {
 		
 		this.rssFeed = rssFeed;
 		this.subMenuName = subMenuName;
 		this.imageResource = imageResource;
+		this.isNotRssFeed = false;
+		this.notRssParseCode= ""; 
 	}
 
 	public String getSubMenuName() {
@@ -46,6 +63,14 @@ public class NewsSubEntry implements Serializable {
 	
 	public int getImageResource() {
 		return imageResource;
+	}  
+	
+	public boolean isNotRssFeed() {
+		return isNotRssFeed;
+	}
+	
+	public String getNotRssParseCode() {
+		return notRssParseCode;
 	}
 	
 

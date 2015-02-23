@@ -8,9 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.android.gms.ads.AdView;
+
 import com.gyagapen.mrunews.R;
 
 /**
